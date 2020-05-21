@@ -12,6 +12,6 @@ public class Ad {
 
    private Set<RentRequest> request;
    private Car car;
-   private PriceList priceList;
+   // private PriceList priceList;
 
 }
