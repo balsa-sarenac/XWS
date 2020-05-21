@@ -18,6 +18,5 @@ public class Car {
    private Set<Occupied> occupied;
    private Set<Report> report;
    private User user;
-   private Set<Grade> grades;
 
 }

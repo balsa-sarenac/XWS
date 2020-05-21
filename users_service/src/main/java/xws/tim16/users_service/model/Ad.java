@@ -10,8 +10,8 @@ public class Ad {
    private String returnDate;
    private double allowedKilometrage;
 
-   private Set<RentRequest> request;
+
    private Car car;
-   private PriceList priceList;
+
 
 }
