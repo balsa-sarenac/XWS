@@ -1,11 +1,15 @@
 package xws.tim16.security_service.model;
 
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 
-@Getter @Setter
+@Getter @Setter @SuperBuilder
+@NoArgsConstructor
 @Entity
 public class Agent extends User {
 

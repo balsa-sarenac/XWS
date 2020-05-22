@@ -1,4 +1,4 @@
-package xws.tim16.security_service.security.auth;
+package xws.tim16.security_service.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,7 +8,9 @@ import lombok.Setter;
 @Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class JwtAuthenticationRequest {
+public class UserDTO {
+    private String firstName;
+    private String lastName;
     private String username;
     private String password;
 }

@@ -9,4 +9,6 @@ import lombok.Setter;
 public class UserTokenState {
     private String  accessToken;
     private Integer expiresIn;
+    private String username;
+    private String refreshToken;
 }

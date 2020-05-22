@@ -1,16 +1,18 @@
 package xws.tim16.security_service.model;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Collection;
+import java.util.Set;
 
-@Getter @Setter
-@Entity
+@Getter @Setter @SuperBuilder
+@NoArgsConstructor @AllArgsConstructor
+@Entity @Table(name = "user_table")
 @Inheritance(strategy = InheritanceType.JOINED)
 public class User implements UserDetails {
 
@@ -18,31 +20,42 @@ public class User implements UserDetails {
    @GeneratedValue(strategy = GenerationType.IDENTITY)
    private Long id;
 
-   @Column(name = "username", nullable = false)
+   @Column(nullable = false)
    private String username;
 
-   @Column(name = "password", nullable = false)
+   @Column(nullable = false)
    private String password;
 
-   @Column(name = "firstName", nullable = false)
+   @Column(nullable = false)
    private String firstName;
 
-   @Column(name = "lastName", nullable = false)
+   @Column(nullable = false)
    private String lastName;
 
-   @Column(name = "enabled", nullable = false)
+   @Column(nullable = false)
    private boolean enabled;
 
-   @Column(name = "lastPasswordResetDate")
+   @Column
    private Timestamp lastPasswordResetDate;
 
+   @ManyToMany
+   @JoinTable(name = "user_authority",
+           joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+           inverseJoinColumns = @JoinColumn(name = "authority_id", referencedColumnName = "id"))
+   private Set<Authority> authorities;
+
+   @Column
    private boolean accountNonExpired;
+
+   @Column
    private boolean accountNonLocked;
+
+   @Column
    private boolean credentialsNonExpired;
 
    @Override
-   public Collection<? extends GrantedAuthority> getAuthorities() {
-      return null;
+   public Collection<Authority> getAuthorities() {
+      return authorities;
    }
 
    @Override
