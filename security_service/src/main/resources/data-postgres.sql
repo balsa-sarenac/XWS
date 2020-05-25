@@ -1,1 +1,0 @@
-insert into user_table (first_name, last_name, username, password, enabled, account_non_expired, account_non_locked, credentials_non_expired) values ('Balsa', 'Sarenac', 'bax', '$2a$10$U9jvaVCEV.48aHuR2vck/emgRLXJ3d5jleYyCTwdO/X9fmDtZ0bgG', true, false, false, false);
