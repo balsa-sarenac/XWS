@@ -1,4 +1,4 @@
-package xws.tim16.users_service.model;
+package xws.team16.adminservice.model;
 
 import java.util.Set;
 
@@ -10,7 +10,7 @@ public class User {
    private boolean isEnabled;
 
    private Set<Car> cars;
-   private Set<Ad> ads;
+//   private Set<Ad> ads;
 
 
 }
