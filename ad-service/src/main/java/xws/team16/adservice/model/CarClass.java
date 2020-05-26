@@ -1,4 +1,4 @@
-package xws.tim16.ads_service.model;
+package xws.team16.adservice.model;
 
 public class CarClass {
    private String name;
