@@ -1,4 +1,4 @@
-package xws.tim16.car_service.model;
+package xws.team16.carservice.model;
 
 public class Mark {
    private String name;
