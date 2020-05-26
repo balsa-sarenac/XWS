@@ -1,4 +1,4 @@
-package xws.tim16.request_service.model;
+package xws.team16.requestservice.model;
 
 public class Grade {
     private int grade;
