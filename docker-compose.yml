@@ -1,0 +1,72 @@
+version: "3"
+services:
+  eureka:
+    build: ./eureka
+    ports:
+      - "8761:8761"
+    tty: true
+
+  ad-service:
+    build: ./ad-service
+    ports:
+      - "8081:8081"
+    environment:
+      - REGISTRY_HOST=eureka
+    tty: true
+    depends_on:
+      - eureka
+
+  admin-service:
+    build: ./admin-service
+    ports:
+      - "8082:8082"
+    environment:
+      - REGISTRY_HOST=eureka
+    tty: true
+    depends_on:
+      - eureka
+
+  car-service:
+    build: ./car-service
+    ports:
+      - "8083:8083"
+    environment:
+      - REGISTRY_HOST=eureka
+    tty: true
+    depends_on:
+      - eureka
+
+  request-service:
+    build: ./request-service
+    ports:
+      - "8084:8084"
+    environment:
+      - REGISTRY_HOST=eureka
+    tty: true
+    depends_on:
+      - eureka
+
+  security-service:
+    build: ./security-service
+    ports:
+      - "8085:8085"
+    environment:
+      - REGISTRY_HOST=eureka
+    tty: true
+    depends_on:
+      - eureka
+
+  zuul:
+    build: ./zuul
+    ports:
+      - "8086:8086"
+    environment:
+      - REGISTRY_HOST=eureka
+    tty: true
+    depends_on:
+      - eureka
+      - ad-service
+      - admin-service
+      - car-service
+      - request-service
+      - security-service
