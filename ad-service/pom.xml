@@ -9,15 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>xws.team16</groupId>
-<<<<<<< HEAD:eureka/pom.xml
-	<artifactId>eureka</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>eureka</name>
-=======
 	<artifactId>ad-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>ad-service</name>
->>>>>>> a2f400b1c749d510883ae8c376f32c1ffc18c3b9:ad-service/pom.xml
 	<description>Project for course XWS</description>
 
 	<properties>
@@ -29,10 +23,6 @@
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
 		</dependency>
 
 		<dependency>
