@@ -9,15 +9,11 @@ public class Car {
    private boolean hasAndroid;
    private int numberOfGrades;
 
-   private Set<Comment> comment;
    private Mark mark;
    private CarClass carClass;
    private Set<Fuel> fuel;
    private Model model;
    private Gearbox gearbox;
    private Set<Occupied> occupied;
-   private Set<Report> report;
-   private User user;
-   private Set<Grade> grades;
 
 }
