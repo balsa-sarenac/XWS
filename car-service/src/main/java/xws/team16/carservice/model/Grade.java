@@ -1,18 +1,27 @@
 package xws.team16.carservice.model;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
 
+@Getter @Setter
+@NoArgsConstructor
 @Entity
 public class Grade {
-    @Id @Column
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
+    @Column(name = "grade")
     private int grade;
 
     @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @ManyToOne
+    @JoinColumn(name = "car_id", nullable = false)
     private Car car;
 }

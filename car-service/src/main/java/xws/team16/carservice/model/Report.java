@@ -1,19 +1,27 @@
 package xws.team16.carservice.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+import javax.persistence.*;
+
+@Getter @Setter
+@NoArgsConstructor
 @Entity
 public class Report {
    @Id
-   @Column
+   @GeneratedValue(strategy = GenerationType.IDENTITY)
    private Long id;
 
-   @Column
+   @Column(name = "kilometrage", nullable = false)
    private double kilometrage;
 
-   @Column
+   @Column(name = "comment")
    private String comment;
+
+   @ManyToOne(fetch = FetchType.LAZY)
+   @JoinColumn(name = "car_id", nullable = false)
+   private Car car;
 
 }

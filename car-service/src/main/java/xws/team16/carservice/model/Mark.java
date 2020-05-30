@@ -1,16 +1,25 @@
 package xws.team16.carservice.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.bouncycastle.math.raw.Mod;
 
+import javax.persistence.*;
+import java.util.Set;
+
+@Getter @Setter
+@NoArgsConstructor
 @Entity
 public class Mark {
    @Id
-   @Column
+   @GeneratedValue(strategy = GenerationType.IDENTITY)
    private Long id;
 
-   @Column
+   @Column(name = "name")
    private String name;
+
+   @OneToMany(mappedBy = "mark")
+   private Set<Model> models;
 
 }

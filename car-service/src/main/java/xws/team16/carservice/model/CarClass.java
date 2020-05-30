@@ -1,15 +1,20 @@
 package xws.team16.carservice.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+import javax.persistence.*;
+
+@Getter @Setter
+@NoArgsConstructor
 @Entity
 public class CarClass {
-   @Id @Column
+   @Id
+   @GeneratedValue(strategy = GenerationType.IDENTITY)
    private Long id;
 
-   @Column
+   @Column(name = "name")
    private String name;
 
 }

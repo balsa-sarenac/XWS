@@ -1,36 +1,49 @@
 package xws.team16.carservice.model;
 
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.util.Set;
+
+@Getter @Setter
+@NoArgsConstructor
 @Entity
 public class Ad {
    @Id
-   @Column
+   @GeneratedValue(strategy = GenerationType.IDENTITY)
    private Long id;
 
-   @Column
+   @Column(name = "cdw_available")
    private boolean cdwAvailable;
 
-   @Column
+   @Column(name = "prick_up_place")
    private String pickUpPlace;
 
-   @Column
+   @Column(name = "pick_up_date")
    private String pickUpDate;
 
-   @Column
+   @Column(name = "return_date")
    private String returnDate;
 
-   @Column
+   @Column(name = "allowed_kilometrage")
    private double allowedKilometrage;
 
-   @OneToMany
-   private Set<Car> cars;
+   @ManyToOne(fetch = FetchType.LAZY)
+   @JoinColumn(name = "car_id", nullable = false)
+   private Car car;
 
-   @OneToMany
+   @OneToMany(mappedBy = "ad")
    private Set<RentRequest> request;
 
-   @ManyToOne
+   @ManyToOne(fetch = FetchType.LAZY)
+   @JoinColumn(name = "price_list_id", nullable = false)
    private PriceList priceList;
+
+   @ManyToOne(fetch = FetchType.LAZY)
+   @JoinColumn(name = "user_id", nullable = false)
+   private User user;
 
 }

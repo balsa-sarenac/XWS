@@ -1,23 +1,28 @@
 package xws.team16.carservice.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+import javax.persistence.*;
+
+@Getter @Setter
+@NoArgsConstructor
 @Entity
 public class PriceList {
-    @Id @Column
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
+    @Column(name = "per_day")
     private double perDay;
 
-    @Column
+    @Column(name = "extra_kilometrage")
     private double extraKilometrage;
 
-    @Column
+    @Column(name = "cdw")
     private double cdw;
 
-    @Column
+    @Column(name = "discount")
     private double discount;
 }

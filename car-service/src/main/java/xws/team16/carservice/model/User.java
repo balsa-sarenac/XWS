@@ -1,35 +1,40 @@
 package xws.team16.carservice.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.SuperBuilder;
+
+import javax.persistence.*;
 import java.util.Set;
 
-@Entity
+@Getter @Setter @SuperBuilder
+@NoArgsConstructor
+@Entity @Table(name = "USER_TABLE") @Inheritance(strategy = InheritanceType.JOINED)
 public class User {
-   @Id @Column
+   @Id
+   @GeneratedValue(strategy = GenerationType.IDENTITY)
    private Long id;
 
-   @Column
+   @Column(name = "username")
    private String username;
 
-   @Column
+   @Column(name = "password")
    private String password;
 
-   @Column
+   @Column(name = "first_name")
    private String firstName;
 
-   @Column
+   @Column(name = "last_name")
    private String lastName;
 
-   @Column
+   @Column(name = "is_enabled")
    private boolean isEnabled;
 
-   @OneToMany
+   @OneToMany(mappedBy = "owner")
    private Set<Car> cars;
 
-   @OneToMany
+   @OneToMany(mappedBy = "user")
    private Set<Ad> ads;
 
 
