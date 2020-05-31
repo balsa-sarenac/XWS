@@ -1,19 +1,15 @@
 package xws.team16.securityservice.controller;
 
-import com.sun.org.apache.regexp.internal.RE;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.*;
 import xws.team16.securityservice.dto.UserDTO;
 import xws.team16.securityservice.security.auth.JwtAuthenticationRequest;
 import xws.team16.securityservice.service.impl.CustomUserDetailsService;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.websocket.server.PathParam;
 
 @RestController @Slf4j
 @RequestMapping(value = "/auth", produces = "application/json")
