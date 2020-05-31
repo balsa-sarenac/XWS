@@ -24,10 +24,5 @@ public class CarController {
         this.carService = carService;
     }
 
-    @PostMapping
-    public ResponseEntity<Void> newCar(@RequestBody CarDTO carDTO) {
-        log.info("Car controller - add new car");
-        return this.carService.newCar(carDTO);
-    }
 
 }
