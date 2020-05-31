@@ -4,3 +4,4 @@ insert into MODEL (name, mark_id) values ('q7', 1);
 insert into FUEL (type) values ('benzin');
 insert into CAR_CLASS (name ) values ('city');
 insert into GEARBOX (type) values ('automatic');
+insert into PRICE_LIST (per_day, extra_kilometrage, cdw, discount) values (7, 4, false, 10);
