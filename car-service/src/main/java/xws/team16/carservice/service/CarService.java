@@ -5,45 +5,46 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import xws.team16.carservice.dto.AdDTO;
 import xws.team16.carservice.dto.CarDTO;
 import xws.team16.carservice.exceptions.*;
 import xws.team16.carservice.model.*;
-import xws.team16.carservice.repository.*;
+import xws.team16.carservice.repository.CarRepository;
 
 import java.util.Optional;
 
 @Service @Slf4j
 public class CarService {
 
-    private ModelRepository modelRepository;
-    private MarkRepository markRepository;
     private CarRepository carRepository;
-    private FuelRepository fuelRepository;
-    private CarClassRepository carClassRepository;
-    private GearboxRepository gearboxRepository;
-    private UserRepository userRepository;
+    private ModelService modelService;
+    private MarkService markService;
+    private FuelService fuelService;
+    private CarClassService carClassService;
+    private GearboxService gearboxService;
+    private UserService userService;
 
     @Autowired
-    public CarService(ModelRepository modelRepository, MarkRepository markRepository, CarRepository carRepository,
-                      FuelRepository fuelRepository, CarClassRepository carClassRepository,
-                      GearboxRepository gearboxRepository, UserRepository userRepository) {
-        this.modelRepository = modelRepository;
-        this.markRepository = markRepository;
+    public CarService(CarRepository carRepository, ModelService modelService, MarkService markService,
+                      FuelService fuelService, CarClassService carClassService, GearboxService gearboxService,
+                      UserService userService) {
         this.carRepository = carRepository;
-        this.fuelRepository = fuelRepository;
-        this.carClassRepository = carClassRepository;
-        this.gearboxRepository = gearboxRepository;
-        this.userRepository = userRepository;
+        this.modelService = modelService;
+        this.markService = markService;
+        this.fuelService = fuelService;
+        this.carClassService = carClassService;
+        this.gearboxService = gearboxService;
+        this.userService = userService;
     }
 
-    public ResponseEntity<Void> newCar(CarDTO carDTO) {
+    public Car newCar(CarDTO carDTO) {
         log.info("Car service - new car");
-        Model model = this.modelRepository.findById(carDTO.getModelId()).orElseThrow(ModelNotFoundException::new);
-        Mark mark = this.markRepository.findById(carDTO.getMarkId()).orElseThrow(MarkNotFoundException::new);
-        Fuel fuel = this.fuelRepository.findById(carDTO.getFuelId()).orElseThrow(FuelNotFoundException::new);
-        CarClass carClass = this.carClassRepository.findById(carDTO.getCarClassId()).orElseThrow(CarClassNotFoundException::new);
-        Gearbox gearbox = this.gearboxRepository.findById(carDTO.getGearboxId()).orElseThrow(GearboxNotFoundException::new);
-        User user = this.userRepository.findById(carDTO.getUserId()).orElseThrow(UserNotFoundException::new);
+        Model model = this.modelService.getModelById(carDTO.getModelId());
+        Mark mark = this.markService.getMarkById(carDTO.getMarkId());
+        Fuel fuel = this.fuelService.getFuelById(carDTO.getFuelId());
+        CarClass carClass = this.carClassService.getCarClassById(carDTO.getCarClassId());;
+        Gearbox gearbox = this.gearboxService.getGearboxById(carDTO.getGearboxId());
+        User user = this.userService.getUserByUsername("bax");
 
         Car car = new Car();
         car.setModel(model);
@@ -52,10 +53,13 @@ public class CarService {
         car.setCarClass(carClass);
         car.setGearbox(gearbox);
         car.setOwner(user);
+        car.setKilometrage(carDTO.getKilometrage());
+        car.setNumberOfChildSeats(carDTO.getNumberOfChildSeats());
+
 
         car = this.carRepository.save(car);
         log.info("Car added with id " + car.getId());
 
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return car;
     }
 }

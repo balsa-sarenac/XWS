@@ -14,4 +14,7 @@ public class CarDTO {
     private Long carClassId;
     private Long gearboxId;
     private Long userId;
+    private int kilometrage;
+    private int numberOfChildSeats;
+    private boolean hasAndroid;
 }

@@ -4,6 +4,8 @@ package xws.team16.carservice.model;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Type;
+import org.joda.time.DateTime;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -22,11 +24,19 @@ public class Ad {
    @Column(name = "prick_up_place")
    private String pickUpPlace;
 
-   @Column(name = "pick_up_date")
-   private String pickUpDate;
+   @Column(name = "from_date")
+   @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime", parameters = {
+           @org.hibernate.annotations.Parameter(name = "databaseZone", value = "UTC"),
+           @org.hibernate.annotations.Parameter(name = "javaZone", value = "UTC")
+   })
+   private DateTime fromDate;
 
-   @Column(name = "return_date")
-   private String returnDate;
+   @Column(name = "to_date")
+   @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime", parameters = {
+           @org.hibernate.annotations.Parameter(name = "databaseZone", value = "UTC"),
+           @org.hibernate.annotations.Parameter(name = "javaZone", value = "UTC")
+   })
+   private DateTime toDate;
 
    @Column(name = "allowed_kilometrage")
    private double allowedKilometrage;
