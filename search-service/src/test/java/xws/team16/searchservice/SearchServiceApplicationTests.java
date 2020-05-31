@@ -1,10 +1,10 @@
-package xws.team16.adservice;
+package xws.team16.searchservice;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class AdServiceApplicationTests {
+class SearchServiceApplicationTests {
 
 	@Test
 	void contextLoads() {
