@@ -1,0 +1,65 @@
+package xws.team16.carservice.service;
+
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+import xws.team16.carservice.dto.AdDTO;
+import xws.team16.carservice.dto.CarDTO;
+import xws.team16.carservice.exceptions.*;
+import xws.team16.carservice.model.*;
+import xws.team16.carservice.repository.CarRepository;
+
+import java.util.Optional;
+
+@Service @Slf4j
+public class CarService {
+
+    private CarRepository carRepository;
+    private ModelService modelService;
+    private MarkService markService;
+    private FuelService fuelService;
+    private CarClassService carClassService;
+    private GearboxService gearboxService;
+    private UserService userService;
+
+    @Autowired
+    public CarService(CarRepository carRepository, ModelService modelService, MarkService markService,
+                      FuelService fuelService, CarClassService carClassService, GearboxService gearboxService,
+                      UserService userService) {
+        this.carRepository = carRepository;
+        this.modelService = modelService;
+        this.markService = markService;
+        this.fuelService = fuelService;
+        this.carClassService = carClassService;
+        this.gearboxService = gearboxService;
+        this.userService = userService;
+    }
+
+    public Car newCar(CarDTO carDTO) {
+        log.info("Car service - new car");
+        Model model = this.modelService.getModelById(carDTO.getModelId());
+        Mark mark = this.markService.getMarkById(carDTO.getMarkId());
+        Fuel fuel = this.fuelService.getFuelById(carDTO.getFuelId());
+        CarClass carClass = this.carClassService.getCarClassById(carDTO.getCarClassId());;
+        Gearbox gearbox = this.gearboxService.getGearboxById(carDTO.getGearboxId());
+        User user = this.userService.getUserByUsername("bax");
+
+        Car car = new Car();
+        car.setModel(model);
+        car.setMark(mark);
+        car.setFuel(fuel);
+        car.setCarClass(carClass);
+        car.setGearbox(gearbox);
+        car.setOwner(user);
+        car.setKilometrage(carDTO.getKilometrage());
+        car.setNumberOfChildSeats(carDTO.getNumberOfChildSeats());
+
+
+        car = this.carRepository.save(car);
+        log.info("Car added with id " + car.getId());
+
+        return car;
+    }
+}
