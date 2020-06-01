@@ -15,6 +15,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import xws.team16.securityservice.dto.UserDTO;
+import xws.team16.securityservice.exception.NotFoundException;
 import xws.team16.securityservice.model.User;
 import xws.team16.securityservice.model.UserTokenState;
 import xws.team16.securityservice.repository.UserRepository;
@@ -114,14 +115,20 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
     public ResponseEntity<Void> enable(Long userId) {
-        Optional<User> optional = this.userRepository.findById(userId);
-        if (!optional.isPresent()) {
-            log.error("User with id " + userId + " is not present");
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        User user = optional.get();
+        User user = getUserById(userId);
         user.setEnabled(true);
         this.userRepository.save(user);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    public ResponseEntity<Void> disable(Long userId) {
+        User user = getUserById(userId);
+        user.setEnabled(false);
+        this.userRepository.save(user);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    private User getUserById(Long userId) {
+        return this.userRepository.findById(userId).orElseThrow(() -> new NotFoundException("User with given id was not found."));
     }
 }

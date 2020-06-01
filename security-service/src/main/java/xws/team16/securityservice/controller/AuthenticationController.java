@@ -12,7 +12,7 @@ import xws.team16.securityservice.service.impl.CustomUserDetailsService;
 import javax.servlet.http.HttpServletResponse;
 
 @RestController @Slf4j
-@RequestMapping(value = "/auth", produces = "application/json")
+@RequestMapping(produces = "application/json")
 public class AuthenticationController {
 
     private CustomUserDetailsService userDetailsService;
@@ -35,10 +35,26 @@ public class AuthenticationController {
         return this.userDetailsService.register(userDTO);
     }
 
+    /**
+     * Enables user to log into application
+     * @param userId id of the user
+     * @return 200 ok if successful or 404 not found if user does not exist
+     */
     @PutMapping(value = "/enable/{userId}")
     public ResponseEntity<Void> enable(@PathVariable Long userId) {
         log.info("Controller /enable reached by user id " + userId);
         return this.userDetailsService.enable(userId);
+    }
+
+    /**
+     * Disables user to log into application
+     * @param userId id of the user
+     * @return 200 ok if successful or 404 not found if user does not exist
+     */
+    @PutMapping(value = "/disable/{userId}")
+    public ResponseEntity<Void> disable(@PathVariable Long userId) {
+        log.info("Controller /disable reached by user id " + userId);
+        return this.userDetailsService.disable(userId);
     }
 
 }
