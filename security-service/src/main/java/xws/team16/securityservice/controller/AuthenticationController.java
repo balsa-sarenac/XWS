@@ -3,12 +3,14 @@ package xws.team16.securityservice.controller;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import xws.team16.securityservice.dto.UserDTO;
 import xws.team16.securityservice.security.auth.JwtAuthenticationRequest;
 import xws.team16.securityservice.service.impl.CustomUserDetailsService;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @RestController @Slf4j
@@ -32,29 +34,42 @@ public class AuthenticationController {
     @PostMapping(value = "/register")
     public ResponseEntity<Void> register(@RequestBody UserDTO userDTO) {
         log.info("Controller /register reached by user: " + userDTO.getUsername());
-        return this.userDetailsService.register(userDTO);
+        this.userDetailsService.register(userDTO);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     /**
-     * Enables user to log into application
+     * Enables user to log in to application
      * @param userId id of the user
      * @return 200 ok if successful or 404 not found if user does not exist
      */
     @PutMapping(value = "/enable/{userId}")
     public ResponseEntity<Void> enable(@PathVariable Long userId) {
         log.info("Controller /enable reached by user id " + userId);
-        return this.userDetailsService.enable(userId);
+        this.userDetailsService.enable(userId);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     /**
-     * Disables user to log into application
+     * Disables user to log in to application
      * @param userId id of the user
      * @return 200 ok if successful or 404 not found if user does not exist
      */
     @PutMapping(value = "/disable/{userId}")
     public ResponseEntity<Void> disable(@PathVariable Long userId) {
         log.info("Controller /disable reached by user id " + userId);
-        return this.userDetailsService.disable(userId);
+        this.userDetailsService.disable(userId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    /**
+     * Verifies users authentication token
+     * @return true if token is valid
+     */
+    @GetMapping(value = "/verify/{token}")
+    public ResponseEntity<?> verify(@PathVariable String token) {
+        log.info("Controller /verify invoked with token - " + token);
+        return this.userDetailsService.verify(token);
     }
 
 }

@@ -22,6 +22,7 @@ import xws.team16.securityservice.repository.UserRepository;
 import xws.team16.securityservice.security.TokenUtils;
 import xws.team16.securityservice.security.auth.JwtAuthenticationRequest;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Timestamp;
@@ -35,6 +36,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     private AuthenticationManager authenticationManager;
     private UserRepository userRepository;
     private PasswordEncoder passwordEncoder;
+    private UserDetailsService userDetailsService;
 
     @Autowired
     public CustomUserDetailsService(TokenUtils tokenUtils, AuthenticationManager authenticationManager,
@@ -77,7 +79,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     }
 
-    public ResponseEntity<Void> register(UserDTO userDTO) {
+    public void register(UserDTO userDTO) {
         log.info("User service - registration function");
         User user = User.builder()
                 .firstName(userDTO.getFirstName())
@@ -87,7 +89,6 @@ public class CustomUserDetailsService implements UserDetailsService {
                 .enabled(false)
                 .build();
         userRepository.save(user);
-        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     public ResponseEntity<?> login(JwtAuthenticationRequest jwtAuthenticationRequest, HttpServletResponse httpServletResponse) throws AuthenticationException, IOException {
@@ -114,21 +115,40 @@ public class CustomUserDetailsService implements UserDetailsService {
         return ResponseEntity.ok(new UserTokenState(jwt, expiresIn, username, refresh));
     }
 
-    public ResponseEntity<Void> enable(Long userId) {
+    public void enable(Long userId) {
         User user = getUserById(userId);
         user.setEnabled(true);
         this.userRepository.save(user);
-        return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    public ResponseEntity<Void> disable(Long userId) {
+    public void disable(Long userId) {
         User user = getUserById(userId);
         user.setEnabled(false);
         this.userRepository.save(user);
-        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     private User getUserById(Long userId) {
         return this.userRepository.findById(userId).orElseThrow(() -> new NotFoundException("User with given id was not found."));
+    }
+
+    public ResponseEntity<?> verify(String token) {
+        log.info("Custom user details service - verify token");
+
+        String username;
+        UserDetails userDetails = null;
+        if (token != null) {
+            username = tokenUtils.getUsernameFromToken(token);
+            log.info("User from token - " + username);
+            if (username != null) {
+                userDetails = userDetailsService.loadUserByUsername(username);
+            }
+        }
+        boolean isValid = this.tokenUtils.validateToken(token, userDetails);
+        if (!isValid) {
+            return new ResponseEntity<>(false, HttpStatus.UNAUTHORIZED);
+        }
+        // Add roles and permissions
+
+        return new ResponseEntity<>(true, HttpStatus.OK);
     }
 }

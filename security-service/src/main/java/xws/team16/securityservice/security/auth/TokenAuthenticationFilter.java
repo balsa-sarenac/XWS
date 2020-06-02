@@ -31,7 +31,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
         String authToken = tokenUtils.getToken(httpServletRequest);
 
         if (authToken != null) {
-            username = tokenUtils.getToken(httpServletRequest);
+            username = tokenUtils.getUsernameFromToken(authToken);
 
             if (username != null) {
                 UserDetails userDetails = userDetailsService.loadUserByUsername(username);
