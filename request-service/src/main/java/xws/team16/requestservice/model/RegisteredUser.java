@@ -25,16 +25,4 @@ public class RegisteredUser extends User {
    @OneToMany(mappedBy = "user")
    private Set<RentRequest> request;
 
-   @Override
-   public boolean equals(Object o) {
-      if (this == o) return true;
-      if (!(o instanceof RegisteredUser)) return false;
-      RegisteredUser that = (RegisteredUser) o;
-      return getId().equals(that.getId());
-   }
-
-   @Override
-   public int hashCode() {
-      return Objects.hash(getId());
-   }
 }
