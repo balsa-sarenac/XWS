@@ -13,7 +13,7 @@ import java.util.Set;
 @SuperBuilder
 @NoArgsConstructor
 @Entity @Table(name = "USER_TABLE")
-@Inheritance(strategy = InheritanceType.JOINED)
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class User {
    @Id
    @GeneratedValue(strategy = GenerationType.IDENTITY)

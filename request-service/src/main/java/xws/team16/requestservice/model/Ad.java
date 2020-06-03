@@ -26,6 +26,6 @@ public class Ad {
    private User user;
 
 //   private Car car;
-   // private PriceList priceList;
+//   private PriceList priceList;
 
 }
