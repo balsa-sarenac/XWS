@@ -6,8 +6,8 @@ services:
       - "8761:8761"
     tty: true
 
-  ad-service:
-    build: ./ad-service
+  search-service:
+    build: ./search-service
     ports:
       - "8081:8081"
     environment:
@@ -65,7 +65,7 @@ services:
     tty: true
     depends_on:
       - eureka
-      - ad-service
+      - search-service
       - admin-service
       - car-service
       - request-service
