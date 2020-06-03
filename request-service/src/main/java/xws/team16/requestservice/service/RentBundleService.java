@@ -9,6 +9,7 @@ import xws.team16.requestservice.model.RentBundle;
 import xws.team16.requestservice.model.RentRequest;
 import xws.team16.requestservice.repository.RentBundleRepository;
 
+import java.util.HashSet;
 import java.util.List;
 
 @Service @Slf4j
@@ -26,13 +27,13 @@ public class RentBundleService {
 
         for (BundleDTO bundle : bundles) {
             RentBundle rentBundle = new RentBundle();
+            rentBundle.setRequests(new HashSet<>());
             for (RequestDTO request : bundle.getRequests()) {
-                RentRequest rentRequest = new RentRequest();
-                this.rentRequestService.newRequest(rentRequest, request);
+                RentRequest rentRequest = this.rentRequestService.newRequest(request);
                 rentBundle.getRequests().add(rentRequest);
             }
             this.rentBundleRepository.save(rentBundle);
+            log.info("Bundle created");
         }
-        log.info("All bundles were successfully created");
     }
 }

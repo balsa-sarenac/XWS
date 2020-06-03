@@ -34,23 +34,21 @@ public class RentRequestService {
 
     public ResponseEntity<?> newRequests(ShoppingCartDTO shoppingCart) {
         log.info("Rent request service - add new ads");
-        if (shoppingCart.getBundles() != null)
-            this.rentBundleService.newBundles(shoppingCart.getBundles());
+        this.rentBundleService.newBundles(shoppingCart.getBundles());
 
-        if (shoppingCart.getRequests() != null) {
-            for (RequestDTO request : shoppingCart.getRequests()) {
-                RentRequest rentRequest = new RentRequest();
-                newRequest(rentRequest, request);
-            }
-            log.info("All requests created successfully");
+        for (RequestDTO request : shoppingCart.getRequests()) {
+            RentRequest rentRequest = newRequest(request);
         }
+        log.info("All requests created successfully");
+
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    public void newRequest(RentRequest rentRequest, RequestDTO request) {
+    public RentRequest newRequest(RequestDTO request) {
         Ad ad = this.adService.getAdById(request.getAdId());
         RegisteredUser user = this.registeredUserService.findUserById(1L);  // GET USER FROM AUTHENTICATION
 
+        RentRequest rentRequest = new RentRequest();
         rentRequest.setPickUpPlace(request.getPickUpPlace());
         rentRequest.setPickUpDate(request.getPickUpDate());
         rentRequest.setReturnDate(request.getReturnDate());
@@ -60,6 +58,7 @@ public class RentRequestService {
 
         rentRequest.setUser(user);
 
-        this.rentRequestRepository.save(rentRequest);
+        rentRequest = this.rentRequestRepository.save(rentRequest);
+        return rentRequest;
     }
 }
