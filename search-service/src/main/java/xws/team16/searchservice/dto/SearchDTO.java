@@ -17,9 +17,11 @@ public class SearchDTO {
     private FuelDTO fuel;
     private GearboxDTO gearbox;
     private CarClassDTO carClass;
-    private int priceFrom;
-    private int priceTo;
-    private int kilometrage;
+    private double priceFrom;
+    private double priceTo;
+    private double kilometrageFrom;
+    private double kilometrageTo;
+    private double kilometrageDrive;
     private Boolean cdw;
     private int numberOfChildSeats;
 }
