@@ -16,8 +16,6 @@ public class Car {
    @GeneratedValue(strategy = GenerationType.IDENTITY)
    private Long id;
 
-   private double price;
-
    @Column(name = "kilometrage")
    private double kilometrage;
 
@@ -26,6 +24,9 @@ public class Car {
 
    @Column(name = "has_android")
    private boolean hasAndroid;
+
+   @Column(name = "overall_grade")
+   private float overallGrade;
 
    @ManyToOne(fetch = FetchType.LAZY)
    @JoinColumn(name = "mark_id", nullable = false)
@@ -52,4 +53,5 @@ public class Car {
 
    @OneToMany(mappedBy = "car")
    private Set<Ad> ads;
+
 }

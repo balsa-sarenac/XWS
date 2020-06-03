@@ -21,7 +21,7 @@ public class Ad {
    @Column(name = "cdw_available")
    private boolean cdwAvailable;
 
-   @Column(name = "prick_up_place")
+   @Column(name = "pick_up_place")
    private String pickUpPlace;
 
    @Column(name = "from_date")
