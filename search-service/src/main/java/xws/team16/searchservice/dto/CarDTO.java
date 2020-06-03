@@ -7,6 +7,7 @@ import lombok.Setter;
 @Getter @Setter
 @NoArgsConstructor
 public class CarDTO {
+    private Long id;
     private ModelDTO model;
     private MarkDTO mark;
     private FuelDTO fuel;
@@ -15,4 +16,5 @@ public class CarDTO {
     private int kilometrage;
     private int numberOfChildSeats;
     private boolean hasAndroid;
+    private float overallGrade;
 }
