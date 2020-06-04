@@ -19,7 +19,7 @@ public class Mark {
    @Column(name = "name")
    private String name;
 
-   @OneToMany(mappedBy = "mark")
+   @OneToMany(mappedBy = "mark", cascade = CascadeType.ALL)
    private Set<Model> models;
 
 }

@@ -73,4 +73,16 @@ public class MarkController {
             return new ResponseEntity<MarkDTO>(markDTO, HttpStatus.OK);
     }
 
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<?> delete(@PathVariable Long id){
+        log.info("Mark Controller - delete mark (markID: " + id + ").");
+
+        Long returnID = markService.delete(id);
+
+        if (returnID == null)
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 }

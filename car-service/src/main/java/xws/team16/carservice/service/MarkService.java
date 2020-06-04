@@ -75,4 +75,17 @@ public class MarkService {
 
         return mark;
     }
+
+    public Long delete(Long id){
+        log.info("Mark Service - delete mark (markID: " + id + ").");
+
+        Mark mark = markRepository.getById(id);
+
+        if (mark == null)
+            return null;
+
+        markRepository.delete(mark);
+
+        return id;
+    }
 }
