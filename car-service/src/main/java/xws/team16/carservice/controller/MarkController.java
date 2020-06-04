@@ -5,9 +5,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import xws.team16.carservice.dto.MarkDTO;
+import xws.team16.carservice.model.Mark;
 import xws.team16.carservice.repository.MarkRepository;
 import xws.team16.carservice.service.MarkService;
 
@@ -32,7 +34,20 @@ public class MarkController {
 
         List<MarkDTO> markDTOS = markService.getAll();
 
-        return new ResponseEntity<>(markDTOS, HttpStatus.OK);
+        return new ResponseEntity<List<MarkDTO>>(markDTOS, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "{id}")
+    public ResponseEntity<?> getById(@PathVariable Long id){
+        log.info("Mark Controller - get mark by id: " + id + ".");
+
+        Mark mark = markService.getMarkById(id);
+
+        MarkDTO markDTO = new MarkDTO();
+        markDTO.setId(mark.getId());
+        markDTO.setName(mark.getName());
+
+        return new ResponseEntity<MarkDTO>(markDTO, HttpStatus.OK);
     }
 
 }
