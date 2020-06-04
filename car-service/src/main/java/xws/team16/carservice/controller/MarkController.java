@@ -61,4 +61,16 @@ public class MarkController {
         return new ResponseEntity<MarkDTO>(markDTO, HttpStatus.CREATED);
     }
 
+    @PutMapping(consumes = "application/json")
+    public ResponseEntity<?> update(@RequestBody MarkDTO markDTO){
+        log.info("Mark Controller - update mark.");
+
+        Mark mark = markService.update(markDTO);
+
+        if(mark == null)
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        else
+            return new ResponseEntity<MarkDTO>(markDTO, HttpStatus.OK);
+    }
+
 }

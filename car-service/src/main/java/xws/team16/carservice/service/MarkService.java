@@ -59,4 +59,20 @@ public class MarkService {
 
         return null;
     }
+
+    public Mark update(MarkDTO markDTO){
+        log.info("Mark Service - update mark.");
+
+        Mark mark = markRepository.getById(markDTO.getId());
+
+        if (mark == null){
+            return null;
+        }
+
+        mark.setName(markDTO.getName());
+
+        markRepository.save(mark);
+
+        return mark;
+    }
 }
