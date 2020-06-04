@@ -104,4 +104,26 @@ public class ModelService {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
     }
+
+    public ResponseEntity<?> update(ModelDTO modelDTO){
+        log.info("Model service - update model.");
+
+        Model model = modelRepository.getById(modelDTO.getId());
+
+        if (model == null){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        Mark mark = markRepository.getByNameAndId(modelDTO.getMark().getName(), modelDTO.getMark().getId());
+
+        if (mark == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        model.setName(modelDTO.getName());
+        model.setMark(mark);
+        modelRepository.save(model);
+
+        return new ResponseEntity<>(modelDTO, HttpStatus.OK);
+    }
 }

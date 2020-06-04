@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.*;
 import xws.team16.carservice.dto.ModelDTO;
 import xws.team16.carservice.service.ModelService;
 
+import javax.jws.WebParam;
+
 @Slf4j
 @RestController
 @RequestMapping(value = "/model")
@@ -38,5 +40,10 @@ public class ModelController {
         return modelService.createOne(modelDTO);
     }
 
+    @PutMapping(consumes = "application/json")
+    public ResponseEntity<?> update(@RequestBody ModelDTO modelDTO){
+        log.info("Model Controller - update model.");
+        return modelService.update(modelDTO);
+    }
 
 }
