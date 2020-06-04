@@ -44,4 +44,19 @@ public class MarkService {
 
         return markDTOS;
     }
+
+    public Mark createOne(MarkDTO markDTO){
+        log.info("Mark Service - create mark.");
+
+        if (markRepository.getByName(markDTO.getName()) == null){
+            Mark mark = new Mark();
+            mark.setName(markDTO.getName());
+
+            markRepository.save(mark);
+
+            return mark;
+        }
+
+        return null;
+    }
 }

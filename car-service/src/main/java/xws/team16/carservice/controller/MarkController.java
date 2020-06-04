@@ -4,10 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import xws.team16.carservice.dto.MarkDTO;
 import xws.team16.carservice.model.Mark;
 import xws.team16.carservice.repository.MarkRepository;
@@ -48,6 +45,20 @@ public class MarkController {
         markDTO.setName(mark.getName());
 
         return new ResponseEntity<MarkDTO>(markDTO, HttpStatus.OK);
+    }
+
+    @PostMapping(consumes = "application/json")
+    public ResponseEntity<?> createOne(@RequestBody MarkDTO markDTO){
+        log.info("Mark Controller - create mark.");
+
+        Mark mark = markService.createOne(markDTO);
+
+        if (mark == null){
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
+
+        markDTO.setId(mark.getId());
+        return new ResponseEntity<MarkDTO>(markDTO, HttpStatus.CREATED);
     }
 
 }
