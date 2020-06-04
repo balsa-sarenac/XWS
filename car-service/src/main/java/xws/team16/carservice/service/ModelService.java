@@ -126,4 +126,16 @@ public class ModelService {
 
         return new ResponseEntity<>(modelDTO, HttpStatus.OK);
     }
+
+    public ResponseEntity<?> delete(Long id){
+        Model model = modelRepository.getById(id);
+
+        if (model == null){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        modelRepository.delete(model);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

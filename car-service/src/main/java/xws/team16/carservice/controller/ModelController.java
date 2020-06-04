@@ -46,4 +46,10 @@ public class ModelController {
         return modelService.update(modelDTO);
     }
 
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<?> delete(@PathVariable Long id){
+        log.info("Model Controller - delete model.");
+        return modelService.delete(id);
+    }
+
 }
