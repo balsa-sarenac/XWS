@@ -9,20 +9,25 @@ import org.springframework.stereotype.Service;
 import xws.team16.carservice.dto.MarkDTO;
 import xws.team16.carservice.dto.ModelDTO;
 import xws.team16.carservice.exceptions.NotFoundException;
+import xws.team16.carservice.model.Mark;
 import xws.team16.carservice.model.Model;
+import xws.team16.carservice.repository.MarkRepository;
 import xws.team16.carservice.repository.ModelRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service @Slf4j
 public class ModelService {
 
     private ModelRepository modelRepository;
+    private MarkRepository markRepository;
 
     @Autowired
-    public ModelService(ModelRepository modelRepository) {
+    public ModelService(ModelRepository modelRepository, MarkRepository markRepository) {
         this.modelRepository = modelRepository;
+        this.markRepository = markRepository;
     }
 
     public Model getModelById(Long modelId) {
@@ -60,7 +65,7 @@ public class ModelService {
 
         if (model == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }   
+        }
 
         MarkDTO markDTO = new MarkDTO();
         markDTO.setId(model.getMark().getId());
@@ -72,5 +77,31 @@ public class ModelService {
         modelDTO.setMark(markDTO);
 
         return new ResponseEntity<>(modelDTO, HttpStatus.OK);
+    }
+
+    public ResponseEntity<?> createOne(ModelDTO modelDTO){
+        log.info("Model service - create model.");
+
+        Mark mark = markRepository.getByNameAndId(modelDTO.getMark().getName(), modelDTO.getMark().getId());
+
+        if (mark == null){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        Model model2 = modelRepository.getByName(modelDTO.getName());
+        if (model2 == null){
+            Model model = new Model();
+            model.setName(modelDTO.getName());
+            model.setMark(mark);
+
+            modelRepository.save(model);
+
+            modelDTO.setId(model.getId());
+
+            return new ResponseEntity<>(modelDTO, HttpStatus.CREATED);
+        }
+        else{
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
     }
 }

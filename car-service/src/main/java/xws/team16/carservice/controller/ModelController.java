@@ -4,10 +4,8 @@ package xws.team16.carservice.controller;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import xws.team16.carservice.dto.ModelDTO;
 import xws.team16.carservice.service.ModelService;
 
 @Slf4j
@@ -32,6 +30,12 @@ public class ModelController {
     public ResponseEntity<?> getById(@PathVariable Long id){
         log.info("Model Controller - get model by id: " + id + ".");
         return modelService.getById(id);
+    }
+
+    @PostMapping(consumes = "application/json")
+    public ResponseEntity<?> createOne(@RequestBody ModelDTO modelDTO){
+        log.info("Model Controller - create model.");
+        return modelService.createOne(modelDTO);
     }
 
 
