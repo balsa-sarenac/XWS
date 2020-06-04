@@ -52,4 +52,25 @@ public class ModelService {
 
         return new ResponseEntity<>(modelDTOS, HttpStatus.OK);
     }
+
+    public ResponseEntity<ModelDTO> getById(Long id){
+        log.info("Model service - get model by id: " + id + ".");
+
+        Model model = modelRepository.getOne(id);
+
+        if (model == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }   
+
+        MarkDTO markDTO = new MarkDTO();
+        markDTO.setId(model.getMark().getId());
+        markDTO.setName(model.getMark().getName());
+
+        ModelDTO modelDTO = new ModelDTO();
+        modelDTO.setId(model.getId());
+        modelDTO.setName(model.getName());
+        modelDTO.setMark(markDTO);
+
+        return new ResponseEntity<>(modelDTO, HttpStatus.OK);
+    }
 }
