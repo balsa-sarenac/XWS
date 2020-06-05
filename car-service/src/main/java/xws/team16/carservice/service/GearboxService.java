@@ -90,4 +90,30 @@ public class GearboxService {
         gearboxDTO.setId(gearbox.getId());
         return new ResponseEntity<GearboxDTO>(gearboxDTO, HttpStatus.OK);
     }
+
+    public Gearbox update(GearboxDTO gearboxDTO) {
+        log.info("Gearbox Service - update(gearboxDTO)");
+
+        Gearbox gearbox = gearboxRepository.getById(gearboxDTO.getId());
+
+        if (gearbox == null)
+            return null;
+
+        gearbox.setType(gearboxDTO.getType());
+
+        gearboxRepository.save(gearbox);
+
+        return gearbox;
+    }
+
+    public ResponseEntity<?> update_ResponseEntity(GearboxDTO gearboxDTO) {
+        log.info("Gearbox Service - update_ResponseEntity(gearboxDTO)");
+
+        Gearbox gearbox = update(gearboxDTO);
+
+        if (gearbox == null)
+            return new ResponseEntity<>("Gearbox with given id was not found", HttpStatus.BAD_REQUEST);
+        else
+            return new ResponseEntity<GearboxDTO>(gearboxDTO, HttpStatus.OK);
+    }
 }

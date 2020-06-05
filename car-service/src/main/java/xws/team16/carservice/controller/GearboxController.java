@@ -37,4 +37,10 @@ public class GearboxController {
         log.info("Gearbox Controller - createOne(gearboxDTO)");
         return gearboxService.createGearbox_ResponseEntity(gearboxDTO);
     }
+
+    @PutMapping(consumes = "application/json")
+    public ResponseEntity<?> update(@RequestBody GearboxDTO gearboxDTO) {
+        log.info("Gearbox Controller - update(gearboxDTO)");
+        return gearboxService.update_ResponseEntity(gearboxDTO);
+    }
 }
