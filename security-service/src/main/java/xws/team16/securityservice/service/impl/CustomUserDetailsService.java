@@ -18,16 +18,13 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import xws.team16.securityservice.dto.RoleDTO;
-import xws.team16.securityservice.dto.TokenDTO;
 import xws.team16.securityservice.dto.UserDTO;
 import xws.team16.securityservice.exception.NotFoundException;
-import xws.team16.securityservice.exception.UserDisabledException;
 import xws.team16.securityservice.model.*;
 import xws.team16.securityservice.repository.UserRepository;
 import xws.team16.securityservice.security.TokenUtils;
 import xws.team16.securityservice.security.auth.JwtAuthenticationRequest;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Timestamp;
