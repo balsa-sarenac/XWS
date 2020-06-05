@@ -116,4 +116,28 @@ public class FuelService {
         else
             return new ResponseEntity<FuelDTO>(fuelDTO, HttpStatus.OK);
     }
+
+    public Long deleteFuelById(Long id) {
+        log.info("Fuel Service - deleteFuelById(" + id + ")");
+
+        Fuel fuel = fuelRepository.getById(id);
+
+        if (fuel == null)
+            return null;
+
+        fuelRepository.delete(fuel);
+
+        return id;
+    }
+
+    public ResponseEntity<?> deleteFuelById_ResponseEntity(Long id) {
+        log.info("Fuel Service - deleteFuelById_ResponseEntity(" + id + ")");
+
+        Long returnId = deleteFuelById(id);
+
+        if (returnId == id)
+            return new ResponseEntity<>(HttpStatus.OK);
+        else
+            return new ResponseEntity<>("Fuel with given id was not found", HttpStatus.BAD_REQUEST);
+    }
 }
