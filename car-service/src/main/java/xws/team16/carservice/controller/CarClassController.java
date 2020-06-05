@@ -3,10 +3,8 @@ package xws.team16.carservice.controller;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import xws.team16.carservice.dto.CarClassDTO;
 import xws.team16.carservice.service.CarClassService;
 
 @Slf4j
@@ -31,5 +29,11 @@ public class CarClassController {
     public ResponseEntity<?> getAllCarClasses() {
         log.info("CarClass Controller - getAllCarClasses()");
         return carClassService.getAllCarClasses_ResponseEntity();
+    }
+
+    @PostMapping(consumes = "application/json")
+    public ResponseEntity<?> createOne(@RequestBody CarClassDTO carClassDTO) {
+        log.info("CarClass Controller - createOne(carClassDTO)");
+        return carClassService.createCarClass_ResponseEntity(carClassDTO);
     }
 }

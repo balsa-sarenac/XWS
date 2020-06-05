@@ -63,4 +63,32 @@ public class CarClassService {
 
         return new ResponseEntity<List<CarClassDTO>>(carClassDTOS, HttpStatus.OK);
     }
+
+    public CarClass createCarClass(CarClassDTO carClassDTO) {
+        log.info("CarClass Service - createCarClass(carClassDTO)");
+
+        if (carClassRepository.getByName(carClassDTO.getName()) == null) {
+            CarClass carClass = new CarClass();
+            carClass.setName(carClassDTO.getName());
+
+            carClassRepository.save(carClass);
+
+            return carClass;
+        }
+
+        return null;
+    }
+
+    public ResponseEntity<?> createCarClass_ResponseEntity(CarClassDTO carClassDTO) {
+        log.info("CarClass Service - createCarClass_ResponseEntity(carClassDTO)");
+
+        CarClass carClass = createCarClass(carClassDTO);
+
+        if (carClass == null) {
+            return new ResponseEntity<>("Car class with that name already exists.", HttpStatus.CONFLICT);
+        }
+
+        carClassDTO.setId(carClass.getId());
+        return new ResponseEntity<CarClassDTO>(carClassDTO, HttpStatus.OK);
+    }
 }
