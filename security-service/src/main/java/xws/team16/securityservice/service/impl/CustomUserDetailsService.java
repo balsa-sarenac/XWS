@@ -5,18 +5,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import xws.team16.securityservice.dto.RoleDTO;
 import xws.team16.securityservice.dto.UserDTO;
-import xws.team16.securityservice.model.User;
-import xws.team16.securityservice.model.UserTokenState;
+import xws.team16.securityservice.exception.NotFoundException;
+import xws.team16.securityservice.model.*;
 import xws.team16.securityservice.repository.UserRepository;
 import xws.team16.securityservice.security.TokenUtils;
 import xws.team16.securityservice.security.auth.JwtAuthenticationRequest;
@@ -24,7 +28,7 @@ import xws.team16.securityservice.security.auth.JwtAuthenticationRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Timestamp;
-import java.util.Optional;
+import java.util.*;
 
 @Service @Slf4j
 public class CustomUserDetailsService implements UserDetailsService {
@@ -34,6 +38,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     private AuthenticationManager authenticationManager;
     private UserRepository userRepository;
     private PasswordEncoder passwordEncoder;
+    private UserDetailsService userDetailsService;
 
     @Autowired
     public CustomUserDetailsService(TokenUtils tokenUtils, AuthenticationManager authenticationManager,
@@ -76,7 +81,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     }
 
-    public ResponseEntity<Void> register(UserDTO userDTO) {
+    public void register(UserDTO userDTO) {
         log.info("User service - registration function");
         User user = User.builder()
                 .firstName(userDTO.getFirstName())
@@ -86,7 +91,6 @@ public class CustomUserDetailsService implements UserDetailsService {
                 .enabled(false)
                 .build();
         userRepository.save(user);
-        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     public ResponseEntity<?> login(JwtAuthenticationRequest jwtAuthenticationRequest, HttpServletResponse httpServletResponse) throws AuthenticationException, IOException {
@@ -100,11 +104,6 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         User user = (User) authentication.getPrincipal();
 
-        if (!user.isEnabled()) {
-            log.error("User is not enabled and can't log in.");
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-        }
-
         String jwt = tokenUtils.generateToken(user.getUsername());
         int expiresIn = tokenUtils.getExpiredIn();
         String refresh = tokenUtils.generateRefreshToken(user.getUsername());
@@ -113,15 +112,75 @@ public class CustomUserDetailsService implements UserDetailsService {
         return ResponseEntity.ok(new UserTokenState(jwt, expiresIn, username, refresh));
     }
 
-    public ResponseEntity<Void> enable(Long userId) {
-        Optional<User> optional = this.userRepository.findById(userId);
-        if (!optional.isPresent()) {
-            log.error("User with id " + userId + " is not present");
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        User user = optional.get();
+    public void enable(Long userId) {
+        User user = getUserById(userId);
         user.setEnabled(true);
         this.userRepository.save(user);
-        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    public void disable(Long userId) {
+        User user = getUserById(userId);
+        user.setEnabled(false);
+        this.userRepository.save(user);
+    }
+
+    private User getUserById(Long userId) {
+        return this.userRepository.findById(userId).orElseThrow(() -> new NotFoundException("User with given id was not found."));
+    }
+
+    public ResponseEntity<?> verify(String token) {
+        log.info("Custom user details service - verify token");
+
+        String username = tokenUtils.getUsernameFromToken(token);;
+        log.info("User from token - " + username);
+        User userDetails = (User) loadUserByUsername(username);;
+
+        boolean isValid = false;
+        if (token != null) {
+            isValid = this.tokenUtils.validateToken(token, userDetails);
+        }
+        if (!isValid) {
+            return new ResponseEntity<>(false, HttpStatus.UNAUTHORIZED);
+        }
+        // Add roles and permissions
+        RoleDTO roleDTO = new RoleDTO();
+        roleDTO.setUsername(username);
+        if (userDetails != null) {
+            roleDTO.setRoles(new HashSet<>());
+            for (Role role : userDetails.getAuthorities()) {
+                roleDTO.getRoles().add(role.getAuthority());
+//                for (Privilege privilege : role.getPrivileges())
+//                    roleDTO.getPrivileges().add(privilege.getName());
+            }
+        }
+
+        return new ResponseEntity<>(roleDTO, HttpStatus.OK);
+    }
+
+    private Collection<? extends GrantedAuthority> getAuthorities(
+            Collection<Role> roles) {
+
+        return getGrantedAuthorities(getPrivileges(roles));
+    }
+
+    private List<String> getPrivileges(Collection<Role> roles) {
+
+        List<String> privileges = new ArrayList<>();
+        List<Privilege> collection = new ArrayList<>();
+        for (Role role : roles) {
+            collection.addAll(role.getPrivileges());
+        }
+        for (Privilege item : collection) {
+            privileges.add(item.getName());
+        }
+        return privileges;
+    }
+
+    private List<GrantedAuthority> getGrantedAuthorities(List<String> privileges) {
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        for (String privilege : privileges) {
+            authorities.add(new SimpleGrantedAuthority(privilege));
+        }
+        return authorities;
     }
 }
