@@ -1,5 +1,6 @@
 insert into USER_TABLE (first_name, last_name, username, password, is_enabled) values ('balsa', 'sarenac', 'bax', 'asdf', true);
 
+
 insert into MARK (name ) values ('audi');
 insert into MARK (name ) values ('bmw');
 insert into MARK (name ) values ('mercedes');
@@ -11,6 +12,10 @@ insert into MODEL (name, mark_id) values ('x7', 2);
 insert into MODEL (name, mark_id) values ('c112', 3);
 insert into MODEL (name, mark_id) values ('f700', 3);
 insert into MODEL (name, mark_id) values ('focus', 4);
+insert into MODEL (name, mark_id) values ('Q5', 1);
+insert into MODEL (name, mark_id) values ('A3', 1);
+insert into MODEL (name, mark_id) values ('A4', 1);
+insert into MODEL (name, mark_id) values ('Q3', 1);
 insert into FUEL (type) values ('benzin');
 insert into FUEL (type) values ('dizel');
 insert into FUEL (type) values ('elektricni');
@@ -36,3 +41,4 @@ insert into AD (cdw_available, pick_up_place, from_date, to_date, allowed_kilome
 insert into AD (cdw_available, pick_up_place, from_date, to_date, allowed_kilometrage, car_id, price_list_id, user_id) values (false, 'Nevesinje', '2020-06-02T21:39:45.618', '2020-06-10T21:39:45.618', 300, 4,4,1);
 insert into AD (cdw_available, pick_up_place, from_date, to_date, allowed_kilometrage, car_id, price_list_id, user_id) values (true, 'Nevesinje', '2020-06-03T21:39:45.618', '2020-06-11T21:39:45.618', 0, 5,2,1);
 insert into AD (cdw_available, pick_up_place, from_date, to_date, allowed_kilometrage, car_id, price_list_id, user_id) values (true, 'Nevesinje', '2020-06-03T21:39:45.618', '2020-06-11T21:39:45.618', 250, 6,4,1);
+
