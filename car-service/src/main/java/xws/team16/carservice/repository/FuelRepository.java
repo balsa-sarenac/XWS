@@ -6,4 +6,7 @@ import xws.team16.carservice.model.Fuel;
 
 @Repository
 public interface FuelRepository extends JpaRepository<Fuel, Long> {
+
+    Fuel getByType(String type);
+    Fuel getById(Long id);
 }
