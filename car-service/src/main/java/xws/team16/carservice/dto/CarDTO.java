@@ -8,6 +8,7 @@ import lombok.Setter;
 @Getter @Setter
 @NoArgsConstructor
 public class CarDTO {
+    private Long id;
     private Long modelId;
     private Long markId;
     private Long fuelId;
