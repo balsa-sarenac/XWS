@@ -117,4 +117,28 @@ public class CarClassService {
         else
             return new ResponseEntity<CarClassDTO>(carClassDTO, HttpStatus.OK);
     }
+
+    public Long deleteCarClassById(Long id) {
+        log.info("CarClass Service - deleteCarClassById(" + id + ")");
+
+        CarClass carClass = carClassRepository.getById(id);
+
+        if (carClass == null)
+            return null;
+
+        carClassRepository.delete(carClass);
+
+        return id;
+    }
+
+    public ResponseEntity<?> deleteCarClassById_ResponseEntity(Long id) {
+        log.info("CarClass Service - deleteCarClassById_ResponseEntity(" + id + ")");
+
+        Long returnId = deleteCarClassById(id);
+
+        if (returnId == id)
+            return new ResponseEntity<>(HttpStatus.OK);
+        else
+            return new ResponseEntity<>("Car class with given id was not found", HttpStatus.BAD_REQUEST);
+    }
 }

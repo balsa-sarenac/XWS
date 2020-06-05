@@ -42,4 +42,10 @@ public class CarClassController {
         log.info("CarClass Controller - update(carClassDTO)");
         return carClassService.update_ResponseEntity(carClassDTO);
     }
+
+    @DeleteMapping(value = "{id}")
+    public ResponseEntity<?> deleteCarClassById(@PathVariable Long id) {
+        log.info("CarClass Controller - deleteCarClassById(" + id + ")");
+        return carClassService.deleteCarClassById_ResponseEntity(id);
+    }
 }
