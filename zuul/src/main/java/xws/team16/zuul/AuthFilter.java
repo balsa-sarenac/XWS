@@ -4,14 +4,18 @@ import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import com.netflix.zuul.exception.ZuulException;
 import feign.FeignException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import xws.team16.zuul.client.SecurityClient;
+import xws.team16.zuul.dto.RoleDTO;
+import xws.team16.zuul.dto.TokenDTO;
 
 import javax.servlet.http.HttpServletRequest;
 
-@Component
+@Component @Slf4j
 public class AuthFilter extends ZuulFilter {
     @Autowired
     private SecurityClient securityClient;
@@ -48,14 +52,27 @@ public class AuthFilter extends ZuulFilter {
         if (request.getHeader("AuthToken") == null) {
             return null;
         }
-        String token = request.getHeader("AuthToken");
-
+        String token = request.getHeader("AuthToken").substring(7);
+        TokenDTO tokenDTO = new TokenDTO();
+        tokenDTO.setToken(token);
+        log.info("Auth filter - sending token");
         try {
-            this.securityClient.verify(token);
+            RoleDTO roleDTO = this.securityClient.verify(tokenDTO);
+            StringBuilder roles = new StringBuilder();
+            StringBuilder privileges = new StringBuilder();
+            for (String role : roleDTO.getRoles())
+                roles.append(role).append("-");
+            for (String privilege : roleDTO.getPrivileges())
+                privileges.append(privilege).append("-");
+
+            ctx.addZuulRequestHeader("Username", roleDTO.getUsername());
+            ctx.addZuulRequestHeader("Roles", String.valueOf(roles));
+            ctx.addZuulRequestHeader("Privileges", String.valueOf(privileges));
+
         } catch (FeignException.NotFound e) {
             setFailedRequest("User does not exist", 403);
         }
-
+        log.info("Auth filter - finished");
         return null;
     }
 }
