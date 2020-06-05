@@ -2,18 +2,15 @@ package xws.team16.securityservice.model;
 
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Collection;
-import java.util.Set;
 
 @Getter @Setter @SuperBuilder
 @NoArgsConstructor @AllArgsConstructor
 @Entity @Table(name = "user_table")
-@Inheritance(strategy = InheritanceType.JOINED)
 public class User implements UserDetails {
 
    @Id
@@ -35,14 +32,29 @@ public class User implements UserDetails {
    @Column(nullable = false)
    private boolean enabled;
 
+//   @Column(name = "adsPosted")
+//   private int adsPosted;
+
+   @Column(name = "isAdmin")
+   private boolean isAdmin;
+
+   @Column(name = "companyName")
+   private String companyName;
+
+   @Column(name = "address")
+   private String address;
+
+   @Column(name = "businessID")
+   private String businessID;
+
    @Column
    private Timestamp lastPasswordResetDate;
 
-   @ManyToMany
-   @JoinTable(name = "user_authority",
+   @ManyToMany(fetch = FetchType.EAGER)
+   @JoinTable(name = "users_roles",
            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
-           inverseJoinColumns = @JoinColumn(name = "authority_id", referencedColumnName = "id"))
-   private Set<Authority> authorities;
+           inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
+   private Collection<Role> roles;
 
    @Column
    private boolean accountNonExpired;
@@ -54,8 +66,8 @@ public class User implements UserDetails {
    private boolean credentialsNonExpired;
 
    @Override
-   public Collection<Authority> getAuthorities() {
-      return authorities;
+   public Collection<Role> getAuthorities() {
+      return roles;
    }
 
    @Override
