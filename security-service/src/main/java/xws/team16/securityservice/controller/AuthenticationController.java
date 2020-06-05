@@ -5,7 +5,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import xws.team16.securityservice.dto.TokenDTO;
 import xws.team16.securityservice.dto.UserDTO;
 import xws.team16.securityservice.security.auth.JwtAuthenticationRequest;
 import xws.team16.securityservice.service.impl.CustomUserDetailsService;
@@ -43,6 +45,7 @@ public class AuthenticationController {
      * @param userId id of the user
      * @return 200 ok if successful or 404 not found if user does not exist
      */
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @PutMapping(value = "/enable/{userId}")
     public ResponseEntity<Void> enable(@PathVariable Long userId) {
         log.info("Controller /enable reached by user id " + userId);
@@ -55,6 +58,7 @@ public class AuthenticationController {
      * @param userId id of the user
      * @return 200 ok if successful or 404 not found if user does not exist
      */
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @PutMapping(value = "/disable/{userId}")
     public ResponseEntity<Void> disable(@PathVariable Long userId) {
         log.info("Controller /disable reached by user id " + userId);
@@ -66,9 +70,9 @@ public class AuthenticationController {
      * Verifies users authentication token
      * @return true if token is valid
      */
-    @GetMapping(value = "/verify/{token}")
-    public ResponseEntity<?> verify(@PathVariable String token) {
-        log.info("Controller /verify invoked with token - " + token);
+    @GetMapping(value = "/verify")
+    public ResponseEntity<?> verify(@RequestBody TokenDTO token) {
+        log.info("Controller /verify invoked with token - " + token.getToken());
         return this.userDetailsService.verify(token);
     }
 
