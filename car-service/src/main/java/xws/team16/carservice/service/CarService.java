@@ -62,4 +62,13 @@ public class CarService {
 
         return car;
     }
+
+    public Car getCar(Long id) {
+        log.info("Car service - get car");
+
+        Car car = carRepository.getOne(id);
+
+        log.info("Car getted with id " + car.getId());
+        return car;
+    }
 }

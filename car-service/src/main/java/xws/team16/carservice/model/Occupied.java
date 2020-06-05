@@ -1,11 +1,16 @@
 package xws.team16.carservice.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Type;
+import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
+
 
 import javax.persistence.*;
-import java.util.Date;
+
 
 @Getter @Setter
 @NoArgsConstructor
@@ -16,10 +21,19 @@ public class Occupied {
    private Long id;
 
    @Column(name = "date_from", nullable = false)
-   private Date dateFrom;
+   @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime", parameters = {
+           @org.hibernate.annotations.Parameter(name = "databaseZone", value = "UTC"),
+           @org.hibernate.annotations.Parameter(name = "javaZone", value = "UTC")
+   })
+   private DateTime dateFrom;
+
 
    @Column(name = "date_to", nullable = false)
-   private Date dateTo;
+   @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime", parameters = {
+           @org.hibernate.annotations.Parameter(name = "databaseZone", value = "UTC"),
+           @org.hibernate.annotations.Parameter(name = "javaZone", value = "UTC")
+   })
+   private DateTime dateTo;
 
    @ManyToOne(fetch = FetchType.LAZY)
    @JoinColumn(name = "car_id", nullable = false)
