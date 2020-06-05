@@ -62,4 +62,32 @@ public class FuelService {
 
         return new ResponseEntity<List<FuelDTO>>(fuelDTOS, HttpStatus.OK);
     }
+
+    public Fuel createFuel(FuelDTO fuelDTO) {
+        log.info("Fuel Service - createFuel(fuelDTO)");
+
+        if (fuelRepository.getByType(fuelDTO.getType()) == null) {
+            Fuel fuel = new Fuel();
+            fuel.setType(fuelDTO.getType());
+
+            fuelRepository.save(fuel);
+
+            return fuel;
+        }
+
+        return null;
+    }
+
+    public ResponseEntity<?> createFuel_ResponseEntity(FuelDTO fuelDTO) {
+        log.info("Fuel Service - createFuel_ResponseEntity(fuelDTO)");
+
+        Fuel fuel = createFuel(fuelDTO);
+
+        if (fuel == null) {
+            return new ResponseEntity<>("Fuel with that name already exists.", HttpStatus.CONFLICT);
+        }
+
+        fuelDTO.setId(fuel.getId());
+        return new ResponseEntity<FuelDTO>(fuelDTO, HttpStatus.OK);
+    }
 }
