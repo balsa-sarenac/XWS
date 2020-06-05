@@ -16,4 +16,11 @@ public class ExceptionResolver {
         headers.setContentType(MediaType.TEXT_PLAIN);
         return new ResponseEntity<String>(exception.getMessage(), headers, HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(UserDisabledException.class)
+    public ResponseEntity<?> userDisabledException(UserDisabledException exception) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.TEXT_PLAIN);
+        return new ResponseEntity<String>(exception.getMessage(), headers, HttpStatus.UNAUTHORIZED);
+    }
 }

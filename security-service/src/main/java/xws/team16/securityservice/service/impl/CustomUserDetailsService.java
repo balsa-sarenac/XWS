@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -20,6 +21,7 @@ import xws.team16.securityservice.dto.RoleDTO;
 import xws.team16.securityservice.dto.TokenDTO;
 import xws.team16.securityservice.dto.UserDTO;
 import xws.team16.securityservice.exception.NotFoundException;
+import xws.team16.securityservice.exception.UserDisabledException;
 import xws.team16.securityservice.model.*;
 import xws.team16.securityservice.repository.UserRepository;
 import xws.team16.securityservice.security.TokenUtils;
@@ -105,11 +107,6 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         User user = (User) authentication.getPrincipal();
 
-        if (!user.isEnabled()) {
-            log.error("User is not enabled and can't log in.");
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-        }
-
         String jwt = tokenUtils.generateToken(user.getUsername());
         int expiresIn = tokenUtils.getExpiredIn();
         String refresh = tokenUtils.generateRefreshToken(user.getUsername());
@@ -134,21 +131,16 @@ public class CustomUserDetailsService implements UserDetailsService {
         return this.userRepository.findById(userId).orElseThrow(() -> new NotFoundException("User with given id was not found."));
     }
 
-    public ResponseEntity<?> verify(TokenDTO token) {
+    public ResponseEntity<?> verify(String token) {
         log.info("Custom user details service - verify token");
 
-        String username = null;
-        User userDetails = null;
-        if (token != null) {
-            username = tokenUtils.getUsernameFromToken(token.getToken());
-            log.info("User from token - " + username);
-            if (username != null) {
-                userDetails = (User) loadUserByUsername(username);
-            }
-        }
+        String username = tokenUtils.getUsernameFromToken(token);;
+        log.info("User from token - " + username);
+        User userDetails = (User) loadUserByUsername(username);;
+
         boolean isValid = false;
         if (token != null) {
-            isValid = this.tokenUtils.validateToken(token.getToken(), userDetails);
+            isValid = this.tokenUtils.validateToken(token, userDetails);
         }
         if (!isValid) {
             return new ResponseEntity<>(false, HttpStatus.UNAUTHORIZED);

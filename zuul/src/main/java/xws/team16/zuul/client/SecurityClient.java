@@ -10,6 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 @FeignClient(name = "security")
 public interface SecurityClient {
 
-    @GetMapping(name = "/verify")
-    RoleDTO verify(@RequestBody TokenDTO token);
+    @PostMapping(value = "/verify")
+    RoleDTO verify(@RequestBody String token);
 }

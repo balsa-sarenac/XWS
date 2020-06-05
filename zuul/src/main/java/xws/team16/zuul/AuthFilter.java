@@ -53,21 +53,17 @@ public class AuthFilter extends ZuulFilter {
             return null;
         }
         String token = request.getHeader("AuthToken").substring(7);
-        TokenDTO tokenDTO = new TokenDTO();
-        tokenDTO.setToken(token);
+
         log.info("Auth filter - sending token");
         try {
-            RoleDTO roleDTO = this.securityClient.verify(tokenDTO);
+            RoleDTO roleDTO = this.securityClient.verify(token);
             StringBuilder roles = new StringBuilder();
             StringBuilder privileges = new StringBuilder();
             for (String role : roleDTO.getRoles())
                 roles.append(role).append("-");
-            for (String privilege : roleDTO.getPrivileges())
-                privileges.append(privilege).append("-");
 
             ctx.addZuulRequestHeader("Username", roleDTO.getUsername());
             ctx.addZuulRequestHeader("Roles", String.valueOf(roles));
-            ctx.addZuulRequestHeader("Privileges", String.valueOf(privileges));
 
         } catch (FeignException.NotFound e) {
             setFailedRequest("User does not exist", 403);

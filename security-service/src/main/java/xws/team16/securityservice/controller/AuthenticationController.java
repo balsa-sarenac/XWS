@@ -70,9 +70,9 @@ public class AuthenticationController {
      * Verifies users authentication token
      * @return true if token is valid
      */
-    @GetMapping(value = "/verify")
-    public ResponseEntity<?> verify(@RequestBody TokenDTO token) {
-        log.info("Controller /verify invoked with token - " + token.getToken());
+    @PostMapping(value = "/verify")
+    public ResponseEntity<?> verify(@RequestBody String token) {
+        log.info("Controller /verify invoked with token - " + token);
         return this.userDetailsService.verify(token);
     }
 
