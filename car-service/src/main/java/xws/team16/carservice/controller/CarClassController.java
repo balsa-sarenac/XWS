@@ -26,4 +26,10 @@ public class CarClassController {
         log.info("CarClass Controller - getCarClassById(" + id + ")");
         return carClassService.getCarClassById_ResponseEntity(id);
     }
+
+    @GetMapping(value = "/all")
+    public ResponseEntity<?> getAllCarClasses() {
+        log.info("CarClass Controller - getAllCarClasses()");
+        return carClassService.getAllCarClasses_ResponseEntity();
+    }
 }
