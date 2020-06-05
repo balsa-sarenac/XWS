@@ -36,4 +36,10 @@ public class CarClassController {
         log.info("CarClass Controller - createOne(carClassDTO)");
         return carClassService.createCarClass_ResponseEntity(carClassDTO);
     }
+
+    @PutMapping(consumes = "application/json")
+    public ResponseEntity<?> update(@RequestBody CarClassDTO carClassDTO) {
+        log.info("CarClass Controller - update(carClassDTO)");
+        return carClassService.update_ResponseEntity(carClassDTO);
+    }
 }

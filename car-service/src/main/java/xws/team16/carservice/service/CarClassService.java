@@ -91,4 +91,30 @@ public class CarClassService {
         carClassDTO.setId(carClass.getId());
         return new ResponseEntity<CarClassDTO>(carClassDTO, HttpStatus.OK);
     }
+
+    public CarClass update(CarClassDTO carClassDTO) {
+        log.info("CarClass Service - update(carClassDTO)");
+
+        CarClass carClass = carClassRepository.getById(carClassDTO.getId());
+
+        if (carClass == null)
+            return null;
+
+        carClass.setName(carClassDTO.getName());
+
+        carClassRepository.save(carClass);
+
+        return carClass;
+    }
+
+    public ResponseEntity<?> update_ResponseEntity(CarClassDTO carClassDTO) {
+        log.info("CarClass Service - update_ResponseEntity(carClassDTO)");
+
+        CarClass carClass = update(carClassDTO);
+
+        if (carClass == null)
+            return new ResponseEntity<>("Car class with given id was not found", HttpStatus.BAD_REQUEST);
+        else
+            return new ResponseEntity<CarClassDTO>(carClassDTO, HttpStatus.OK);
+    }
 }

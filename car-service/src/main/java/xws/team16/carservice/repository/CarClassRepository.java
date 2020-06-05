@@ -8,4 +8,5 @@ import xws.team16.carservice.model.CarClass;
 public interface CarClassRepository extends JpaRepository<CarClass, Long> {
 
     CarClass getByName(String name);
+    CarClass getById(Long id);
 }
