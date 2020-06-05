@@ -10,6 +10,9 @@ import xws.team16.carservice.exceptions.NotFoundException;
 import xws.team16.carservice.model.Gearbox;
 import xws.team16.carservice.repository.GearboxRepository;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service @Slf4j
 public class GearboxService {
 
@@ -35,5 +38,28 @@ public class GearboxService {
         gearboxDTO.setType(gearbox.getType());
 
         return new ResponseEntity<GearboxDTO>(gearboxDTO, HttpStatus.FOUND);
+    }
+
+    public List<Gearbox> getAllGearboxes() {
+        log.info("Gearbox Service - getAllGearboxes()");
+        return gearboxRepository.findAll();
+    }
+
+    public ResponseEntity<?> getAllGearboxes_ResponseEntity() {
+        log.info("Gearbox Service - getAllGearboxes_ResponseEntity");
+
+        List<Gearbox> gearboxes = getAllGearboxes();
+
+        List<GearboxDTO> gearboxDTOS = new ArrayList<>();
+        for (Gearbox g : gearboxes) {
+            GearboxDTO gearboxDTO = new GearboxDTO();
+
+            gearboxDTO.setId(g.getId());
+            gearboxDTO.setType(g.getType());
+
+            gearboxDTOS.add(gearboxDTO);
+        }
+
+        return new ResponseEntity<List<GearboxDTO>>(gearboxDTOS, HttpStatus.OK);
     }
 }

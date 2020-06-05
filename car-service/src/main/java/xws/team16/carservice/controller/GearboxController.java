@@ -27,4 +27,10 @@ public class GearboxController {
         log.info("Gearbox Controller - geGearboxById(" + id + ")");
         return gearboxService.getGearboxById_ResponseEntity(id);
     }
+
+    @GetMapping(value = "/all")
+    public ResponseEntity<?> getAllGearboxes() {
+        log.info("Gearbox Controller - getAllGearboxes()");
+        return gearboxService.getAllGearboxes_ResponseEntity();
+    }
 }
