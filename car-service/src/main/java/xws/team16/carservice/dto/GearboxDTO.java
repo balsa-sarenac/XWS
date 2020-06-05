@@ -9,5 +9,5 @@ import lombok.Setter;
 @NoArgsConstructor
 public class GearboxDTO {
     private Long id;
-    private String name;
+    private String type;
 }
