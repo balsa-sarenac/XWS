@@ -8,16 +8,19 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import xws.team16.securityservice.dto.RoleDTO;
+import xws.team16.securityservice.dto.TokenDTO;
 import xws.team16.securityservice.dto.UserDTO;
 import xws.team16.securityservice.exception.NotFoundException;
-import xws.team16.securityservice.model.User;
-import xws.team16.securityservice.model.UserTokenState;
+import xws.team16.securityservice.model.*;
 import xws.team16.securityservice.repository.UserRepository;
 import xws.team16.securityservice.security.TokenUtils;
 import xws.team16.securityservice.security.auth.JwtAuthenticationRequest;
@@ -26,7 +29,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Timestamp;
-import java.util.Optional;
+import java.util.*;
 
 @Service @Slf4j
 public class CustomUserDetailsService implements UserDetailsService {
@@ -131,24 +134,64 @@ public class CustomUserDetailsService implements UserDetailsService {
         return this.userRepository.findById(userId).orElseThrow(() -> new NotFoundException("User with given id was not found."));
     }
 
-    public ResponseEntity<?> verify(String token) {
+    public ResponseEntity<?> verify(TokenDTO token) {
         log.info("Custom user details service - verify token");
 
-        String username;
-        UserDetails userDetails = null;
+        String username = null;
+        User userDetails = null;
         if (token != null) {
-            username = tokenUtils.getUsernameFromToken(token);
+            username = tokenUtils.getUsernameFromToken(token.getToken());
             log.info("User from token - " + username);
             if (username != null) {
-                userDetails = userDetailsService.loadUserByUsername(username);
+                userDetails = (User) loadUserByUsername(username);
             }
         }
-        boolean isValid = this.tokenUtils.validateToken(token, userDetails);
+        boolean isValid = false;
+        if (token != null) {
+            isValid = this.tokenUtils.validateToken(token.getToken(), userDetails);
+        }
         if (!isValid) {
             return new ResponseEntity<>(false, HttpStatus.UNAUTHORIZED);
         }
         // Add roles and permissions
+        RoleDTO roleDTO = new RoleDTO();
+        roleDTO.setUsername(username);
+        if (userDetails != null) {
+            roleDTO.setRoles(new HashSet<>());
+            for (Role role : userDetails.getAuthorities()) {
+                roleDTO.getRoles().add(role.getAuthority());
+//                for (Privilege privilege : role.getPrivileges())
+//                    roleDTO.getPrivileges().add(privilege.getName());
+            }
+        }
 
-        return new ResponseEntity<>(true, HttpStatus.OK);
+        return new ResponseEntity<>(roleDTO, HttpStatus.OK);
+    }
+
+    private Collection<? extends GrantedAuthority> getAuthorities(
+            Collection<Role> roles) {
+
+        return getGrantedAuthorities(getPrivileges(roles));
+    }
+
+    private List<String> getPrivileges(Collection<Role> roles) {
+
+        List<String> privileges = new ArrayList<>();
+        List<Privilege> collection = new ArrayList<>();
+        for (Role role : roles) {
+            collection.addAll(role.getPrivileges());
+        }
+        for (Privilege item : collection) {
+            privileges.add(item.getName());
+        }
+        return privileges;
+    }
+
+    private List<GrantedAuthority> getGrantedAuthorities(List<String> privileges) {
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        for (String privilege : privileges) {
+            authorities.add(new SimpleGrantedAuthority(privilege));
+        }
+        return authorities;
     }
 }
