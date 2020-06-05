@@ -62,4 +62,32 @@ public class GearboxService {
 
         return new ResponseEntity<List<GearboxDTO>>(gearboxDTOS, HttpStatus.OK);
     }
+
+    public Gearbox createGearbox(GearboxDTO gearboxDTO) {
+        log.info("Gearbox Service - createGearbox(gearboxDTO)");
+
+        if (gearboxRepository.getByType(gearboxDTO.getType()) == null) {
+            Gearbox gearbox = new Gearbox();
+            gearbox.setType(gearboxDTO.getType());
+
+            gearboxRepository.save(gearbox);
+
+            return gearbox;
+        }
+
+        return null;
+    }
+
+    public ResponseEntity<?> createGearbox_ResponseEntity(GearboxDTO gearboxDTO) {
+        log.info("Gearbox Service - createGearbox_ResponseEntity(gearboxDTO)");
+
+        Gearbox gearbox = createGearbox(gearboxDTO);
+
+        if (gearbox == null) {
+            return new ResponseEntity<>("Gearbox with that name already exists.", HttpStatus.CONFLICT);
+        }
+
+        gearboxDTO.setId(gearbox.getId());
+        return new ResponseEntity<GearboxDTO>(gearboxDTO, HttpStatus.OK);
+    }
 }

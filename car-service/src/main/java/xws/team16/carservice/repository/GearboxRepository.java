@@ -6,4 +6,6 @@ import xws.team16.carservice.model.Gearbox;
 
 @Repository
 public interface GearboxRepository extends JpaRepository<Gearbox, Long> {
+
+    Gearbox getByType(String type);
 }
