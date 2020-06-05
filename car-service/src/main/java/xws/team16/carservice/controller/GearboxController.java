@@ -43,4 +43,10 @@ public class GearboxController {
         log.info("Gearbox Controller - update(gearboxDTO)");
         return gearboxService.update_ResponseEntity(gearboxDTO);
     }
+
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<?> deleteGearboxById(@PathVariable Long id) {
+        log.info("Gearbox Controller - deleteGearboxById(" + id + ")");
+        return gearboxService.deleteGearboxById_ResponseEntity(id);
+    }
 }

@@ -116,4 +116,28 @@ public class GearboxService {
         else
             return new ResponseEntity<GearboxDTO>(gearboxDTO, HttpStatus.OK);
     }
+
+    public Long deleteGearboxById(Long id) {
+        log.info("Gearbox Service - deleteGearboxById(" + id + ")");
+
+        Gearbox gearbox = gearboxRepository.getById(id);
+
+        if (gearbox == null)
+            return null;
+
+        gearboxRepository.delete(gearbox);
+
+        return id;
+    }
+
+    public ResponseEntity<?> deleteGearboxById_ResponseEntity(Long id) {
+        log.info("Gearbox Service - deleteGearboxById_ResponseEntity(" + id + ")");
+
+        Long returnId = deleteGearboxById(id);
+
+        if (returnId == id)
+            return new ResponseEntity<>(HttpStatus.OK);
+        else
+            return new ResponseEntity<>("Gearbox with given id was not found", HttpStatus.BAD_REQUEST);
+    }
 }
