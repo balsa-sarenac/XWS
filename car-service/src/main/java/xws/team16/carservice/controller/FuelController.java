@@ -36,4 +36,10 @@ public class FuelController {
         log.info("Fuel Controller - createOne(fuelDTO)");
         return fuelService.createFuel_ResponseEntity(fuelDTO);
     }
+
+    @PutMapping(consumes = "application/json")
+    public ResponseEntity<?> update(@RequestBody FuelDTO fuelDTO) {
+        log.info("Fuel Controller - update(fuelDTO)");
+        return fuelService.update_ResponseEntity(fuelDTO);
+    }
 }

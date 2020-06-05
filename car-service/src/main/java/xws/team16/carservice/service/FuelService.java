@@ -90,4 +90,30 @@ public class FuelService {
         fuelDTO.setId(fuel.getId());
         return new ResponseEntity<FuelDTO>(fuelDTO, HttpStatus.OK);
     }
+
+    public Fuel update(FuelDTO fuelDTO) {
+        log.info("Fuel Service - update(fuelDTO)");
+
+        Fuel fuel = fuelRepository.getById(fuelDTO.getId());
+
+        if (fuel == null)
+            return null;
+
+        fuel.setType(fuelDTO.getType());
+
+        fuelRepository.save(fuel);
+
+        return fuel;
+    }
+
+    public ResponseEntity<?> update_ResponseEntity(FuelDTO fuelDTO) {
+        log.info("Fuel Service - update_ResponseEntity(fuelDTO)");
+
+        Fuel fuel = update(fuelDTO);
+
+        if (fuel == null)
+            return new ResponseEntity<>("Fuel with given id was not found", HttpStatus.BAD_REQUEST);
+        else
+            return new ResponseEntity<FuelDTO>(fuelDTO, HttpStatus.OK);
+    }
 }
