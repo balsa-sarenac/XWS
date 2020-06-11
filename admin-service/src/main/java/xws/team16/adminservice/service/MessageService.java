@@ -59,4 +59,20 @@ public class MessageService {
                         .build());
 
     }
+
+    public ResponseEntity<?> newMessage(MessageDTO messageDTO) {
+        User owner = this.userService.getUser();
+        User companion = this.userService.getUserById(messageDTO.getCompanionId());
+
+        Message message = Message.builder()
+                .text(messageDTO.getText())
+                .sent(messageDTO.getSent())
+                .sender(messageDTO.getUser().equals("sent") ? owner : companion)
+                .receiver(messageDTO.getUser().equals("sent") ? companion : owner)
+                .build();
+
+        message = this.messageRepository.save(message);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

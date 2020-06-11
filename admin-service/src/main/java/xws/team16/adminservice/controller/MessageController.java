@@ -2,10 +2,8 @@ package xws.team16.adminservice.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import xws.team16.adminservice.dto.MessageDTO;
 import xws.team16.adminservice.service.MessageService;
 
 @RestController
@@ -22,5 +20,10 @@ public class MessageController {
     @GetMapping(value = "/{userId}")
     public ResponseEntity<?> getAll(@PathVariable Long userId) {
         return this.messageService.getAll(userId);
+    }
+
+    @PostMapping
+    public ResponseEntity<?> newMessage(@RequestBody MessageDTO messageDTO) {
+        return this.messageService.newMessage(messageDTO);
     }
 }

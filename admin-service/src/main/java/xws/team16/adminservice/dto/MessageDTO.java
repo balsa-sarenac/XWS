@@ -12,4 +12,5 @@ public class MessageDTO {
     private String text;
     private DateTime sent;
     private String user;
+    private Long companionId;
 }
