@@ -28,20 +28,14 @@ public class User {
    @Column(nullable = false)
    private String lastName;
 
-   @Column(nullable = false)
-   private boolean enabled;
-
-   @Column(name = "companyName")
+   @Column(name = "company_name")
    private String companyName;
 
    @Column(name = "address")
    private String address;
 
-   @Column(name = "businessID")
+   @Column(name = "business_id")
    private String businessID;
-
-   @Column(name = "isAdmin")
-   private boolean isAdmin;
 
    @OneToMany(mappedBy = "user")
    private Set<Car> cars;
