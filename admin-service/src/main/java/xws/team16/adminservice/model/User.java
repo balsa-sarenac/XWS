@@ -1,16 +1,58 @@
 package xws.team16.adminservice.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.SuperBuilder;
+
+import javax.persistence.*;
 import java.util.Set;
 
+@Getter @Setter
+@SuperBuilder
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity @Table(name = "user_table")
 public class User {
+   @Id
+   @GeneratedValue(strategy = GenerationType.IDENTITY)
+   private Long id;
+
+   @Column(nullable = false)
    private String username;
-   private String password;
+
+   @Column(nullable = false)
    private String firstName;
+
+   @Column(nullable = false)
    private String lastName;
-   private boolean isEnabled;
 
+   @Column(nullable = false)
+   private boolean enabled;
+
+   @Column(name = "companyName")
+   private String companyName;
+
+   @Column(name = "address")
+   private String address;
+
+   @Column(name = "businessID")
+   private String businessID;
+
+   @Column(name = "isAdmin")
+   private boolean isAdmin;
+
+   @OneToMany(mappedBy = "user")
    private Set<Car> cars;
-//   private Set<Ad> ads;
 
+   @OneToMany(mappedBy = "user")
+   private Set<Comment> comments;
+
+   @OneToMany(mappedBy = "sender")
+   private Set<Message> sent;
+
+   @OneToMany(mappedBy = "receiver")
+   private Set<Message> received;
 
 }
