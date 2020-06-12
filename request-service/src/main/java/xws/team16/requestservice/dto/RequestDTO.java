@@ -12,6 +12,7 @@ public class RequestDTO {
     private String pickUpPlace;
     private LocalDate pickUpDate;
     private LocalDate returnDate;
+    private String status;
     private Long adId;
     private Long bundleId;
 }

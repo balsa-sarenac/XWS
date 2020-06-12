@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import xws.team16.requestservice.dto.OccupiedDTO;
 import xws.team16.requestservice.dto.RequestDTO;
 import xws.team16.requestservice.dto.ShoppingCartDTO;
+import xws.team16.requestservice.exceptions.InvalidOperationException;
 import xws.team16.requestservice.exceptions.NotFoundException;
 import xws.team16.requestservice.model.*;
 import xws.team16.requestservice.repository.RentRequestRepository;
@@ -48,6 +49,7 @@ public class RentRequestService {
                     .pickUpDate(request.getPickUpDate())
                     .pickUpPlace(request.getPickUpPlace())
                     .adId(request.getAd().getId())
+                    .status(String.valueOf(request.getStatus()))
                     .bundleId(request.getBundle() != null ? request.getBundle().getId() : -1)
                     .build());
         }
@@ -123,6 +125,8 @@ public class RentRequestService {
     public ResponseEntity<?> cancelRequest(Long requestId) {
         log.info("Rent request service - cancel request");
         RentRequest rentRequest = this.rentRequestRepository.findById(requestId).orElseThrow(() -> new NotFoundException("Request with given id was not found"));
+        if (rentRequest.getStatus().equals(RequestStatus.paid))
+            throw new InvalidOperationException("Rent request has already been paid. It cannot be cancelled.");
         rentRequest.setStatus(RequestStatus.cancelled);
         this.rentRequestRepository.save(rentRequest);
         log.info("Request cancelled");

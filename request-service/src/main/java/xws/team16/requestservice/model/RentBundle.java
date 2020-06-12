@@ -18,7 +18,9 @@ public class RentBundle {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany(mappedBy = "bundle")
+    @OneToMany(mappedBy = "bundle", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<RentRequest> requests;
 
+    @Enumerated(value = EnumType.STRING)
+    private RequestStatus bundleStatus;
 }
