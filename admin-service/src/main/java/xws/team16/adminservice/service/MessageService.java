@@ -1,5 +1,6 @@
 package xws.team16.adminservice.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,12 +12,9 @@ import xws.team16.adminservice.model.Message;
 import xws.team16.adminservice.model.User;
 import xws.team16.adminservice.repository.MessageRepository;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-@Service
+@Service @Slf4j
 public class MessageService {
 
     private MessageRepository messageRepository;
@@ -29,6 +27,7 @@ public class MessageService {
     }
 
     public ResponseEntity<?> getAll(Long userId) {
+        log.info("Message service - get all messages");
         User user = this.userService.getUserById(userId);
         List<Message> messageList = this.messageRepository.findBySenderOrReceiverOrderBySent(user, user);
         Map<Long, ChatDTO> chats = new HashMap<>();
@@ -48,7 +47,7 @@ public class MessageService {
         if (!chats.containsKey(companion.getId())) {
             UserDTO ownerDTO = new UserDTO(owner.getId(), owner.getFirstName(), owner.getLastName(), owner.getCompanyName());
             UserDTO companionDTO = new UserDTO(companion.getId(), companion.getFirstName(), companion.getLastName(), companion.getCompanyName());
-            chats.put(companion.getId(), new ChatDTO(new HashSet<>(), ownerDTO, companionDTO));
+            chats.put(companion.getId(), new ChatDTO(new LinkedList<>(), ownerDTO, companionDTO));
         }
         chats.get(companion.getId()).getMessages().add(
                 MessageDTO.builder()
@@ -61,6 +60,7 @@ public class MessageService {
     }
 
     public ResponseEntity<?> newMessage(MessageDTO messageDTO) {
+        log.info("Message service - new message");
         User owner = this.userService.getUser();
         User companion = this.userService.getUserById(messageDTO.getCompanionId());
 
@@ -72,7 +72,8 @@ public class MessageService {
                 .build();
 
         message = this.messageRepository.save(message);
+        messageDTO.setId(message.getId());
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(messageDTO, HttpStatus.OK);
     }
 }
