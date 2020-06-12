@@ -13,20 +13,24 @@ import java.util.Set;
 @SuperBuilder
 @NoArgsConstructor
 @Entity @Table(name = "USER_TABLE")
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class User {
    @Id
    @GeneratedValue(strategy = GenerationType.IDENTITY)
    private Long id;
 
 //   private String username;
-//   private String password;
 //   private String firstName;
 //   private String lastName;
-//   private boolean isEnabled;
+//   private String companyName;
+//   private String address;
+//   private String businessID;
 
    @OneToMany(mappedBy = "user")
    private Set<Ad> ads;
+
+   @OneToMany(mappedBy = "user")
+   private Set<RentRequest> request;
+
 
    @Override
    public boolean equals(Object o) {
