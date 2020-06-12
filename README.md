@@ -16,6 +16,6 @@ Front end application can be found [here](https://github.com/baxbaxbax/rent-a-ca
 ## Usage
 To install and start this application you will need Docker. Application can be started with only one command:
 
-``` 
+```bash
 docker-compose up
 ````
