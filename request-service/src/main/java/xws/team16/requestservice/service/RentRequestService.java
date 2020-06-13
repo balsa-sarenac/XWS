@@ -62,14 +62,15 @@ public class RentRequestService {
         this.rentBundleService.newBundles(shoppingCart.getBundles());
 
         for (RequestDTO request : shoppingCart.getRequests()) {
-            RentRequest rentRequest = newRequest(request);
+            RentRequest rentRequest = newRequest(request, null);
+            rentRequest = this.rentRequestRepository.save(rentRequest);
         }
         log.info("All requests created successfully");
 
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    public RentRequest newRequest(RequestDTO request) {
+    public RentRequest newRequest(RequestDTO request, RentBundle bundle) {
         Ad ad = this.adService.getAdById(request.getAdId());
         User user = this.userService.getUserById(1L);  // GET USER FROM AUTHENTICATION
 
@@ -80,17 +81,17 @@ public class RentRequestService {
         rentRequest.setDateCreated(new DateTime());
         rentRequest.setAd(ad);
         rentRequest.setStatus(RequestStatus.pending);
+        rentRequest.setBundle(bundle);
 
         rentRequest.setUser(user);
 
-        rentRequest = this.rentRequestRepository.save(rentRequest);
         return rentRequest;
     }
 
     public ResponseEntity<?> cancelOccupiedRequests(OccupiedDTO occupiedDTO) {
-        log.info("Rent request service - cencel occupied requests");
-        LocalDate occupiedFrom = occupiedDTO.getDateFrom().toLocalDate();
-        LocalDate occupiedTo = occupiedDTO.getDateTo().toLocalDate();
+        log.info("Rent request service - cancel occupied requests");
+        LocalDate occupiedFrom = occupiedDTO.getDateFrom();
+        LocalDate occupiedTo = occupiedDTO.getDateTo();
 
         for (Long id: occupiedDTO.getAdsId()){
             List<RentRequest> rentRequests = this.rentRequestRepository.findByAdId(id);
@@ -118,7 +119,7 @@ public class RentRequestService {
             }
         }
 
-        log.info("Rent request service - succesfully canceled pending requests");
+        log.info("Rent request service - successfully canceled pending requests");
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -131,5 +132,38 @@ public class RentRequestService {
         this.rentRequestRepository.save(rentRequest);
         log.info("Request cancelled");
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    public ResponseEntity<?> acceptRequest(Long requestId) {
+        log.info("Rent request service - accept request");
+        RentRequest request = this.rentRequestRepository.findById(requestId).orElseThrow(() -> new NotFoundException("Request with given id was not found"));
+        acceptRequest(request);
+
+        log.info("Successfully canceled other requests, saving in database");
+        this.rentRequestRepository.save(request);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    public void acceptRequest(RentRequest request) {
+        if (!request.getStatus().equals(RequestStatus.pending))
+            throw new InvalidOperationException("Rent request cannot be accepted, it's not in pending state, but has status: " + request.getStatus());
+
+        request.setStatus(RequestStatus.reserved);
+        request.setStatus(RequestStatus.paid);
+        log.info("Rent request status changed to paid");
+
+        List<RentRequest> requests = this.rentRequestRepository.findByAdId(request.getAd().getId());
+        List<Long> adsId = new ArrayList<>();
+        for (RentRequest r: requests)
+            adsId.add(r.getAd().getId());
+
+        OccupiedDTO occupiedDTO = OccupiedDTO.builder()
+                .id(request.getId())
+                .dateFrom(request.getPickUpDate())
+                .dateTo(request.getReturnDate())
+                .adsId(adsId)
+                .build();
+        cancelOccupiedRequests(occupiedDTO);
     }
 }

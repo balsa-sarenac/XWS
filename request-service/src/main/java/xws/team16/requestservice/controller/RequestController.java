@@ -48,6 +48,18 @@ public class RequestController {
         return this.rentRequestService.cancelRequest(requestId);
     }
 
+    /**
+     * Accepts a request given its id and cancels all other requests in that period for rented car
+     * @param requestId id of the request
+     * @throws xws.team16.requestservice.exceptions.InvalidOperationException if request is not in status pending
+     * @return 200 ok if all done successfully
+     */
+    @PutMapping(value = "/accept/{requestId}")
+    public ResponseEntity<?> acceptRequest(@PathVariable Long requestId) {
+        log.info("Request controller - accept request with id " + requestId);
+        return this.rentRequestService.acceptRequest(requestId);
+    }
+
     @PostMapping(value = "/occupied" , consumes = "application/json")
     public ResponseEntity<?> occupiedRequests(@RequestBody OccupiedDTO occupiedDTO) {
         log.info("Request controller - occupied requests");

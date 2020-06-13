@@ -30,4 +30,16 @@ public class BundleController {
         log.info("Bundle controller - cancel bundle with id " + bundleId);
         return this.rentBundleService.cancelBundle(bundleId);
     }
+
+    /**
+     * Accepts a bundle and cancels all other requests for given cars
+     * @param bundleId id of the bundle
+     * @throws xws.team16.requestservice.exceptions.InvalidOperationException if bundle is not in status pending
+     * @return 200 ok if everything passed successfully
+     */
+    @PutMapping(value = "/accept/{bundleId}")
+    public ResponseEntity<?> acceptBundle(@PathVariable Long bundleId) {
+        log.info("Bundle controller - accept bundle with bundle id "+ bundleId);
+        return this.rentBundleService.acceptBundle(bundleId);
+    }
 }

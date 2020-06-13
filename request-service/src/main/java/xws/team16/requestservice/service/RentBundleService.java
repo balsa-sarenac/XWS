@@ -32,9 +32,10 @@ public class RentBundleService {
 
         for (BundleDTO bundle : bundles) {
             RentBundle rentBundle = new RentBundle();
+            rentBundle.setBundleStatus(RequestStatus.pending);
             rentBundle.setRequests(new HashSet<>());
             for (RequestDTO request : bundle.getRequests()) {
-                RentRequest rentRequest = this.rentRequestService.newRequest(request);
+                RentRequest rentRequest = this.rentRequestService.newRequest(request, rentBundle);
                 rentBundle.getRequests().add(rentRequest);
             }
             this.rentBundleRepository.save(rentBundle);
@@ -53,6 +54,26 @@ public class RentBundleService {
         }
         this.rentBundleRepository.save(bundle);
         log.info("Bundle and all requests cancelled successfully");
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    public ResponseEntity<?> acceptBundle(Long bundleId) {
+        log.info("Rent bundle service - accept bundle");
+        RentBundle rentBundle = this.rentBundleRepository.findById(bundleId).orElseThrow(() -> new NotFoundException("Bundle with given id was not found"));
+        if (!rentBundle.getBundleStatus().equals(RequestStatus.pending))
+            throw new InvalidOperationException("Rent request cannot be accepted, it's not in pending state, but has status: " + rentBundle.getBundleStatus());
+
+        rentBundle.setBundleStatus(RequestStatus.reserved);
+        rentBundle.setBundleStatus(RequestStatus.paid);
+
+        for (RentRequest request: rentBundle.getRequests())  {
+            log.info(String.valueOf(request.getStatus()));
+            if (request.getStatus().equals(RequestStatus.pending))
+                this.rentRequestService.acceptRequest(request);
+        }
+
+        this.rentBundleRepository.save(rentBundle);
+        log.info("Successfully saved everything");
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }
