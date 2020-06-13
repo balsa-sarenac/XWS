@@ -130,6 +130,6 @@ public class RentRequestService {
         rentRequest.setStatus(RequestStatus.cancelled);
         this.rentRequestRepository.save(rentRequest);
         log.info("Request cancelled");
-        return null;
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

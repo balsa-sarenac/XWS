@@ -2,6 +2,7 @@ package xws.team16.requestservice.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import xws.team16.requestservice.dto.BundleDTO;
@@ -52,6 +53,6 @@ public class RentBundleService {
         }
         this.rentBundleRepository.save(bundle);
         log.info("Bundle and all requests cancelled successfully");
-        return null;
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
