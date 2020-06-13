@@ -166,4 +166,15 @@ public class RentRequestService {
                 .build();
         cancelOccupiedRequests(occupiedDTO);
     }
+
+    public ResponseEntity<?> refuseRequest(Long requestId) {
+        log.info("Rent request service - refuse request");
+        RentRequest request = this.rentRequestRepository.findById(requestId).orElseThrow(() -> new NotFoundException("Rent request with given id was not found"));
+        if (!request.getStatus().equals(RequestStatus.pending))
+            throw new InvalidOperationException("Rent request cannot be refused, it's not in pending state, but has status: " + request.getStatus());
+        request.setStatus(RequestStatus.refused);
+        this.rentRequestRepository.save(request);
+        log.info("Successfully refused rent request");
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

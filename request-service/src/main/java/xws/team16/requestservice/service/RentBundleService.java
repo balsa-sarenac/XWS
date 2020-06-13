@@ -66,7 +66,7 @@ public class RentBundleService {
         rentBundle.setBundleStatus(RequestStatus.reserved);
         rentBundle.setBundleStatus(RequestStatus.paid);
 
-        for (RentRequest request: rentBundle.getRequests())  {
+        for (RentRequest request: rentBundle.getRequests()) {
             log.info(String.valueOf(request.getStatus()));
             if (request.getStatus().equals(RequestStatus.pending))
                 this.rentRequestService.acceptRequest(request);
@@ -74,6 +74,23 @@ public class RentBundleService {
 
         this.rentBundleRepository.save(rentBundle);
         log.info("Successfully saved everything");
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    public ResponseEntity<?> refuseBundle(Long bundleId) {
+        log.info("Rent bundle service - refuse bundle");
+        RentBundle bundle = this.rentBundleRepository.findById(bundleId).orElseThrow(() -> new NotFoundException("Bundle with given id was not found"));
+        if (!bundle.getBundleStatus().equals(RequestStatus.pending))
+            throw new InvalidOperationException("Rent bundle cannot be refused, it's not in pending state, but has status: " + bundle.getBundleStatus());
+        bundle.setBundleStatus(RequestStatus.refused);
+
+        for (RentRequest request: bundle.getRequests()) {
+            log.info(String.valueOf(request.getStatus()));
+            request.setStatus(RequestStatus.refused);
+        }
+        this.rentBundleRepository.save(bundle);
+        log.info("Bundle refused successfully");
+
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

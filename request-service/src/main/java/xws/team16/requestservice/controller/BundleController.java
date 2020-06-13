@@ -42,4 +42,16 @@ public class BundleController {
         log.info("Bundle controller - accept bundle with bundle id "+ bundleId);
         return this.rentBundleService.acceptBundle(bundleId);
     }
+
+    /**
+     * Refuses a bundle of requests
+     * @param bundleId id of the bundle
+     * @throws xws.team16.requestservice.exceptions.InvalidOperationException if bundle is not in status pending
+     * @return 200 ok if refused successfully
+     */
+    @PutMapping(value = "/refuse/{bundleId}")
+    public ResponseEntity<?> refuseBundle(@PathVariable Long bundleId) {
+        log.info("Bundle controller - refuse bundle with bundle id "+ bundleId);
+        return this.rentBundleService.refuseBundle(bundleId);
+    }
 }

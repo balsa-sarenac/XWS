@@ -60,6 +60,17 @@ public class RequestController {
         return this.rentRequestService.acceptRequest(requestId);
     }
 
+    /**
+     * Refuses a request given its id
+     * @param requestId id of the request
+     * @return 200 ok if request is refused
+     */
+    @PutMapping(value = "/refuse/{requestId}")
+    public ResponseEntity<?> refuseRequest(@PathVariable Long requestId) {
+        log.info("Request controller - refuse request with id " + requestId);
+        return this.rentRequestService.refuseRequest(requestId);
+    }
+
     @PostMapping(value = "/occupied" , consumes = "application/json")
     public ResponseEntity<?> occupiedRequests(@RequestBody OccupiedDTO occupiedDTO) {
         log.info("Request controller - occupied requests");
