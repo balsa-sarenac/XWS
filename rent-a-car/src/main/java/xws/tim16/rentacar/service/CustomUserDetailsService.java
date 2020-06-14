@@ -94,20 +94,21 @@ public class CustomUserDetailsService implements UserDetailsService{
                 .firstName(userDTO.getFirstName())
                 .lastName(userDTO.getLastName())
                 .username(userDTO.getUsername())
+                .email(userDTO.getEmail())
+                .address(userDTO.getAddress())
                 .password(passwordEncoder.encode(userDTO.getPassword()))
                 .isAdmin(false)
+                .enabled(false)
                 .companyName("")
                 .businessID("")
-                .address("")
-                .enabled(true)
                 .build();
 
         if(userDTO.getRoles().get(0).equals("ROLE_AGENT")){
-            user.setAddress(userDTO.getAddress());
             user.setCompanyName(userDTO.getCompanyName());
             user.setBusinessID(userDTO.getBusinessID());
         }else if(userDTO.getRoles().get(0).equals("ROLE_ADMIN")){
             user.setAdmin(true);
+            user.setEnabled(true);
         }
 
         Role role = this.roleRepository.findByName(userDTO.getRoles().get(0));

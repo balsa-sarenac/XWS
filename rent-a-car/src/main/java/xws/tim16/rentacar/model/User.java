@@ -43,6 +43,9 @@ public class User implements  UserDetails {
    @Column(name = "businessID")
    private String businessID;
 
+   @Column(name = "email")
+   private String email;
+
    @Column
    private Timestamp lastPasswordResetDate;
 

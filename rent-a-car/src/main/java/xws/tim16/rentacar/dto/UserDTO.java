@@ -23,4 +23,5 @@ public class UserDTO {
     private String businessID;
     private Timestamp lastPasswordResetDate;
     private List<String> roles;
+    private String email;
 }
