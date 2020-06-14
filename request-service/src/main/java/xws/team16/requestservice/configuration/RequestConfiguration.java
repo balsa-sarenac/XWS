@@ -48,7 +48,7 @@ public class RequestConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers(HttpMethod.OPTIONS).permitAll()
-                .antMatchers("/h2-console/**", "/hello")
+                .antMatchers("/h2-console/**", "/**")
                 .permitAll()
                 .anyRequest().authenticated();
 

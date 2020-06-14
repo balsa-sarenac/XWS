@@ -3,10 +3,7 @@ package xws.team16.requestservice.controller;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import xws.team16.requestservice.service.RentBundleService;
 
 @RestController @Slf4j
@@ -25,8 +22,8 @@ public class BundleController {
      * @param bundleId id of the bundle
      * @return 200 ok if cancelled successfully
      */
-    @PutMapping(value = "/cancel/{bundleId}")
-    public ResponseEntity<?> cancelBundle(@PathVariable Long bundleId) {
+    @PutMapping(value = "/cancel", consumes = "application/json")
+    public ResponseEntity<?> cancelBundle(@RequestBody Long bundleId) {
         log.info("Bundle controller - cancel bundle with id " + bundleId);
         return this.rentBundleService.cancelBundle(bundleId);
     }
@@ -37,8 +34,8 @@ public class BundleController {
      * @throws xws.team16.requestservice.exceptions.InvalidOperationException if bundle is not in status pending
      * @return 200 ok if everything passed successfully
      */
-    @PutMapping(value = "/accept/{bundleId}")
-    public ResponseEntity<?> acceptBundle(@PathVariable Long bundleId) {
+    @PutMapping(value = "/accept", consumes = "application/json")
+    public ResponseEntity<?> acceptBundle(@RequestBody Long bundleId) {
         log.info("Bundle controller - accept bundle with bundle id "+ bundleId);
         return this.rentBundleService.acceptBundle(bundleId);
     }
@@ -49,8 +46,8 @@ public class BundleController {
      * @throws xws.team16.requestservice.exceptions.InvalidOperationException if bundle is not in status pending
      * @return 200 ok if refused successfully
      */
-    @PutMapping(value = "/refuse/{bundleId}")
-    public ResponseEntity<?> refuseBundle(@PathVariable Long bundleId) {
+    @PutMapping(value = "/refuse", consumes = "application/json")
+    public ResponseEntity<?> refuseBundle(@RequestBody Long bundleId) {
         log.info("Bundle controller - refuse bundle with bundle id "+ bundleId);
         return this.rentBundleService.refuseBundle(bundleId);
     }

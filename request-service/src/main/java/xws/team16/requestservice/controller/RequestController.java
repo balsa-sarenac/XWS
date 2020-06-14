@@ -42,8 +42,8 @@ public class RequestController {
      * @param requestId id of the request
      * @return 200 ok if cancelled successfully
      */
-    @PutMapping(value = "/cancel/{requestId}")
-    public ResponseEntity<?> cancelRequest(@PathVariable Long requestId) {
+    @PutMapping(value = "/cancel", consumes = "application/json")
+    public ResponseEntity<?> cancelRequest(@RequestBody Long requestId) {
         log.info("Request controller - cancel request with id " + requestId);
         return this.rentRequestService.cancelRequest(requestId);
     }
@@ -54,8 +54,8 @@ public class RequestController {
      * @throws xws.team16.requestservice.exceptions.InvalidOperationException if request is not in status pending
      * @return 200 ok if all done successfully
      */
-    @PutMapping(value = "/accept/{requestId}")
-    public ResponseEntity<?> acceptRequest(@PathVariable Long requestId) {
+    @PutMapping(value = "/accept", consumes = "application/json")
+    public ResponseEntity<?> acceptRequest(@RequestBody Long requestId) {
         log.info("Request controller - accept request with id " + requestId);
         return this.rentRequestService.acceptRequest(requestId);
     }
@@ -65,8 +65,8 @@ public class RequestController {
      * @param requestId id of the request
      * @return 200 ok if request is refused
      */
-    @PutMapping(value = "/refuse/{requestId}")
-    public ResponseEntity<?> refuseRequest(@PathVariable Long requestId) {
+    @PutMapping(value = "/refuse", consumes = "application/json")
+    public ResponseEntity<?> refuseRequest(@RequestBody Long requestId) {
         log.info("Request controller - refuse request with id " + requestId);
         return this.rentRequestService.refuseRequest(requestId);
     }
