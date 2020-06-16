@@ -1,14 +1,13 @@
 package xws.team16.requestservice.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import java.util.List;
-
-@Getter
+@Getter @Setter
 @NoArgsConstructor
-public class BundleDTO {
+@AllArgsConstructor
+public class PatchRequestDTO {
     private Long id;
-    private String status;
-    private List<RequestDTO> requests;
 }
