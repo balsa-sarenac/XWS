@@ -71,4 +71,8 @@ public class CarService {
         log.info("Car getted with id " + car.getId());
         return car;
     }
+
+    public Car saveCar(Car car){
+       return this.carRepository.save(car);
+    }
 }
