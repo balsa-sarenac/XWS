@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -142,7 +143,10 @@ public class RentRequestService {
         log.info("Successfully canceled other requests, saving in database");
         this.rentRequestRepository.save(request);
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setAccessControlAllowOrigin("*");
+
+        return new ResponseEntity<>(headers, HttpStatus.OK);
     }
 
     public void acceptRequest(RentRequest request) {
