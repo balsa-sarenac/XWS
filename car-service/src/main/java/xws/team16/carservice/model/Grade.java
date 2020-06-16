@@ -1,14 +1,13 @@
 package xws.team16.carservice.model;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Getter @Setter
 @NoArgsConstructor
-@Entity
+@AllArgsConstructor
+@Entity @Builder
 public class Grade {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
