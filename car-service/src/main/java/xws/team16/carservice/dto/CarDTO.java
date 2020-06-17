@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter @Setter
 @NoArgsConstructor
 public class CarDTO {
@@ -18,4 +20,5 @@ public class CarDTO {
     private int kilometrage;
     private int numberOfChildSeats;
     private boolean hasAndroid;
+    private List<String> images;
 }

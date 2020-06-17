@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.*;
 import xws.team16.carservice.dto.AdDTO;
 import xws.team16.carservice.service.AdService;
 
+import java.sql.SQLException;
+
 @CrossOrigin
 @Slf4j
 @RestController
@@ -26,7 +28,7 @@ public class AdController {
      * @param adDTO is ad to be created with all fields
      */
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> addNew(@RequestBody AdDTO adDTO) {
+    public ResponseEntity<?> addNew(@RequestBody AdDTO adDTO) throws SQLException {
         log.info("Ad controller - new ad");
         return this.adService.newAd(adDTO);
     }
