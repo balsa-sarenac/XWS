@@ -5,8 +5,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import xws.team16.carservice.dto.MarkDTO;
+import xws.team16.carservice.dto.ModelDTO;
 import xws.team16.carservice.exceptions.NotFoundException;
 import xws.team16.carservice.model.Mark;
+import xws.team16.carservice.model.Model;
 import xws.team16.carservice.repository.MarkRepository;
 
 import java.util.ArrayList;
@@ -38,6 +40,14 @@ public class MarkService {
             MarkDTO markDTO = new MarkDTO();
             markDTO.setId(m.getId());
             markDTO.setName(m.getName());
+            List<ModelDTO> modelDTOList = new ArrayList<>();
+            for (Model model: m.getModels()) {
+                ModelDTO modelDTO = new ModelDTO();
+                modelDTO.setId(model.getId());
+                modelDTO.setName(model.getName());
+                modelDTOList.add(modelDTO);
+            }
+            markDTO.setModels(modelDTOList);
 
             markDTOS.add(markDTO);
         }
