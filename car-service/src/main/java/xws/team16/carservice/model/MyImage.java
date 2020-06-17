@@ -19,7 +19,7 @@ public class MyImage {
     private String type;
 
     @Lob
-    @Column(name = "iamge", columnDefinition="BLOB")
+    @Column(name = "imаge", columnDefinition="BLOB")
     private Blob image;
 
     @ManyToOne(fetch = FetchType.LAZY)
