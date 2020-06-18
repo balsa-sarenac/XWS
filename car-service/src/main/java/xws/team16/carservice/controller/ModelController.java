@@ -10,6 +10,7 @@ import xws.team16.carservice.service.ModelService;
 
 import javax.jws.WebParam;
 
+@CrossOrigin
 @Slf4j
 @RestController
 @RequestMapping(value = "/model")

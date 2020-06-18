@@ -15,5 +15,4 @@ public class AdDTO {
     private double allowedKilometrage;
     private CarDTO carDTO;
     private Long priceListId;
-    private boolean hasAndroid;
 }

@@ -8,6 +8,7 @@ import xws.team16.carservice.dto.GearboxDTO;
 import xws.team16.carservice.model.Gearbox;
 import xws.team16.carservice.service.GearboxService;
 
+@CrossOrigin
 @Slf4j
 @RestController
 @RequestMapping(value = "/gearbox")

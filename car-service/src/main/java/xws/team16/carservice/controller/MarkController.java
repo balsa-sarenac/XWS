@@ -13,6 +13,7 @@ import xws.team16.carservice.service.MarkService;
 import java.util.ArrayList;
 import java.util.List;
 
+@CrossOrigin
 @Slf4j
 @RestController
 @RequestMapping(value = "/mark")
