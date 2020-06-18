@@ -15,6 +15,8 @@ import xws.team16.carservice.model.PriceList;
 import xws.team16.carservice.model.User;
 import xws.team16.carservice.repository.AdRepository;
 
+import java.sql.SQLException;
+
 @Service @Slf4j
 public class AdService {
 
@@ -29,7 +31,7 @@ public class AdService {
         this.priceListService = priceListService;
     }
 
-    public ResponseEntity<Void> newAd(AdDTO adDTO) {
+    public ResponseEntity<Void> newAd(AdDTO adDTO) throws SQLException {
         log.info("Ad service - add new ad and car");
         Car car = this.carService.newCar(adDTO.getCarDTO());
         PriceList priceList = this.priceListService.getPriceListById(adDTO.getPriceListId());

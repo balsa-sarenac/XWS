@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import xws.team16.carservice.dto.FuelDTO;
 import xws.team16.carservice.service.FuelService;
 
+@CrossOrigin
 @Slf4j
 @RestController
 @RequestMapping(value = "/fuel")

@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import xws.team16.carservice.dto.CarClassDTO;
 import xws.team16.carservice.service.CarClassService;
 
+@CrossOrigin
 @Slf4j
 @RestController
 @RequestMapping(value = "/carclass")
