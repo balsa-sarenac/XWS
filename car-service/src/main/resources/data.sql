@@ -1,4 +1,6 @@
 insert into USER_TABLE (first_name, last_name, username, password, is_enabled) values ('balsa', 'sarenac', 'bax', 'asdf', true);
+insert into USER_TABLE (first_name, last_name, username, password, is_enabled) values ('agent', 'agent', 'agent', 'asdf', true);
+insert into USER_TABLE (first_name, last_name, username, password, is_enabled) values ('stefan', 'kovac', 'stefan', 'asdf', true);
 
 
 insert into MARK (name ) values ('audi');
@@ -42,3 +44,8 @@ insert into AD (cdw_available, pick_up_place, from_date, to_date, allowed_kilome
 insert into AD (cdw_available, pick_up_place, from_date, to_date, allowed_kilometrage, car_id, price_list_id, user_id) values (true, 'Nevesinje', '2020-06-03T21:39:45.618', '2020-06-11T21:39:45.618', 0, 5,2,1);
 insert into AD (cdw_available, pick_up_place, from_date, to_date, allowed_kilometrage, car_id, price_list_id, user_id) values (true, 'Nevesinje', '2020-06-03T21:39:45.618', '2020-06-11T21:39:45.618', 250, 6,4,1);
 
+insert into COMMENT (text, approved, user_id, car_id, ad_id) values ('komentar', false, 1, 1, 1);
+insert into COMMENT (text, approved, user_id, car_id, ad_id) values ('Komentar2', false, 1, 2, 2);
+insert into COMMENT (text, approved, user_id, car_id, ad_id) values ('komentar3', false, 3, 2, 2);
+insert into COMMENT (text, approved, user_id, car_id, ad_id) values ('komentar4', false, 1, 3, 3);
+insert into COMMENT (text, approved, user_id, car_id, ad_id) values ('komentar5', false, 3, 3, 3);
