@@ -22,5 +22,10 @@ public class CarController {
         this.carService = carService;
     }
 
+    @GetMapping(value = "/statistics/{ownersID}")
+    public ResponseEntity<?> getStatistics(@PathVariable Long ownersID){
+        log.info("Car Controller - get statistics of owner with id " + ownersID);
+        return carService.getStatistics_ResponseEntity(ownersID);
+    }
 
 }
