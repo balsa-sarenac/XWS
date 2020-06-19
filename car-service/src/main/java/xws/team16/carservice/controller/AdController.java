@@ -13,7 +13,6 @@ import java.sql.SQLException;
 @CrossOrigin
 @Slf4j
 @RestController
-@CrossOrigin(origins = "*")
 @RequestMapping(value = "/ad")
 public class AdController {
 
