@@ -3,12 +3,16 @@ package xws.team16.carservice.service;
 import https.ftn_uns_ac_rs.ad.CarDTOType;
 import lombok.extern.slf4j.Slf4j;
 import org.bouncycastle.util.encoders.Base64;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import xws.team16.carservice.dto.AdDTO;
 import xws.team16.carservice.dto.CarDTO;
+import xws.team16.carservice.dto.CarInfoDTO;
 import xws.team16.carservice.dto.ImageDTO;
 import xws.team16.carservice.exceptions.*;
 import xws.team16.carservice.model.*;
@@ -17,7 +21,9 @@ import xws.team16.carservice.repository.CarRepository;
 import javax.sql.rowset.serial.SerialBlob;
 import java.sql.Blob;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Service @Slf4j
@@ -30,11 +36,12 @@ public class CarService {
     private CarClassService carClassService;
     private GearboxService gearboxService;
     private UserService userService;
+    private ModelMapper modelMapper;
+
 
     @Autowired
-    public CarService(CarRepository carRepository, ModelService modelService, MarkService markService,
-                      FuelService fuelService, CarClassService carClassService, GearboxService gearboxService,
-                      UserService userService) {
+    public CarService(CarRepository carRepository, ModelService modelService, MarkService markService, FuelService fuelService,
+                      CarClassService carClassService, GearboxService gearboxService, UserService userService, ModelMapper modelMapper) {
         this.carRepository = carRepository;
         this.modelService = modelService;
         this.markService = markService;
@@ -42,6 +49,7 @@ public class CarService {
         this.carClassService = carClassService;
         this.gearboxService = gearboxService;
         this.userService = userService;
+        this.modelMapper = modelMapper;
     }
 
     public Car newCar(CarDTO carDTO) throws SQLException {
@@ -135,5 +143,19 @@ public class CarService {
         myImage.setInfo(parts[0]);
         myImage.setType(type);
         return myImage;
+    }
+
+    public ResponseEntity<?> getCarByUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        User user  = this.userService.getUserByUsername(username);
+
+        List<Car> cars = this.carRepository.findAllByOwnerId(1L);
+        List<CarInfoDTO> carInfoDTOS = new ArrayList<>();
+
+        for(Car car: cars){
+            carInfoDTOS.add(modelMapper.map(car, CarInfoDTO.class));
+        }
+        return new ResponseEntity<>(carInfoDTOS, HttpStatus.OK);
     }
 }
