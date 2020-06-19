@@ -3,9 +3,9 @@ package xws.tim16.rentacar.client;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ws.client.core.support.WebServiceGatewaySupport;
 import org.springframework.ws.soap.client.core.SoapActionCallback;
-import xws.tim16.rentacar.wsdl.PostMessageRequest;
-import xws.tim16.rentacar.wsdl.PostMessageResponse;
-import xws.tim16.rentacar.wsdl.TMessage;
+import xws.tim16.rentacar.generated.PostMessageRequest;
+import xws.tim16.rentacar.generated.PostMessageResponse;
+import xws.tim16.rentacar.generated.TMessage;
 
 @Slf4j
 public class AdminClient extends WebServiceGatewaySupport {

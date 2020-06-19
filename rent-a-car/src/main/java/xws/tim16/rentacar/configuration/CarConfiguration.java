@@ -12,7 +12,7 @@ public class CarConfiguration {
     @Bean
     public Jaxb2Marshaller marshaller() {
         Jaxb2Marshaller marshaller = new Jaxb2Marshaller();
-        marshaller.setContextPath("xws.tim16.rentacar.wsdl");
+        marshaller.setContextPath("xws.tim16.rentacar.generated");
         return marshaller;
     }
 

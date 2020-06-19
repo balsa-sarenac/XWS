@@ -1,7 +1,6 @@
 package xws.tim16.rentacar.service;
 
 import lombok.extern.slf4j.Slf4j;
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,8 +12,7 @@ import xws.tim16.rentacar.dto.UserDTO;
 import xws.tim16.rentacar.model.Message;
 import xws.tim16.rentacar.model.User;
 import xws.tim16.rentacar.repository.MessageRepository;
-import xws.tim16.rentacar.wsdl.PostMessageRequest;
-import xws.tim16.rentacar.wsdl.TMessage;
+import xws.tim16.rentacar.generated.TMessage;
 
 import java.util.HashMap;
 import java.util.LinkedList;
