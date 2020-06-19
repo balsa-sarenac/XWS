@@ -10,5 +10,6 @@ public class CommentDTO {
     private String text;
     private boolean approved;
     private String userUsername;
-    private CarDTO car;
+    private Long carId;
+    private Long adId;
 }

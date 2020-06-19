@@ -10,4 +10,5 @@ public class GradeDTO {
     private int grade;
     private String userUsername;
     private Long carId;
+    private Long adId;
 }

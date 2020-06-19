@@ -8,6 +8,7 @@ import org.joda.time.DateTime;
 @Getter @Setter
 @NoArgsConstructor
 public class AdDTO {
+    private Long id;
     private boolean cdwAvailable;
     private String pickUpPlace;
     private DateTime fromDate;
