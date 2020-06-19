@@ -42,3 +42,11 @@ insert into AD (cdw_available, pick_up_place, from_date, to_date, allowed_kilome
 insert into AD (cdw_available, pick_up_place, from_date, to_date, allowed_kilometrage, car_id, price_list_id, user_id) values (true, 'Nevesinje', '2020-06-03T21:39:45.618', '2020-06-11T21:39:45.618', 0, 5,2,1);
 insert into AD (cdw_available, pick_up_place, from_date, to_date, allowed_kilometrage, car_id, price_list_id, user_id) values (true, 'Nevesinje', '2020-06-03T21:39:45.618', '2020-06-11T21:39:45.618', 250, 6,4,1);
 
+insert into GRADE (grade, user_id, car_id) values (5, 1, 1);
+insert into GRADE (grade, user_id, car_id) values (4, 1, 1);
+
+insert into COMMENT (text, approved, user_id, car_id) values ('mnogo brz auto!!!11', true, 1, 2);
+insert into COMMENT (text, approved, user_id, car_id) values ('mnogo mi se svidja ovaj automobil', true, 1, 4);
+insert into COMMENT (text, approved, user_id, car_id) values ('preporucujem svakom ko voli udobnu voznju', true, 1, 2);
+
+
