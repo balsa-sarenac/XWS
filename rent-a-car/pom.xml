@@ -155,25 +155,25 @@
 				<groupId>org.jvnet.jaxb2.maven2</groupId>
 				<artifactId>maven-jaxb2-plugin</artifactId>
 				<version>0.14.0</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>generate</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<schemaLanguage>WSDL</schemaLanguage>
-					<generatePackage>xws.tim16.rentacar.wsdl</generatePackage>
-					<schemas>
-						<schema>
-							<url>http://localhost:8083/ad/ad.wsdl</url>
-						</schema>
-						<schema>
-							<url>http://localhost:8082/messages/messages.wsdl</url>
-						</schema>
-					</schemas>
-				</configuration>
+<!--				<executions>-->
+<!--					<execution>-->
+<!--						<goals>-->
+<!--							<goal>generate</goal>-->
+<!--						</goals>-->
+<!--					</execution>-->
+<!--				</executions>-->
+<!--				<configuration>-->
+<!--					<schemaLanguage>WSDL</schemaLanguage>-->
+<!--					<generatePackage>xws.tim16.rentacar.wsdl</generatePackage>-->
+<!--					<schemas>-->
+<!--						<schema>-->
+<!--							<url>http://localhost:8083/ad/ad.wsdl</url>-->
+<!--						</schema>-->
+<!--						<schema>-->
+<!--							<url>http://localhost:8082/messages/messages.wsdl</url>-->
+<!--						</schema>-->
+<!--					</schemas>-->
+<!--				</configuration>-->
 			</plugin>
 		</plugins>
 	</build>

@@ -1,7 +1,7 @@
 package xws.team16.carservice.service;
 
-import https.ftn_uns_ac_rs.ad.AdDTOType;
-import https.ftn_uns_ac_rs.ad.PostAdRequest;
+import xws.team16.carservice.generated.AdDTOType;
+import xws.team16.carservice.generated.PostAdRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.joda.time.DateTime;

@@ -1,6 +1,6 @@
 package xws.team16.carservice.service;
 
-import https.ftn_uns_ac_rs.ad.CarDTOType;
+import xws.team16.carservice.generated.CarDTOType;
 import lombok.extern.slf4j.Slf4j;
 import org.bouncycastle.util.encoders.Base64;
 import org.modelmapper.ModelMapper;

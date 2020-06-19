@@ -1,21 +1,19 @@
 package xws.tim16.rentacar.service;
 
 import lombok.extern.slf4j.Slf4j;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import xws.tim16.rentacar.client.CarClient;
 import xws.tim16.rentacar.dto.AdDTO;
-import xws.tim16.rentacar.dto.CarDTO;
 import xws.tim16.rentacar.model.Ad;
 import xws.tim16.rentacar.model.Car;
 import xws.tim16.rentacar.model.PriceList;
 import xws.tim16.rentacar.model.User;
 import xws.tim16.rentacar.repository.AdRepository;
-import xws.tim16.rentacar.wsdl.AdDTOType;
-import xws.tim16.rentacar.wsdl.CarDTOType;
+import xws.tim16.rentacar.generated.AdDTOType;
+import xws.tim16.rentacar.generated.CarDTOType;
 
 @Service @Slf4j
 public class AdService {

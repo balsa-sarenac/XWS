@@ -1,7 +1,7 @@
 package xws.team16.adminservice.endpoint;
 
-import https.ftn_uns_ac_rs.messages.PostMessageRequest;
-import https.ftn_uns_ac_rs.messages.PostMessageResponse;
+import xws.team16.adminservice.generated.PostMessageRequest;
+import xws.team16.adminservice.generated.PostMessageResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
 import org.springframework.ws.server.endpoint.annotation.PayloadRoot;

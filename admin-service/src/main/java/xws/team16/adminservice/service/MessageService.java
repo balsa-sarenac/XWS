@@ -1,7 +1,7 @@
 package xws.team16.adminservice.service;
 
-import https.ftn_uns_ac_rs.messages.PostMessageRequest;
-import https.ftn_uns_ac_rs.messages.TMessage;
+import xws.team16.adminservice.generated.PostMessageRequest;
+import xws.team16.adminservice.generated.TMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
