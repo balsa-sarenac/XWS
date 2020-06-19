@@ -169,6 +169,9 @@
 						<schema>
 							<url>http://localhost:8083/ad/ad.wsdl</url>
 						</schema>
+						<schema>
+							<url>http://localhost:8082/messages/messages.wsdl</url>
+						</schema>
 					</schemas>
 				</configuration>
 			</plugin>
