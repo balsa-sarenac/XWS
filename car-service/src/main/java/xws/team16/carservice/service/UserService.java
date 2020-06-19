@@ -22,4 +22,9 @@ public class UserService {
 
         return this.userRepository.findByUsername(bax).orElseThrow(() -> new NotFoundException("User with given username was not found."));
     }
+
+    public User getUserById(Long id){
+        log.info("User service - get user by id " + id);
+        return userRepository.findById(id).orElseThrow(() -> new NotFoundException("User with id " + id + " was not found."));
+    }
 }
