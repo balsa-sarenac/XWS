@@ -8,6 +8,7 @@ import xws.team16.carservice.dto.CommentDTO;
 import xws.team16.carservice.service.CommentService;
 
 @RestController @Slf4j
+@CrossOrigin(origins = "*")
 @RequestMapping(value = "/comment")
 public class CommentController {
     private CommentService commentService;
@@ -23,10 +24,17 @@ public class CommentController {
         return this.commentService.createComment(commentDTO);
     }
 
+
     @GetMapping(value = "/{carId}")
     private ResponseEntity<?> getComments(@PathVariable Long carId){
         log.info("Comment controller - getting comment for car");
         return this.commentService.getComments(carId);
+    }
+
+    @GetMapping(value = "/all")
+    private ResponseEntity<?> getAllComments(){
+        log.info("Comment controller - getting all comments");
+        return this.commentService.getAllComments();
     }
 
     @GetMapping(value = "/accept/{id}/{decision}")

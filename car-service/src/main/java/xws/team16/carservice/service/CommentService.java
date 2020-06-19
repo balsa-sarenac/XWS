@@ -4,8 +4,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import xws.team16.carservice.dto.CommentDTO;
+import xws.team16.carservice.model.Ad;
 import xws.team16.carservice.model.Car;
 import xws.team16.carservice.model.Comment;
 import xws.team16.carservice.model.User;
@@ -20,12 +23,14 @@ public class CommentService {
     private CommentRepository commentRepository;
     private UserService userService;
     private CarService carService;
+    private AdService adService;
 
     @Autowired
-    public CommentService(CommentRepository commentRepository, UserService userService, CarService carService) {
+    public CommentService(CommentRepository commentRepository, UserService userService, CarService carService, AdService adService) {
         this.commentRepository = commentRepository;
         this.userService = userService;
         this.carService = carService;
+        this.adService = adService;
     }
 
     public ResponseEntity<?> createComment(CommentDTO commentDTO) {
@@ -35,9 +40,19 @@ public class CommentService {
                 .text(commentDTO.getText())
                 .build();
         User user = this.userService.getUserByUsername(commentDTO.getUserUsername());
-        Car car = this.carService.getCar(commentDTO.getCar().getId());
+        Ad ad = this.adService.getAd(commentDTO.getAdId());
+        Car car = ad.getCar();
+
         comment.setCar(car);
+        comment.setAd(ad);
         comment.setUser(user);
+
+        Comment commentCheck = this.commentRepository.findByUserIdAndAdId(user.getId(),ad.getId());
+
+        if(commentCheck != null){
+            log.info("Comment service - comment already created");
+            return new ResponseEntity<>("User already add comment for this car", HttpStatus.BAD_REQUEST);
+        }
 
         this.commentRepository.save(comment);
         log.info("Comment service - comment created");
@@ -47,6 +62,11 @@ public class CommentService {
     public ResponseEntity<?> getComments(Long carId) {
         log.info("Comment service - get all comments for car with id" + carId);
         List<Comment> comments = this.commentRepository.findByCarIdAndAndApproved(carId, true);
+        log.info("Comment service - retrieving comments");
+        return new ResponseEntity<>(transformComments(comments),HttpStatus.OK);
+    }
+
+    public List<CommentDTO> transformComments(List<Comment> comments){
         List<CommentDTO> commentDTOS = new ArrayList<>();
         log.info("Comment service - creating dto for comments");
         for (Comment comment: comments){
@@ -58,8 +78,8 @@ public class CommentService {
                     .build();
             commentDTOS.add(commentDTO);
         }
-        log.info("Comment service - retrieving comments");
-        return new ResponseEntity<>(commentDTOS,HttpStatus.OK);
+
+        return commentDTOS;
     }
 
     public ResponseEntity<?> acceptOrRefuse(Long id, Boolean decision) {
@@ -82,4 +102,12 @@ public class CommentService {
         }
     }
 
+    public ResponseEntity<?> getAllComments() {
+        log.info("Comment service - get all comments ");
+        List<Comment> comments = this.commentRepository.findAllByApproved(false);
+        log.info("Comment service - retrieving comments");
+        return new ResponseEntity<>(transformComments(comments),HttpStatus.OK);
+
+
+    }
 }
