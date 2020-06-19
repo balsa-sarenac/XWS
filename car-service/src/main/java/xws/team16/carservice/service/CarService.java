@@ -182,4 +182,58 @@ public class CarService {
 
         return carWithMostKilometers;
     }
+
+    public ResponseEntity<?> getStatistics_ResponseEntity(Long ownersID) {
+        /* Returns ResponseEntity<StatisticsDTO>.
+        *  StatisticsDTO has fields: carWithHighestGrade, carWithMostComments, carWithMostKilometers.
+        *  In case of not finding any of these 3 cars, it'll just return null instead of the actual car. */
+
+        log.info("Car service - getStatistic_ResponseEntity(" + ownersID + ")");
+
+        StatisticsDTO statisticsDTO = new StatisticsDTO();
+
+        Car carWithHighestAverageGrade = getCarWithHighestGradeByOwnersId(ownersID);
+        if (carWithHighestAverageGrade != null){
+            CarWithHighestGradeDTO carDTO = new CarWithHighestGradeDTO();
+
+            carDTO.setId(carWithHighestAverageGrade.getId());
+            carDTO.setMarkId(carWithHighestAverageGrade.getMark().getId());
+            carDTO.setMarkName(carWithHighestAverageGrade.getMark().getName());
+            carDTO.setModelId(carWithHighestAverageGrade.getModel().getId());
+            carDTO.setModelName(carWithHighestAverageGrade.getModel().getName());
+            carDTO.setAverageGrade(carWithHighestAverageGrade.getAverageGrade());
+
+            statisticsDTO.setCarWithHighestGrade(carDTO);
+        }
+
+        Car carWithMostComments = getCarWithMostCommentsByOwnersId(ownersID);
+        if (carWithMostComments != null){
+            CarWithMostCommentsDTO carDTO = new CarWithMostCommentsDTO();
+
+            carDTO.setId(carWithMostComments.getId());
+            carDTO.setMarkId(carWithMostComments.getMark().getId());
+            carDTO.setMarkName(carWithMostComments.getMark().getName());
+            carDTO.setModelId(carWithMostComments.getModel().getId());
+            carDTO.setModelName(carWithMostComments.getModel().getName());
+            carDTO.setNumberOfComments(carWithMostComments.getComments().size());
+
+            statisticsDTO.setCarWithMostComments(carDTO);
+        }
+
+        Car carWithMostKilometers = getCarWithMostKilometersByOwnersId(ownersID);
+        if (carWithMostKilometers != null){
+            CarWithMostKilometersDTO carDTO = new CarWithMostKilometersDTO();
+
+            carDTO.setId(carWithMostKilometers.getId());
+            carDTO.setMarkId(carWithMostKilometers.getMark().getId());
+            carDTO.setMarkName(carWithMostKilometers.getMark().getName());
+            carDTO.setModelId(carWithMostKilometers.getModel().getId());
+            carDTO.setModelName(carWithMostKilometers.getModel().getName());
+            carDTO.setKilometrage(carWithMostKilometers.getKilometrage());
+
+            statisticsDTO.setCarWithMostKilometers(carDTO);
+        }
+
+        return new ResponseEntity<StatisticsDTO>(statisticsDTO, HttpStatus.FOUND);
+    }
 }
