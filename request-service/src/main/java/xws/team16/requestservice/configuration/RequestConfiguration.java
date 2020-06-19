@@ -37,7 +37,7 @@ public class RequestConfiguration extends WebSecurityConfigurerAdapter {
         http.headers().frameOptions().disable();
 
         http.headers().addHeaderWriter(new StaticHeadersWriter("X-Content-Security-Policy","script-src 'self'"));
-
+        http.cors().disable();
         http
                 .csrf()
                 .disable()
@@ -48,7 +48,7 @@ public class RequestConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers(HttpMethod.OPTIONS).permitAll()
-                .antMatchers("/h2-console/**", "/hello")
+                .antMatchers("/h2-console/**", "/**")
                 .permitAll()
                 .anyRequest().authenticated();
 
@@ -60,6 +60,7 @@ public class RequestConfiguration extends WebSecurityConfigurerAdapter {
         web.ignoring().antMatchers(HttpMethod.GET).antMatchers("/**");
         web.ignoring().antMatchers(HttpMethod.POST).antMatchers("/**");
         web.ignoring().antMatchers(HttpMethod.PUT).antMatchers("/**");
+        web.ignoring().antMatchers(HttpMethod.PATCH).antMatchers("/**");
         web.ignoring().antMatchers(HttpMethod.DELETE).antMatchers("/**");
     }
 }

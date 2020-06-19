@@ -1,7 +1,10 @@
 package xws.team16.carservice.service;
 
+import https.ftn_uns_ac_rs.ad.AdDTOType;
+import https.ftn_uns_ac_rs.ad.PostAdRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +18,8 @@ import xws.team16.carservice.model.Car;
 import xws.team16.carservice.model.PriceList;
 import xws.team16.carservice.model.User;
 import xws.team16.carservice.repository.AdRepository;
+
+import java.sql.SQLException;
 
 @Service @Slf4j
 public class AdService {
@@ -32,7 +37,7 @@ public class AdService {
         this.modelMapper = modelMapper;
     }
 
-    public ResponseEntity<Void> newAd(AdDTO adDTO) {
+    public ResponseEntity<Void> newAd(AdDTO adDTO) throws SQLException {
         log.info("Ad service - add new ad and car");
         Car car = this.carService.newCar(adDTO.getCarDTO());
         PriceList priceList = this.priceListService.getPriceListById(adDTO.getPriceListId());
@@ -52,6 +57,7 @@ public class AdService {
         log.info("Ad created with id " + ad.getId());
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
+
 
     public Ad getAd(Long id) {
         Ad ad = this.adRepository.findById(id).orElseGet(null);
@@ -77,5 +83,28 @@ public class AdService {
         adDTO.setCar(car);
 
         return new ResponseEntity<>(adDTO,HttpStatus.OK);
+
+    }
+
+    public boolean newAd(PostAdRequest adRequest) {
+        log.info("Ad service - add new ad and car");
+        AdDTOType adType = adRequest.getAdRequest();
+        Car car = this.carService.newCar(adType.getCarDTO());
+        PriceList priceList = this.priceListService.getPriceListById(adType.getPriceListId());
+        User user = car.getOwner();
+
+        Ad ad = new Ad();
+        ad.setCar(car);
+        ad.setAllowedKilometrage(adType.getAllowedKilometrage());
+        ad.setCdwAvailable(adType.isCdwAvailable());
+        ad.setPickUpPlace(adType.getPickUpPlace());
+        ad.setFromDate(new DateTime(adType.getFromDate()));
+        ad.setToDate(new DateTime(adType.getToDate()));
+        ad.setUser(user);
+        ad.setPriceList(priceList);
+
+        ad = this.adRepository.save(ad);
+        log.info("Ad created with id " + ad.getId());
+        return true;
     }
 }

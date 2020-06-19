@@ -2,6 +2,8 @@ package xws.team16.carservice.dto;
 
 import lombok.*;
 
+import java.util.List;
+
 @Getter @Setter
 @NoArgsConstructor
 @Builder
@@ -14,7 +16,8 @@ public class CarDTO {
     private Long carClassId;
     private Long gearboxId;
     private Long userId;
-    private int kilometrage;
+    private double kilometrage;
     private int numberOfChildSeats;
     private boolean hasAndroid;
+    private List<String> images;
 }

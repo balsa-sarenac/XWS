@@ -1,15 +1,51 @@
 package xws.tim16.rentacar.model;
-import xws.tim16.rentacar.model.RequestStatus;
 
-import java.util.Date;
-import java.util.Set;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.annotations.Type;
+import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 
+import javax.persistence.*;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@Entity
 public class RentRequest {
-   private RequestStatus status;
-   private boolean bundle;
-   private Date dateCreated;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-   private Ad ad;
+    @Enumerated(value = EnumType.STRING)
+    private RequestStatus status;
 
+    @Column(name = "bundle", nullable = false)
+    private boolean bundle;
+
+    @Column(name = "date_created", nullable = false)
+    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime", parameters = {
+            @org.hibernate.annotations.Parameter(name = "databaseZone", value = "UTC"),
+            @org.hibernate.annotations.Parameter(name = "javaZone", value = "UTC")
+    })
+    private DateTime dateCreated;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ad_id", nullable = false)
+    private Ad ad;
+
+    @Column(name = "pick_up_date")
+    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDate", parameters = {
+            @org.hibernate.annotations.Parameter(name = "databaseZone", value = "UTC"),
+            @org.hibernate.annotations.Parameter(name = "javaZone", value = "UTC")
+    })
+    private LocalDate pickUpDate;
+
+    @Column(name = "return_date")
+    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDate", parameters = {
+            @org.hibernate.annotations.Parameter(name = "databaseZone", value = "UTC"),
+            @org.hibernate.annotations.Parameter(name = "javaZone", value = "UTC")
+    })
+    private LocalDate returnDate;
 }
