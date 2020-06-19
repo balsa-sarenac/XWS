@@ -8,6 +8,7 @@ import xws.team16.carservice.dto.GradeDTO;
 import xws.team16.carservice.service.GradeService;
 
 @RestController @Slf4j
+@CrossOrigin(origins = "*")
 @RequestMapping(value = "/grade")
 public class GradeController {
     private GradeService gradeService;

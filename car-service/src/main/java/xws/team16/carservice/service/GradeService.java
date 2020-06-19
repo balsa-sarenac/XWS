@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import xws.team16.carservice.dto.GradeDTO;
+import xws.team16.carservice.model.Ad;
 import xws.team16.carservice.model.Car;
 import xws.team16.carservice.model.Grade;
 import xws.team16.carservice.model.User;
@@ -19,14 +20,15 @@ public class GradeService {
     private GradeRepository gradeRepository;
     private UserService userService;
     private CarService carService;
+    private AdService adService;
 
     @Autowired
-    public GradeService(GradeRepository gradeRepository, UserService userService, CarService carService) {
+    public GradeService(GradeRepository gradeRepository, UserService userService, CarService carService, AdService adService) {
         this.gradeRepository = gradeRepository;
         this.userService = userService;
         this.carService = carService;
+        this.adService = adService;
     }
-
 
     public ResponseEntity<?> createGrade(GradeDTO gradeDTO) {
         log.info("Grade service - creating grade for car with id " + gradeDTO.getCarId());
@@ -34,10 +36,19 @@ public class GradeService {
                 .grade(gradeDTO.getGrade())
                 .build();
         User user = this.userService.getUserByUsername(gradeDTO.getUserUsername());
-        Car car = this.carService.getCar(gradeDTO.getId());
+        Ad ad  = this.adService.getAd(gradeDTO.getAdId());
+        Car car = ad.getCar();
         car.setNumberOfGrades(car.getNumberOfGrades()+1);
         grade.setCar(car);
+        grade.setAd(ad);
         grade.setUser(user);
+
+        Grade gradeCheck = this.gradeRepository.findByUserIdAndAdId(user.getId(),ad.getId());
+
+        if(gradeCheck != null){
+            log.info("Grade service - grade already added");
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
 
         log.info("Grade service - saving grade");
         this.carService.saveCar(car);
