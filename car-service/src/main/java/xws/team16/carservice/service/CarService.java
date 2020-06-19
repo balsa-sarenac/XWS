@@ -6,9 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import xws.team16.carservice.dto.AdDTO;
-import xws.team16.carservice.dto.CarDTO;
-import xws.team16.carservice.dto.ImageDTO;
+import xws.team16.carservice.dto.*;
 import xws.team16.carservice.exceptions.*;
 import xws.team16.carservice.model.*;
 import xws.team16.carservice.repository.CarRepository;
@@ -102,5 +100,86 @@ public class CarService {
         myImage.setInfo(parts[0]);
         myImage.setType(type);
         return myImage;
+    }
+
+    public Set<Car> getAllCarsByOwnersId(Long ownersID){
+        log.info("Car service - get all cars by owner's id (id: " + ownersID + ")");
+
+        User owner = userService.getUserById(ownersID);
+        //return carRepository.findAllByOwner(owner).orElseThrow(() -> new NotFoundException("Not one car was found."));
+        return carRepository.getAllByOwner(owner);
+        // ako ne nađe nijedna kola, da li vraća null ili prazan Set<Car> ???
+    }
+
+    public Car getCarWithHighestGradeByOwnersId(Long ownersID){
+        /* Returns null if all cars have 0 grades. */
+
+        log.info("Car service - get car with best grade by owner's id (id: " + ownersID + ")");
+
+        Set<Car> allCars = getAllCarsByOwnersId(ownersID);
+
+        float maxAverageGrade = 0;
+        Car carWithBHighestAverageGrade = new Car();
+
+        for(Car c : allCars){
+            if (c.getAverageGrade() == null)
+                continue;
+
+            if (c.getAverageGrade() > maxAverageGrade){
+                maxAverageGrade = c.getAverageGrade();
+                carWithBHighestAverageGrade = c;
+            }
+        }
+
+        if (maxAverageGrade == 0)
+            return null;
+
+        return carWithBHighestAverageGrade;
+    }
+
+    public Car getCarWithMostCommentsByOwnersId(Long ownersID){
+        /* Returns null if all cars have 0 comments. */
+
+        log.info("Car service - get car with most comments by owner's id (id: " + ownersID + ")");
+
+        Set<Car> allCars = getAllCarsByOwnersId(ownersID);
+
+        int maxComments = 0;
+        Car carWithMostComments = new Car();
+
+        for(Car c : allCars){
+            if (c.getComments().size() > maxComments){
+                maxComments = c.getComments().size();
+                carWithMostComments = c;
+            }
+        }
+
+        if (maxComments == 0)
+            return null;
+
+        return carWithMostComments;
+    }
+
+    public Car getCarWithMostKilometersByOwnersId(Long ownersID){
+        /* Returns null if all cars have kilometrage equal to 0. */
+
+        log.info("Car service - get car with most kilometers by owner's id (id: " + ownersID + ")");
+
+        Set<Car> allCars = getAllCarsByOwnersId(ownersID);
+
+        double mostKilometers = 0;
+        Car carWithMostKilometers = new Car();
+
+        for (Car c : allCars){
+            if (c.getKilometrage() > mostKilometers){
+                mostKilometers = c.getKilometrage();
+                carWithMostKilometers = c;
+            }
+        }
+
+        if (mostKilometers == 0)
+            return null;
+
+        return carWithMostKilometers;
     }
 }
