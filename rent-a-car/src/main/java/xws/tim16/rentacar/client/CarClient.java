@@ -11,7 +11,6 @@ import xws.tim16.rentacar.wsdl.PostAdResponse;
 public class CarClient extends WebServiceGatewaySupport {
 
     public PostAdResponse postNewCar(AdDTOType adDTOType) {
-
         PostAdRequest request = new PostAdRequest();
         request.setAdRequest(adDTOType);
 
@@ -19,8 +18,7 @@ public class CarClient extends WebServiceGatewaySupport {
 
         PostAdResponse response = (PostAdResponse) getWebServiceTemplate()
                 .marshalSendAndReceive("http://localhost:8083/ad/ad", request,
-                        new SoapActionCallback(
-                                "https://ftn.uns.ac.rs/ad/PostAdRequest"));
+                        new SoapActionCallback("https://ftn.uns.ac.rs/ad/PostAdRequest"));
 
         return response;
     }
