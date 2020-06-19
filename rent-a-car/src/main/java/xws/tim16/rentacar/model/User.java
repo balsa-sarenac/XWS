@@ -40,7 +40,7 @@ public class User implements  UserDetails {
    @Column(name = "address")
    private String address;
 
-   @Column(name = "businessID")
+   @Column(name = "business_id")
    private String businessID;
 
    @Column(name = "email")
