@@ -28,7 +28,7 @@ public class Car {
    private int numberOfGrades;
 
    @OneToMany(mappedBy = "car")
-   private Set<Comment> comment;
+   private Set<Comment> comments;
 
    @ManyToOne(fetch = FetchType.LAZY)
    @JoinColumn(name = "mark_id", nullable = false)
@@ -72,4 +72,19 @@ public class Car {
    @OneToMany(mappedBy = "car")
    private Set<Ad> ads;
 
+   public Float getAverageGrade(){
+      /* Returns null if Car has no grades. */
+      int sum = 0;
+      for (Grade g : this.grades){
+         sum += g.getGrade();
+      }
+
+      if (sum == 0) {
+         return null;
+      } else {
+         Float averageGrade = new Float(0);
+         averageGrade = (float) sum / grades.size();
+         return averageGrade;
+      }
+   }
 }
