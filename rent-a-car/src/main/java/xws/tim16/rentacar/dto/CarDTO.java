@@ -1,13 +1,11 @@
-package xws.team16.carservice.dto;
+package xws.tim16.rentacar.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
-
-@Getter @Setter
+@Getter
+@Setter
 @NoArgsConstructor
 public class CarDTO {
     private Long id;
@@ -20,5 +18,4 @@ public class CarDTO {
     private double kilometrage;
     private int numberOfChildSeats;
     private boolean hasAndroid;
-    private List<String> images;
 }
