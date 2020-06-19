@@ -31,16 +31,16 @@ public class User implements  UserDetails {
    @Column(nullable = false)
    private boolean enabled;
 
-   @Column(name = "isAdmin")
+   @Column(name = "is_admin")
    private boolean isAdmin;
 
-   @Column(name = "companyName")
+   @Column(name = "company_name")
    private String companyName;
 
    @Column(name = "address")
    private String address;
 
-   @Column(name = "businessID")
+   @Column(name = "business_id")
    private String businessID;
 
    @Column(name = "email")

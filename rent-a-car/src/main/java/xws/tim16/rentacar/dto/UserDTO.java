@@ -12,6 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserDTO {
+    private Long id;
     private String firstName;
     private String lastName;
     private String username;
@@ -24,4 +25,11 @@ public class UserDTO {
     private Timestamp lastPasswordResetDate;
     private List<String> roles;
     private String email;
+
+    public UserDTO(Long id, String firstName, String lastName, String companyName) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.companyName = companyName;
+    }
 }

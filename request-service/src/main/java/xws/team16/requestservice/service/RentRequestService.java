@@ -42,8 +42,14 @@ public class RentRequestService {
         User user = this.userService.getUserById(userId);
         List<RentRequest> requests = this.rentRequestRepository.findByUser(user);
 
+        List<RequestDTO> retVal = getRequestDTOS(requests);
+        log.info("Returning list of requests");
+        return new ResponseEntity<>(retVal, HttpStatus.OK);
+    }
+
+    public List<RequestDTO> getRequestDTOS(List<RentRequest> requests) {
         List<RequestDTO> retVal = new ArrayList<>();
-        for (RentRequest request: requests) {
+        for (RentRequest request : requests) {
             retVal.add(RequestDTO.builder()
                     .id(request.getId())
                     .returnDate(request.getReturnDate())
@@ -54,6 +60,25 @@ public class RentRequestService {
                     .bundleId(request.getBundle() != null ? request.getBundle().getId() : -1)
                     .build());
         }
+        return retVal;
+    }
+
+    public ResponseEntity<?> getAllActive(Long userId) {
+        log.info("Rent request service - get all active requests for user");
+        User user = this.userService.getUserById(userId);
+        List<RentRequest> requests = this.rentRequestRepository.findByUserAndStatus(user, RequestStatus.pending);
+
+        List<RequestDTO> retVal = getRequestDTOS(requests);
+        log.info("Returning list of requests");
+        return new ResponseEntity<>(retVal, HttpStatus.OK);
+    }
+
+    public ResponseEntity<?> getAllPast(Long userId) {
+        log.info("Rent request service - get all past requests for user");
+        User user = this.userService.getUserById(userId);
+        List<RentRequest> requests = this.rentRequestRepository.findByUserAndStatusAndReturnDateAfter(user, RequestStatus.paid, new LocalDate());
+
+        List<RequestDTO> retVal = getRequestDTOS(requests);
         log.info("Returning list of requests");
         return new ResponseEntity<>(retVal, HttpStatus.OK);
     }

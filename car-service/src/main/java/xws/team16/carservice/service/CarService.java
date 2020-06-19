@@ -1,5 +1,6 @@
 package xws.team16.carservice.service;
 
+import xws.team16.carservice.generated.CarDTOType;
 import lombok.extern.slf4j.Slf4j;
 import org.bouncycastle.util.encoders.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,6 +88,33 @@ public class CarService {
         Car car = carRepository.getOne(id);
 
         log.info("Car getted with id " + car.getId());
+        return car;
+    }
+
+    public Car newCar(CarDTOType carDTO) {
+        log.info("Car service - new car");
+        Model model = this.modelService.getModelById(carDTO.getModelId());
+        Mark mark = this.markService.getMarkById(carDTO.getMarkId());
+        Fuel fuel = this.fuelService.getFuelById(carDTO.getFuelId());
+        CarClass carClass = this.carClassService.getCarClassById(carDTO.getCarClassId());
+        ;
+        Gearbox gearbox = this.gearboxService.getGearboxById(carDTO.getGearboxId());
+        User user = this.userService.getUserByUsername("bax");
+
+        Car car = new Car();
+        car.setModel(model);
+        car.setMark(mark);
+        car.setFuel(fuel);
+        car.setCarClass(carClass);
+        car.setGearbox(gearbox);
+        car.setOwner(user);
+        car.setKilometrage(carDTO.getKilometrage());
+        car.setNumberOfChildSeats(carDTO.getNumberOfChildSeats());
+
+
+        car = this.carRepository.save(car);
+        log.info("Car added with id " + car.getId());
+
         return car;
     }
 

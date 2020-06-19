@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
+    targetNamespace="https://ftn.uns.ac.rs/messages" xmlns:ms="https://ftn.uns.ac.rs/messages">
+    <xs:complexType name="TChat">
+        <xs:sequence>
+            <xs:element maxOccurs="unbounded" minOccurs="0" name="messages" type="ms:TMessage"/>
+            <xs:element name="owner" type="ms:TUser"/>
+            <xs:element name="companion" type="ms:TUser"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="TMessage">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long"/>
+            <xs:element name="text" type="xs:string"/>
+            <xs:element name="dateSent" type="xs:long"/>
+            <xs:element name="user">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:enumeration value="sent"/>
+                        <xs:enumeration value="received"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="companionId" type="xs:long"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="TUser">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long"/>
+            <xs:element name="firstName" type="xs:string"/>
+            <xs:element name="lastName" type="xs:string"/>
+            <xs:element name="companyName" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:element name="PostMessageRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="message" type="ms:TMessage"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="PostMessageResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="isSent" type="xs:boolean"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="GetMessagesRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="userId" type="xs:long"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="GetMessagesResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" minOccurs="0" name="chats" type="ms:TChat"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>
