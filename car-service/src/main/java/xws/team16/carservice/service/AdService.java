@@ -17,6 +17,10 @@ import xws.team16.carservice.model.Ad;
 import xws.team16.carservice.model.Car;
 import xws.team16.carservice.model.PriceList;
 import xws.team16.carservice.model.User;
+import xws.team16.carservice.dto.AdInfoDTO;
+import xws.team16.carservice.dto.CarDTO;
+import xws.team16.carservice.dto.CarInfoDTO;
+import xws.team16.carservice.model.*;
 import xws.team16.carservice.repository.AdRepository;
 
 import java.sql.SQLException;
@@ -76,8 +80,13 @@ public class AdService {
         adDTO.setPriceListId(ad.getPriceList().getId());
         CarInfoDTO car = modelMapper.map(ad.getCar(), CarInfoDTO.class);
         float grade  = 0;
-        if(ad.getCar().getNumberOfGrades()!=0){
-             grade = ad.getCar().getGrades().size() / ad.getCar().getNumberOfGrades();
+        if(ad.getCar().getGrades().size()!=0){
+             float sum = 0;
+             for(Grade g: ad.getCar().getGrades()){
+                 sum = sum + g.getGrade();
+             }
+
+             grade = sum / ad.getCar().getGrades().size();
         }
         car.setOverallGrade(grade);
         adDTO.setCar(car);
