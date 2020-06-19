@@ -17,7 +17,7 @@ public class CarDTO {
     private Long carClassId;
     private Long gearboxId;
     private Long userId;
-    private int kilometrage;
+    private double kilometrage;
     private int numberOfChildSeats;
     private boolean hasAndroid;
     private List<String> images;
