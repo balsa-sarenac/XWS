@@ -23,17 +23,15 @@ public class AdService {
     private AdRepository adRepository;
     private CarService carService;
     private PriceListService priceListService;
-    private ModelMapper modelMapper;
     private CarClient carClient;
 
     @Autowired
     public AdService(AdRepository adRepository, CarService carService, PriceListService priceListService,
-                     CarClient carClient, ModelMapper modelMapper) {
+                     CarClient carClient) {
         this.adRepository = adRepository;
         this.carService = carService;
         this.priceListService = priceListService;
         this.carClient = carClient;
-        this.modelMapper = modelMapper;
     }
 
     public ResponseEntity<Void> newAd(AdDTO adDTO) {
