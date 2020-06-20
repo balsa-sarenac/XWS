@@ -17,6 +17,9 @@ import xws.team16.carservice.model.Car;
 import xws.team16.carservice.model.Occupied;
 import xws.team16.carservice.repository.OccupiedRepository;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service @Slf4j
 public class OccupiedService {
     private OccupiedRepository occupiedRepository;
@@ -39,10 +42,11 @@ public class OccupiedService {
 
         Car car = carService.getCar(occupiedDTO.getCarId());
         occupied.setCar(car);
-
+        List<Long> adsId = new ArrayList<>();
         for (Ad a: car.getAds()){
-            occupiedDTO.getAdsId().add(a.getId());
+            adsId.add(a.getId());
         }
+        occupiedDTO.setAdsId(adsId);
 
         occupied = this.occupiedRepository.save(occupied);
         log.info("Created occupied with id " + occupied.getId());

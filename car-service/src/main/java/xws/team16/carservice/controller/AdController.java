@@ -10,7 +10,7 @@ import xws.team16.carservice.service.AdService;
 
 import java.sql.SQLException;
 
-@CrossOrigin
+@CrossOrigin(origins = "*")
 @Slf4j
 @RestController
 @RequestMapping(value = "/ad")

@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import xws.team16.carservice.dto.OccupiedDTO;
 import xws.team16.carservice.service.OccupiedService;
 
-@CrossOrigin
+@CrossOrigin(origins = "*")
 @RestController @Slf4j
 @RequestMapping(value = "/occupied")
 public class OccupiedController {

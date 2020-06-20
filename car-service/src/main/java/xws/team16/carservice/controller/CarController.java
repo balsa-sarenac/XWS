@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import xws.team16.carservice.dto.CarDTO;
 import xws.team16.carservice.service.CarService;
 
-@CrossOrigin
+@CrossOrigin(origins = "*")
 @Slf4j
 @RestController
 @RequestMapping(value = "/car")

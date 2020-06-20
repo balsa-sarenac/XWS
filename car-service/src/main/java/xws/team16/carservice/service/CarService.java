@@ -1,5 +1,6 @@
 package xws.team16.carservice.service;
 
+import xws.team16.carservice.dto.*;
 import xws.team16.carservice.generated.CarDTOType;
 import lombok.extern.slf4j.Slf4j;
 import org.bouncycastle.util.encoders.Base64;
@@ -10,10 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import xws.team16.carservice.dto.AdDTO;
-import xws.team16.carservice.dto.CarDTO;
-import xws.team16.carservice.dto.CarInfoDTO;
-import xws.team16.carservice.dto.ImageDTO;
 import xws.team16.carservice.exceptions.*;
 import xws.team16.carservice.model.*;
 import xws.team16.carservice.repository.CarRepository;
@@ -146,15 +143,26 @@ public class CarService {
     }
 
     public ResponseEntity<?> getCarByUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String username = authentication.getName();
-        User user  = this.userService.getUserByUsername(username);
+       // Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        //String username = authentication.getName();
+        //User user  = this.userService.getUserByUsername(username);
 
         List<Car> cars = this.carRepository.findAllByOwnerId(1L);
         List<CarInfoDTO> carInfoDTOS = new ArrayList<>();
 
         for(Car car: cars){
-            carInfoDTOS.add(modelMapper.map(car, CarInfoDTO.class));
+            CarInfoDTO carInfoDTO = new CarInfoDTO();
+            carInfoDTO.setId(car.getId());
+            carInfoDTO.setFuel(modelMapper.map(car.getFuel(), FuelDTO.class));
+            ModelDTO modelDTO = new ModelDTO();
+            modelDTO.setId(car.getModel().getId());
+            modelDTO.setName(car.getModel().getName());
+            MarkDTO markDTO = new MarkDTO();
+            markDTO.setId(car.getMark().getId());
+            markDTO.setName(car.getMark().getName());
+            carInfoDTO.setMark(markDTO);
+            carInfoDTO.setModel(modelDTO);
+            carInfoDTOS.add(carInfoDTO);
         }
         return new ResponseEntity<>(carInfoDTOS, HttpStatus.OK);
     }
