@@ -172,6 +172,9 @@
 <!--						<schema>-->
 <!--							<url>http://localhost:8082/messages/messages.wsdl</url>-->
 <!--						</schema>-->
+<!--						<schema>-->
+<!--							<url>http://localhost:8083/ad/car.wsdl</url>-->
+<!--						</schema>-->
 <!--					</schemas>-->
 <!--				</configuration>-->
 			</plugin>
