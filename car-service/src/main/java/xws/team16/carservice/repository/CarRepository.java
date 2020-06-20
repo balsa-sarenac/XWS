@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 import xws.team16.carservice.model.Car;
 import xws.team16.carservice.model.User;
 
+import java.util.List;
 import java.util.Set;
 
 @Repository
@@ -12,4 +13,5 @@ public interface CarRepository extends JpaRepository<Car, Long> {
 
     Set<Car> getAllByOwner(User owner);
     Set<Car> findAllByOwner(User owner);
+    List<Car> findAllByOwner_Id(Long id);
 }

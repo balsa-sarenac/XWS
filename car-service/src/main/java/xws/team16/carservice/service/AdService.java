@@ -1,7 +1,7 @@
 package xws.team16.carservice.service;
 
-import xws.team16.carservice.generated.AdDTOType;
-import xws.team16.carservice.generated.PostAdRequest;
+import xws.team16.carservice.generated.ad.AdDTOType;
+import xws.team16.carservice.generated.ad.PostAdRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;

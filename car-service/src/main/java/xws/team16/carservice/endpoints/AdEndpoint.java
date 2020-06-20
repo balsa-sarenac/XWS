@@ -1,7 +1,7 @@
 package xws.team16.carservice.endpoints;
 
-import xws.team16.carservice.generated.PostAdRequest;
-import xws.team16.carservice.generated.PostAdResponse;
+import xws.team16.carservice.generated.ad.PostAdRequest;
+import xws.team16.carservice.generated.ad.PostAdResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;

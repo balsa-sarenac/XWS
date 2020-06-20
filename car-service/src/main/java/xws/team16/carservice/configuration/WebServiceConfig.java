@@ -33,8 +33,23 @@ public class WebServiceConfig extends WsConfigurerAdapter {
         return wsdl11Definition;
     }
 
+    @Bean(name = "car")
+    public DefaultWsdl11Definition defaultWsdl11DefinitionCar(XsdSchema carSchema) {
+        DefaultWsdl11Definition wsdl11Definition = new DefaultWsdl11Definition();
+        wsdl11Definition.setPortTypeName("CarPort");
+        wsdl11Definition.setLocationUri("/car");
+        wsdl11Definition.setTargetNamespace("https://ftn.uns.ac.rs/car");
+        wsdl11Definition.setSchema(carSchema);
+        return wsdl11Definition;
+    }
+
     @Bean
     public XsdSchema adSchema() {
         return new SimpleXsdSchema(new ClassPathResource("AdDTO.xsd"));
+    }
+
+    @Bean
+    public XsdSchema carSchema() {
+        return new SimpleXsdSchema(new ClassPathResource("CarStatistics.xsd"));
     }
 }
