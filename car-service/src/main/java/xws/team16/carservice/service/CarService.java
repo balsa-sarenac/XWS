@@ -130,6 +130,29 @@ public class CarService {
         return myImage;
     }
 
+    public Float getAverageGrade(Car car){
+        /* Returns null if car has no grades. */
+        /* Returns null if car equals to null. */
+
+        if (car == null)
+            return null;
+        /* Maybe it would be better to return -1, so we could distinguish this situation
+        *  from one where the car is not null, but it has no grades. */
+
+        int sum = 0;
+        for (Grade g : car.getGrades()){
+            sum += g.getGrade();
+        }
+
+        if (sum == 0) {
+            return null;
+        } else {
+            Float averageGrade = new Float(0);
+            averageGrade = (float) sum / car.getGrades().size();
+            return averageGrade;
+        }
+    }
+
     public Set<Car> getAllCarsByOwnersId(Long ownersID){
         log.info("Car service - get all cars by owner's id (id: " + ownersID + ")");
 
@@ -150,11 +173,11 @@ public class CarService {
         Car carWithBHighestAverageGrade = new Car();
 
         for(Car c : allCars){
-            if (c.getAverageGrade() == null)
+            if (getAverageGrade(c) == null)
                 continue;
 
-            if (c.getAverageGrade() > maxAverageGrade){
-                maxAverageGrade = c.getAverageGrade();
+            if (getAverageGrade(c) > maxAverageGrade){
+                maxAverageGrade = getAverageGrade(c);
                 carWithBHighestAverageGrade = c;
             }
         }
@@ -229,7 +252,7 @@ public class CarService {
             carDTO.setMarkName(carWithHighestAverageGrade.getMark().getName());
             carDTO.setModelId(carWithHighestAverageGrade.getModel().getId());
             carDTO.setModelName(carWithHighestAverageGrade.getModel().getName());
-            carDTO.setAverageGrade(carWithHighestAverageGrade.getAverageGrade());
+            carDTO.setAverageGrade(getAverageGrade(carWithHighestAverageGrade));
 
             statisticsDTO.setCarWithHighestGrade(carDTO);
         }
