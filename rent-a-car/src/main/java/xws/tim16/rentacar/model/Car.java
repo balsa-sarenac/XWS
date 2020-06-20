@@ -29,7 +29,7 @@ public class Car {
    private int numberOfGrades;
 
    @OneToMany(mappedBy = "car")
-   private Set<Comment> comment;
+   private Set<Comment> comments;
 
    @ManyToOne(fetch = FetchType.LAZY)
    @JoinColumn(name = "mark_id", nullable = false)
@@ -55,7 +55,7 @@ public class Car {
    private Set<Occupied> occupied;
 
    @OneToMany(mappedBy = "car")
-   private Set<Report> report;
+   private Set<Report> reports;
 
    @ManyToOne(fetch = FetchType.LAZY)
    @JoinColumn(name = "owner_id", nullable = false)
