@@ -6,12 +6,9 @@
 //
 
 
-package xws.team16.carservice.generated;
+package xws.team16.carservice.generated.ad;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.*;
 
 
 /**
@@ -24,7 +21,7 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
- *         &lt;element name="adResponse" type="{http://www.w3.org/2001/XMLSchema}boolean"/&gt;
+ *         &lt;element name="adRequest" type="{https://ftn.uns.ac.rs/ad}AdDTO_type"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
@@ -35,27 +32,36 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "adResponse"
+    "adRequest"
 })
-@XmlRootElement(name = "PostAdResponse")
-public class PostAdResponse {
+@XmlRootElement(name = "PostAdRequest")
+public class PostAdRequest {
 
-    protected boolean adResponse;
+    @XmlElement(required = true)
+    protected AdDTOType adRequest;
 
     /**
-     * Gets the value of the adResponse property.
+     * Gets the value of the adRequest property.
      * 
+     * @return
+     *     possible object is
+     *     {@link AdDTOType }
+     *     
      */
-    public boolean isAdResponse() {
-        return adResponse;
+    public AdDTOType getAdRequest() {
+        return adRequest;
     }
 
     /**
-     * Sets the value of the adResponse property.
+     * Sets the value of the adRequest property.
      * 
+     * @param value
+     *     allowed object is
+     *     {@link AdDTOType }
+     *     
      */
-    public void setAdResponse(boolean value) {
-        this.adResponse = value;
+    public void setAdRequest(AdDTOType value) {
+        this.adRequest = value;
     }
 
 }

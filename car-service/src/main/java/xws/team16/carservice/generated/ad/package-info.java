@@ -6,4 +6,4 @@
 //
 
 @javax.xml.bind.annotation.XmlSchema(namespace = "https://ftn.uns.ac.rs/ad", elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED)
-package xws.team16.carservice.generated;
+package xws.team16.carservice.generated.ad;

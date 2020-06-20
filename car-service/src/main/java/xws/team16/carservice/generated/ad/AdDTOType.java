@@ -6,7 +6,7 @@
 //
 
 
-package xws.team16.carservice.generated;
+package xws.team16.carservice.generated.ad;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
