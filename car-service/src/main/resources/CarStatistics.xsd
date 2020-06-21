@@ -10,6 +10,29 @@
             <xs:element name="id" type="xs:long"/>
         </xs:sequence>
     </xs:complexType>
+    <xs:complexType name="TOccupied">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long"/>
+            <xs:element name="dateTo" type="xs:long"/>
+            <xs:element name="dateFrom" type="xs:long"/>
+            <xs:element name="carId" type="xs:long"/>
+            <xs:element maxOccurs="unbounded" minOccurs="0" name="adsId" type="xs:long"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:element name="PostOccupiedRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="occupiedRequest" type="car:TOccupied"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="PostOccupiedResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="occupiedResponse" type="xs:long"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
     <xs:complexType name="TComment">
         <xs:sequence>
             <xs:element name="id" type="xs:long"/>

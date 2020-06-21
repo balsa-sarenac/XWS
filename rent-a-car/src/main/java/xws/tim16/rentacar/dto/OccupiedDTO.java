@@ -1,15 +1,14 @@
-package xws.team16.carservice.dto;
+package xws.tim16.rentacar.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 
 import java.util.List;
 
-@Getter @Setter
+@Getter
+@Setter
 @NoArgsConstructor
 public class OccupiedDTO {
     private Long id;

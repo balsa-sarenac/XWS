@@ -1,6 +1,7 @@
 package xws.tim16.rentacar.service;
 
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,7 @@ import xws.tim16.rentacar.generated.TCarStatistics;
 import xws.tim16.rentacar.model.*;
 import xws.tim16.rentacar.repository.CarRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -25,14 +27,13 @@ public class CarService {
     private CarClassService carClassService;
     private GearboxService gearboxService;
     private UserService userService;
+    private ModelMapper modelMapper;
 
     @Autowired
     private CarClient carClient;
 
     @Autowired
-    public CarService(CarRepository carRepository, ModelService modelService, MarkService markService,
-                      FuelService fuelService, CarClassService carClassService, GearboxService gearboxService,
-                      UserService userService) {
+    public CarService(CarRepository carRepository, ModelService modelService, MarkService markService, FuelService fuelService, CarClassService carClassService, GearboxService gearboxService, UserService userService, ModelMapper modelMapper) {
         this.carRepository = carRepository;
         this.modelService = modelService;
         this.markService = markService;
@@ -40,6 +41,7 @@ public class CarService {
         this.carClassService = carClassService;
         this.gearboxService = gearboxService;
         this.userService = userService;
+        this.modelMapper = modelMapper;
     }
 
     public Car newCar(CarDTO carDTO) {
@@ -164,6 +166,31 @@ public class CarService {
             return null;
 
         return carWithMostKilometers;
+    }
+
+    public ResponseEntity<?> getCarByUser() {
+        // Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        //String username = authentication.getName();
+        //User user  = this.userService.getUserByUsername(username);
+
+        List<Car> cars = this.carRepository.findAllByOwnerId(1L);
+        List<CarInfoDTO> carInfoDTOS = new ArrayList<>();
+
+        for (Car car : cars) {
+            CarInfoDTO carInfoDTO = new CarInfoDTO();
+            carInfoDTO.setId(car.getId());
+            carInfoDTO.setFuel(modelMapper.map(car.getFuel(), FuelDTO.class));
+            ModelInfoDTO modelDTO = new ModelInfoDTO();
+            modelDTO.setId(car.getModel().getId());
+            modelDTO.setName(car.getModel().getName());
+            MarkInfoDTO markDTO = new MarkInfoDTO();
+            markDTO.setId(car.getMark().getId());
+            markDTO.setName(car.getMark().getName());
+            carInfoDTO.setMark(markDTO);
+            carInfoDTO.setModel(modelDTO);
+            carInfoDTOS.add(carInfoDTO);
+        }
+        return new ResponseEntity<>(carInfoDTOS, HttpStatus.OK);
     }
 
     public ResponseEntity<?> getStatistics_ResponseEntity(Long ownersID) {

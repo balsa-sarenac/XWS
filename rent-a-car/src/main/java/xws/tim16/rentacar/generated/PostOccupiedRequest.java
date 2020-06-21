@@ -21,7 +21,7 @@ import javax.xml.bind.annotation.*;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
- *         &lt;element name="reportRequest" type="{https://ftn.uns.ac.rs/car}TReport"/&gt;
+ *         &lt;element name="occupiedRequest" type="{https://ftn.uns.ac.rs/car}TOccupied"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
@@ -32,36 +32,36 @@ import javax.xml.bind.annotation.*;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "reportRequest"
+    "occupiedRequest"
 })
-@XmlRootElement(name = "PostReportRequest")
-public class PostReportRequest {
+@XmlRootElement(name = "PostOccupiedRequest")
+public class PostOccupiedRequest {
 
     @XmlElement(required = true)
-    protected TReport reportRequest;
+    protected TOccupied occupiedRequest;
 
     /**
-     * Gets the value of the reportRequest property.
+     * Gets the value of the occupiedRequest property.
      *
      * @return
      *     possible object is
-     *     {@link TReport }
+     *     {@link TOccupied }
      *
      */
-    public TReport getReportRequest() {
-        return reportRequest;
+    public TOccupied getOccupiedRequest() {
+        return occupiedRequest;
     }
 
     /**
-     * Sets the value of the reportRequest property.
+     * Sets the value of the occupiedRequest property.
      *
      * @param value
      *     allowed object is
-     *     {@link TReport }
+     *     {@link TOccupied }
      *     
      */
-    public void setReportRequest(TReport value) {
-        this.reportRequest = value;
+    public void setOccupiedRequest(TOccupied value) {
+        this.occupiedRequest = value;
     }
 
 }

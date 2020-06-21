@@ -8,7 +8,10 @@
 
 package xws.tim16.rentacar.generated;
 
-import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
 
 /**
@@ -21,7 +24,7 @@ import javax.xml.bind.annotation.*;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
- *         &lt;element name="reportRequest" type="{https://ftn.uns.ac.rs/car}TReport"/&gt;
+ *         &lt;element name="occupiedResponse" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
@@ -32,36 +35,27 @@ import javax.xml.bind.annotation.*;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "reportRequest"
+    "occupiedResponse"
 })
-@XmlRootElement(name = "PostReportRequest")
-public class PostReportRequest {
+@XmlRootElement(name = "PostOccupiedResponse")
+public class PostOccupiedResponse {
 
-    @XmlElement(required = true)
-    protected TReport reportRequest;
+    protected long occupiedResponse;
 
     /**
-     * Gets the value of the reportRequest property.
-     *
-     * @return
-     *     possible object is
-     *     {@link TReport }
-     *
+     * Gets the value of the occupiedResponse property.
+     * 
      */
-    public TReport getReportRequest() {
-        return reportRequest;
+    public long getOccupiedResponse() {
+        return occupiedResponse;
     }
 
     /**
-     * Sets the value of the reportRequest property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link TReport }
-     *     
+     * Sets the value of the occupiedResponse property.
+     * 
      */
-    public void setReportRequest(TReport value) {
-        this.reportRequest = value;
+    public void setOccupiedResponse(long value) {
+        this.occupiedResponse = value;
     }
 
 }

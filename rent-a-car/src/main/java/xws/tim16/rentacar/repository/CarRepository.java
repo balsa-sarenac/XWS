@@ -13,4 +13,6 @@ public interface CarRepository extends JpaRepository<Car, Long> {
     Set<Car> getAllByOwner(User owner);
 
     Set<Car> findAllByOwner_Id(Long id);
+
+    List<Car> findAllByOwnerId(long l);
 }
