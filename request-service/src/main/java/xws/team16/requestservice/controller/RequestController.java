@@ -28,6 +28,28 @@ public class RequestController {
     }
 
     /**
+     * Returns all active requests of a user
+     * @param userId id of a user !!!!!!!!!!!!!!!will be replaced!!!!!!!!!!!
+     * @return List of requests
+     */
+    @GetMapping(value = "/active/{userId}")
+    public ResponseEntity<?> getAllActive(@PathVariable Long userId) {
+        log.info("Request controller - get all active requests for user " + userId);
+        return this.rentRequestService.getAllActive(userId);
+    }
+
+    /**
+     * Returns all past requests of a user
+     * @param userId id of a user !!!!!!!!!!!!!!!will be replaced!!!!!!!!!!!
+     * @return List of requests
+     */
+    @GetMapping(value = "/past/{userId}")
+    public ResponseEntity<?> getAllPast(@PathVariable Long userId) {
+        log.info("Request controller - get all past requests for user " + userId);
+        return this.rentRequestService.getAllPast(userId);
+    }
+
+    /**
      * Create renting requests for a user
      * @param shoppingCart requests and bundles dto
      * @return 201 if created successfully
