@@ -1,7 +1,5 @@
 package xws.team16.carservice.service;
 
-import xws.team16.carservice.generated.ad.AdDTOType;
-import xws.team16.carservice.generated.ad.PostAdRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import xws.team16.carservice.dto.AdDTO;
+import xws.team16.carservice.generated.ad.PostAdRequest;
+import xws.team16.carservice.generated.ad.TAd;
 import xws.team16.carservice.model.Ad;
 import xws.team16.carservice.model.Car;
 import xws.team16.carservice.model.PriceList;
@@ -52,10 +52,10 @@ public class AdService {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    public boolean newAd(PostAdRequest adRequest) {
+    public long newAd(PostAdRequest adRequest) {
         log.info("Ad service - add new ad and car");
-        AdDTOType adType = adRequest.getAdRequest();
-        Car car = this.carService.newCar(adType.getCarDTO());
+        TAd adType = adRequest.getAdRequest();
+        Car car = this.carService.newCar(adType.getCar());
         PriceList priceList = this.priceListService.getPriceListById(adType.getPriceListId());
         User user = car.getOwner();
 
@@ -71,6 +71,6 @@ public class AdService {
 
         ad = this.adRepository.save(ad);
         log.info("Ad created with id " + ad.getId());
-        return true;
+        return ad.getId();
     }
 }

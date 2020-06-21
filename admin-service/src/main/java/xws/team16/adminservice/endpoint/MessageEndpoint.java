@@ -1,12 +1,12 @@
 package xws.team16.adminservice.endpoint;
 
-import xws.team16.adminservice.generated.PostMessageRequest;
-import xws.team16.adminservice.generated.PostMessageResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
 import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
 import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
+import xws.team16.adminservice.generated.PostMessageRequest;
+import xws.team16.adminservice.generated.PostMessageResponse;
 import xws.team16.adminservice.service.MessageService;
 
 @Endpoint

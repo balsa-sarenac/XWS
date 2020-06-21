@@ -138,7 +138,7 @@
 				</executions>
 				<configuration>
 					<sources>
-						<source>${project.basedir}/src/main/resources/AdDTO.xsd</source>
+						<source>${project.basedir}/src/main/resources/Ad.xsd</source>
 						<source>${project.basedir}/src/main/resources/CarStatistics.xsd</source>
 					</sources>
 				</configuration>

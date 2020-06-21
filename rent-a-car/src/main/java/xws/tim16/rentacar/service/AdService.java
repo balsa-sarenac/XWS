@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import xws.tim16.rentacar.client.CarClient;
 import xws.tim16.rentacar.dto.AdDTO;
+import xws.tim16.rentacar.generated.PostAdResponse;
 import xws.tim16.rentacar.model.Ad;
 import xws.tim16.rentacar.model.Car;
 import xws.tim16.rentacar.model.PriceList;
@@ -53,7 +54,8 @@ public class AdService {
 
         log.info("Sending soap request to car service");
         AdDTOType adDTOType = createAdFromDTO(adDTO);
-        this.carClient.postNewCar(adDTOType);
+        PostAdResponse response = this.carClient.postNewCar(adDTOType);
+//        ad.setId(response.);
         log.info("Soap request successfully finished");
 
         return new ResponseEntity<>(HttpStatus.CREATED);

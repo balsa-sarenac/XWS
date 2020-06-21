@@ -1,6 +1,5 @@
 package xws.team16.carservice.service;
 
-import xws.team16.carservice.generated.ad.CarDTOType;
 import lombok.extern.slf4j.Slf4j;
 import org.bouncycastle.util.encoders.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,13 +7,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import xws.team16.carservice.dto.*;
-import xws.team16.carservice.exceptions.*;
+import xws.team16.carservice.generated.ad.TCar;
 import xws.team16.carservice.generated.car.*;
 import xws.team16.carservice.model.*;
 import xws.team16.carservice.repository.CarRepository;
 
 import javax.sql.rowset.serial.SerialBlob;
-import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -94,7 +92,7 @@ public class CarService {
         return car;
     }
 
-    public Car newCar(CarDTOType carDTO) {
+    public Car newCar(TCar carDTO) {
         log.info("Car service - new car");
         Model model = this.modelService.getModelById(carDTO.getModelId());
         Mark mark = this.markService.getMarkById(carDTO.getMarkId());

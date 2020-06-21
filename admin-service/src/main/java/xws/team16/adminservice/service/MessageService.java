@@ -1,7 +1,5 @@
 package xws.team16.adminservice.service;
 
-import xws.team16.adminservice.generated.PostMessageRequest;
-import xws.team16.adminservice.generated.TMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +9,8 @@ import org.springframework.stereotype.Service;
 import xws.team16.adminservice.dto.ChatDTO;
 import xws.team16.adminservice.dto.MessageDTO;
 import xws.team16.adminservice.dto.UserDTO;
+import xws.team16.adminservice.generated.PostMessageRequest;
+import xws.team16.adminservice.generated.TMessage;
 import xws.team16.adminservice.model.Message;
 import xws.team16.adminservice.model.User;
 import xws.team16.adminservice.repository.MessageRepository;
@@ -80,7 +80,7 @@ public class MessageService {
         return new ResponseEntity<>(messageDTO, HttpStatus.OK);
     }
 
-    public boolean newMessage(PostMessageRequest request) {
+    public long newMessage(PostMessageRequest request) {
         log.info("Message service - new message");
         User owner = this.userService.getUser();
         TMessage tMessage = request.getMessage();
@@ -93,9 +93,9 @@ public class MessageService {
                 .receiver(tMessage.getUser().equals("sent") ? companion : owner)
                 .build();
 
-        this.messageRepository.save(message);
+        message = this.messageRepository.save(message);
 
         log.info("Message successfully saved");
-        return true;
+        return message.getId();
     }
 }
