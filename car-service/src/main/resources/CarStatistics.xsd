@@ -23,6 +23,7 @@
             <xs:element name="id" type="xs:long"/>
             <xs:element name="kilometrage" type="xs:double"/>
             <xs:element name="comment" type="xs:string"/>
+            <xs:element name="carId" type="xs:long"/>
         </xs:sequence>
     </xs:complexType>
     <xs:complexType name="TGrade">
@@ -44,6 +45,20 @@
             <xs:sequence>
                 <xs:element maxOccurs="unbounded" minOccurs="0" name="cars"
                     type="car:TCarStatistics"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="PostReportRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="reportRequest" type="car:TReport"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="PostReportResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="reportResponse" type="xs:long"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>

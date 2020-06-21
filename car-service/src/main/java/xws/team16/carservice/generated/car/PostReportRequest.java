@@ -8,10 +8,7 @@
 
 package xws.team16.carservice.generated.car;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.*;
 
 
 /**
@@ -24,7 +21,7 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
- *         &lt;element name="userId" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
+ *         &lt;element name="reportRequest" type="{https://ftn.uns.ac.rs/car}TReport"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
@@ -35,27 +32,36 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "userId"
+    "reportRequest"
 })
-@XmlRootElement(name = "GetStatisticsRequest")
-public class GetStatisticsRequest {
+@XmlRootElement(name = "PostReportRequest")
+public class PostReportRequest {
 
-    protected long userId;
+    @XmlElement(required = true)
+    protected TReport reportRequest;
 
     /**
-     * Gets the value of the userId property.
+     * Gets the value of the reportRequest property.
      * 
+     * @return
+     *     possible object is
+     *     {@link TReport }
+     *     
      */
-    public long getUserId() {
-        return userId;
+    public TReport getReportRequest() {
+        return reportRequest;
     }
 
     /**
-     * Sets the value of the userId property.
+     * Sets the value of the reportRequest property.
      * 
+     * @param value
+     *     allowed object is
+     *     {@link TReport }
+     *     
      */
-    public void setUserId(long value) {
-        this.userId = value;
+    public void setReportRequest(TReport value) {
+        this.reportRequest = value;
     }
 
 }
