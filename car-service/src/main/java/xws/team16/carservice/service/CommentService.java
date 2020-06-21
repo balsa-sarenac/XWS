@@ -47,12 +47,13 @@ public class CommentService {
         comment.setAd(ad);
         comment.setUser(user);
 
+        /*
         Comment commentCheck = this.commentRepository.findByUserIdAndAdId(user.getId(),ad.getId());
 
         if(commentCheck != null){
             log.info("Comment service - comment already created");
             return new ResponseEntity<>("User already add comment for this car", HttpStatus.BAD_REQUEST);
-        }
+        }*/
 
         this.commentRepository.save(comment);
         log.info("Comment service - comment created");

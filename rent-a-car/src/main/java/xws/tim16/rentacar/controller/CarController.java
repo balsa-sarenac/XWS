@@ -25,4 +25,13 @@ public class CarController {
         return carService.getStatistics_ResponseEntity(ownersID);
     }
 
+    /**
+     * Get car for logged user
+     */
+    @GetMapping(value = "/user")
+    private ResponseEntity<?> getCarByUser(){
+        log.info("Car controller - getting cars");
+        return this.carService.getCarByUser();
+    }
+
 }

@@ -65,7 +65,7 @@ public class ReportService {
 //        reportDTO.setId(tReport.getId());
         reportDTO.setComment(tReport.getComment());
         reportDTO.setKilometrage(tReport.getKilometrage());
-        reportDTO.setCar_id(tReport.getCarId());
+        reportDTO.setAd_id(tReport.getCarId());
 
         Report report = newReport(reportDTO);
 

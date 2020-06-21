@@ -44,4 +44,17 @@ public class CarClient extends WebServiceGatewaySupport {
                         new SoapActionCallback("https://ftn.uns.ac.rs/car/PostReportRequest"));
         return response;
     }
+
+    public PostOccupiedResponse postNewOccupied(TOccupied tOccupied) {
+        PostOccupiedRequest request = new PostOccupiedRequest();
+        request.setOccupiedRequest(tOccupied);
+
+        log.info("Requesting creation of new occupation " + tOccupied.toString());
+
+        PostOccupiedResponse response = (PostOccupiedResponse) getWebServiceTemplate()
+                .marshalSendAndReceive("http://localhost:8083/ad-soap/car", request,
+                        new SoapActionCallback("https://ftn.uns.ac.rs/car/PostOccupiedRequest"));
+
+        return response;
+    }
 }
