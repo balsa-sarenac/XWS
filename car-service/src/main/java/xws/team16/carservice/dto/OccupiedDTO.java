@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 
 import java.util.List;
 
@@ -12,8 +13,8 @@ import java.util.List;
 @NoArgsConstructor
 public class OccupiedDTO {
     private Long id;
-    private DateTime dateTo;
-    private DateTime dateFrom;
+    private LocalDate dateTo;
+    private LocalDate dateFrom;
     private Long carId;
     private List<Long> adsId;
 }
