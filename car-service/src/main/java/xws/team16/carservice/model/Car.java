@@ -28,7 +28,7 @@ public class Car {
    private int numberOfGrades;
 
    @OneToMany(mappedBy = "car")
-   private Set<Comment> comment;
+   private Set<Comment> comments;
 
    @ManyToOne(fetch = FetchType.LAZY)
    @JoinColumn(name = "mark_id", nullable = false)
@@ -71,5 +71,4 @@ public class Car {
 
    @OneToMany(mappedBy = "car")
    private Set<Ad> ads;
-
 }
