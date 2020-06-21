@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import xws.team16.carservice.dto.ReportDTO;
 import xws.team16.carservice.generated.car.PostReportResponse;
 import xws.team16.carservice.generated.car.TReport;
+import xws.team16.carservice.model.Ad;
 import xws.team16.carservice.model.Car;
 import xws.team16.carservice.model.Report;
 import xws.team16.carservice.repository.ReportRepository;
@@ -20,17 +21,21 @@ public class ReportService {
 
     private ReportRepository reportRepository;
     private CarService carService;
+    private AdService adService;
 
     @Autowired
-    ReportService(ReportRepository reportRepository, CarService carService){
+    ReportService(ReportRepository reportRepository, CarService carService, AdService adService){
         this.reportRepository = reportRepository;
         this.carService = carService;
+        this.adService = adService;
     }
 
     public Report newReport(ReportDTO reportDTO){
         log.info("Report service - creating new report");
 
-        Car car = carService.getCar(reportDTO.getCar_id());
+        Ad ad = adService.getAdById(reportDTO.getAd_id());
+
+        Car car = ad.getCar();
         // if(car == null) return null;
 
         car = carService.updateCarsKilometrage(car, reportDTO.getKilometrage());

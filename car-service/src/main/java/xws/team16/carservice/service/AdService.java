@@ -1,5 +1,9 @@
 package xws.team16.carservice.service;
 
+
+import xws.team16.carservice.exceptions.NotFoundException;
+import xws.team16.carservice.generated.AdDTOType;
+import xws.team16.carservice.generated.PostAdRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.joda.time.DateTime;
@@ -110,5 +114,10 @@ public class AdService {
         ad = this.adRepository.save(ad);
         log.info("Ad created with id " + ad.getId());
         return ad.getId();
+    }
+
+    public Ad getAdById(Long id) {
+        log.info("Ad service - getAdById(" + id + ")");
+        return adRepository.findById(id).orElseThrow(() -> new NotFoundException("Ad with id " + id + " was not found."));
     }
 }
