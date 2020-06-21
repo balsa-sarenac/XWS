@@ -1,7 +1,5 @@
 package xws.team16.carservice.service;
 
-import com.sun.org.apache.regexp.internal.RE;
-import https.ftn_uns_ac_rs.car.PostReportRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
