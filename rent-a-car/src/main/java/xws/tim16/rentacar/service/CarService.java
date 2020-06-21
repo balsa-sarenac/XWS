@@ -11,6 +11,7 @@ import xws.tim16.rentacar.generated.GetStatisticsResponse;
 import xws.tim16.rentacar.model.*;
 import xws.tim16.rentacar.repository.CarRepository;
 
+import java.util.List;
 import java.util.Set;
 
 @Service @Slf4j
@@ -98,26 +99,15 @@ public class CarService {
         }
     }
 
-    public Set<Car> getAllCarsByOwnersId(Long ownersID){
-        log.info("Car service - get all cars by owner's id (id: " + ownersID + ")");
-
-        User owner = userService.getUserById(ownersID);
-        //return carRepository.findAllByOwner(owner).orElseThrow(() -> new NotFoundException("Not one car was found."));
-        return carRepository.getAllByOwner(owner);
-        // ako ne nađe nijedna kola, da li vraća null ili prazan Set<Car> ???
-    }
-
-    public Car getCarWithHighestGradeByOwnersId(Long ownersID){
+    public Car getCarWithHighestGradeByOwnersId(Set<Car> cars){
         /* Returns null if all cars have 0 grades. */
 
-        log.info("Car service - get car with best grade by owner's id (id: " + ownersID + ")");
-
-        Set<Car> allCars = getAllCarsByOwnersId(ownersID);
+        log.info("Car service - get car with best grade");
 
         float maxAverageGrade = 0;
         Car carWithBHighestAverageGrade = new Car();
 
-        for(Car c : allCars){
+        for(Car c : cars){
             if (getAverageGrade(c) == null)
                 continue;
 
@@ -133,17 +123,15 @@ public class CarService {
         return carWithBHighestAverageGrade;
     }
 
-    public Car getCarWithMostCommentsByOwnersId(Long ownersID){
+    public Car getCarWithMostCommentsByOwnersId(Set<Car> cars){
         /* Returns null if all cars have 0 comments. */
 
-        log.info("Car service - get car with most comments by owner's id (id: " + ownersID + ")");
-
-        Set<Car> allCars = getAllCarsByOwnersId(ownersID);
+        log.info("Car service - get car with most comments");
 
         int maxComments = 0;
         Car carWithMostComments = new Car();
 
-        for(Car c : allCars){
+        for(Car c : cars){
             if (c.getComments().size() > maxComments){
                 maxComments = c.getComments().size();
                 carWithMostComments = c;
@@ -156,17 +144,15 @@ public class CarService {
         return carWithMostComments;
     }
 
-    public Car getCarWithMostKilometersByOwnersId(Long ownersID){
+    public Car getCarWithMostKilometersByOwnersId(Set<Car> cars){
         /* Returns null if all cars have kilometrage equal to 0. */
 
-        log.info("Car service - get car with most kilometers by owner's id (id: " + ownersID + ")");
-
-        Set<Car> allCars = getAllCarsByOwnersId(ownersID);
+        log.info("Car service - get car with most kilometers");
 
         double mostKilometers = 0;
         Car carWithMostKilometers = new Car();
 
-        for (Car c : allCars){
+        for (Car c : cars){
             if (c.getKilometrage() > mostKilometers){
                 mostKilometers = c.getKilometrage();
                 carWithMostKilometers = c;
@@ -182,8 +168,12 @@ public class CarService {
     public ResponseEntity<?> getStatistics_ResponseEntity(Long ownersID) {
         log.info("Car service - sending soap synchronisation request");
 
+        Set<Car> cars = this.carRepository.findAllByOwner_Id(ownersID);
         GetStatisticsResponse response = this.carClient.getStatistics(ownersID);
-        synchroniseStatistics(response);
+
+        log.info("Soap request successful, synchronising database");
+
+        synchroniseStatistics(response, cars);
 
         log.info("Car service - database synchronised, proceeding...");
 
@@ -195,7 +185,7 @@ public class CarService {
 
         StatisticsDTO statisticsDTO = new StatisticsDTO();
 
-        Car carWithHighestAverageGrade = getCarWithHighestGradeByOwnersId(ownersID);
+        Car carWithHighestAverageGrade = getCarWithHighestGradeByOwnersId(cars);
         if (carWithHighestAverageGrade != null){
             CarWithHighestGradeDTO carDTO = new CarWithHighestGradeDTO();
 
@@ -209,7 +199,7 @@ public class CarService {
             statisticsDTO.setCarWithHighestGrade(carDTO);
         }
 
-        Car carWithMostComments = getCarWithMostCommentsByOwnersId(ownersID);
+        Car carWithMostComments = getCarWithMostCommentsByOwnersId(cars);
         if (carWithMostComments != null){
             CarWithMostCommentsDTO carDTO = new CarWithMostCommentsDTO();
 
@@ -223,7 +213,7 @@ public class CarService {
             statisticsDTO.setCarWithMostComments(carDTO);
         }
 
-        Car carWithMostKilometers = getCarWithMostKilometersByOwnersId(ownersID);
+        Car carWithMostKilometers = getCarWithMostKilometersByOwnersId(cars);
         if (carWithMostKilometers != null){
             CarWithMostKilometersDTO carDTO = new CarWithMostKilometersDTO();
 
@@ -244,7 +234,7 @@ public class CarService {
      * Evaluates data from other database and this database for selected user
      * @param response soap response with all users cars and important info
      */
-    private void synchroniseStatistics(GetStatisticsResponse response) {
+    private void synchroniseStatistics(GetStatisticsResponse response, Set<Car> cars) {
 
     }
 }
