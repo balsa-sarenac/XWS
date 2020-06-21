@@ -51,12 +51,12 @@ insert into COMMENT (text, approved, user_id, car_id, ad_id) values ('komentar3'
 insert into COMMENT (text, approved, user_id, car_id, ad_id) values ('komentar4', false, 1, 3, 3);
 insert into COMMENT (text, approved, user_id, car_id, ad_id) values ('komentar5', false, 3, 3, 3);
 
-insert into GRADE (grade, user_id, car_id) values (5, 1, 1);
-insert into GRADE (grade, user_id, car_id) values (4, 1, 1);
+insert into GRADE (grade, user_id, car_id, ad_id) values (5, 1, 1, 1);
+insert into GRADE (grade, user_id, car_id, ad_id) values (4, 1, 1, 1);
 
-insert into COMMENT (text, approved, user_id, car_id) values ('mnogo brz auto!!!11', true, 1, 2);
-insert into COMMENT (text, approved, user_id, car_id) values ('mnogo mi se svidja ovaj automobil', true, 1, 4);
-insert into COMMENT (text, approved, user_id, car_id) values ('preporucujem svakom ko voli udobnu voznju', true, 1, 2);
+insert into COMMENT (text, approved, user_id, car_id, ad_id) values ('mnogo brz auto!!!11', true, 1, 2, 1);
+insert into COMMENT (text, approved, user_id, car_id, ad_id) values ('mnogo mi se svidja ovaj automobil', true, 1, 4, 2);
+insert into COMMENT (text, approved, user_id, car_id, ad_id) values ('preporucujem svakom ko voli udobnu voznju', true, 1, 2, 2);
 
 
 

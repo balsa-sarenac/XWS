@@ -68,9 +68,11 @@ public class CarService {
 //            images.add(myImage);
 //        }
         Set<MyImage> images = new HashSet<>();
-        for (String image: carDTO.getImages()) {
-            MyImage myImage = extractImage(image);
-            images.add(myImage);
+        if (carDTO.getImages() != null) {
+            for (String image: carDTO.getImages()) {
+                MyImage myImage = extractImage(image);
+                images.add(myImage);
+            }
         }
 
         Car car = new Car();
@@ -155,10 +157,10 @@ public class CarService {
             CarInfoDTO carInfoDTO = new CarInfoDTO();
             carInfoDTO.setId(car.getId());
             carInfoDTO.setFuel(modelMapper.map(car.getFuel(), FuelDTO.class));
-            ModelDTO modelDTO = new ModelDTO();
+            ModelInfoDTO modelDTO = new ModelInfoDTO();
             modelDTO.setId(car.getModel().getId());
             modelDTO.setName(car.getModel().getName());
-            MarkDTO markDTO = new MarkDTO();
+            MarkInfoDTO markDTO = new MarkInfoDTO();
             markDTO.setId(car.getMark().getId());
             markDTO.setName(car.getMark().getName());
             carInfoDTO.setMark(markDTO);
@@ -166,6 +168,7 @@ public class CarService {
             carInfoDTOS.add(carInfoDTO);
         }
         return new ResponseEntity<>(carInfoDTOS, HttpStatus.OK);
+    }
 
     public Float getAverageGrade(Car car){
         /* Returns null if car has no grades. */

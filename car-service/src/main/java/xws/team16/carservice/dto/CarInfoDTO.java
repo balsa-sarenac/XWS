@@ -10,8 +10,8 @@ import org.joda.time.DateTime;
 @AllArgsConstructor
 public class CarInfoDTO {
     private Long id;
-    private ModelDTO model;
-    private MarkDTO mark;
+    private ModelInfoDTO model;
+    private MarkInfoDTO mark;
     private FuelDTO fuel;
     private CarClassDTO carClass;
     private GearboxDTO gearbox;
