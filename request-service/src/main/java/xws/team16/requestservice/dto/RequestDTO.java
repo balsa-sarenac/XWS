@@ -15,4 +15,5 @@ public class RequestDTO {
     private String status;
     private Long adId;
     private Long bundleId;
+    private Long userId;
 }
