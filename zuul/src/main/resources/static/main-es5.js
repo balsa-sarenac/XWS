@@ -126,6 +126,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     var _requests_past_requests_past_requests_component__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(
     /*! ./requests/past-requests/past-requests.component */
     "./src/app/requests/past-requests/past-requests.component.ts");
+    /* harmony import */
+
+
+    var _car_statistics_statistics_component__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(
+    /*! ./car/statistics/statistics.component */
+    "./src/app/car/statistics/statistics.component.ts");
 
     var routes = [{
       path: 'login',
@@ -151,6 +157,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     }, {
       path: 'comments',
       component: _comment_comment_component__WEBPACK_IMPORTED_MODULE_9__["CommentComponent"]
+    }, {
+      path: 'statistics',
+      component: _car_statistics_statistics_component__WEBPACK_IMPORTED_MODULE_12__["StatisticsComponent"]
     }, {
       path: 'occupation',
       component: _car_occupation_occupation_component__WEBPACK_IMPORTED_MODULE_10__["OccupationComponent"]
@@ -236,11 +245,15 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     /*! @angular/common */
     "./node_modules/@angular/common/__ivy_ngcc__/fesm2015/common.js");
 
+    var _c0 = function _c0() {
+      return ["/statistics"];
+    };
+
     function AppComponent_li_27_Template(rf, ctx) {
       if (rf & 1) {
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "li", 4);
 
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](1, "a", 11);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](1, "a", 3);
 
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](2, "Statistics");
 
@@ -248,37 +261,43 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
       }
+
+      if (rf & 2) {
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
+
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("routerLink", _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵpureFunction0"](1, _c0));
+      }
     }
 
-    var _c0 = function _c0() {
+    var _c1 = function _c1() {
       return ["/login"];
     };
 
-    var _c1 = function _c1() {
+    var _c2 = function _c2() {
       return ["/register"];
     };
 
-    var _c2 = function _c2() {
+    var _c3 = function _c3() {
       return ["/chat"];
     };
 
-    var _c3 = function _c3() {
+    var _c4 = function _c4() {
       return ["/requests"];
     };
 
-    var _c4 = function _c4() {
+    var _c5 = function _c5() {
       return ["/past-requests"];
     };
 
-    var _c5 = function _c5() {
+    var _c6 = function _c6() {
       return ["/new-car"];
     };
 
-    var _c6 = function _c6() {
+    var _c7 = function _c7() {
       return ["/comments"];
     };
 
-    var _c7 = function _c7() {
+    var _c8 = function _c8() {
       return ["/occupation"];
     };
 
@@ -315,7 +334,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       selectors: [["app-root"]],
       decls: 36,
       vars: 17,
-      consts: [[1, "navbar", "navbar-expand-lg", "navbar-light", "bg-light"], [1, "navbar-nav", "mr-auto"], [1, "nav-item", "active"], [1, "nav-link", 3, "routerLink"], [1, "nav-item"], ["class", "nav-item", 4, "ngIf"], ["for", "switch", "value", "Agent", 1, "p-2"], [1, "switch"], ["type", "checkbox"], [1, "slider", "round", 3, "click"], ["for", "switch", "value", "User", 1, "p-2"], [1, "nav-link"]],
+      consts: [[1, "navbar", "navbar-expand-lg", "navbar-light", "bg-light"], [1, "navbar-nav", "mr-auto"], [1, "nav-item", "active"], [1, "nav-link", 3, "routerLink"], [1, "nav-item"], ["class", "nav-item", 4, "ngIf"], ["for", "switch", "value", "Agent", 1, "p-2"], [1, "switch"], ["type", "checkbox"], [1, "slider", "round", 3, "click"], ["for", "switch", "value", "User", 1, "p-2"]],
       template: function AppComponent_Template(rf, ctx) {
         if (rf & 1) {
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "div");
@@ -404,7 +423,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](27, AppComponent_li_27_Template, 3, 0, "li", 5);
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](27, AppComponent_li_27_Template, 3, 2, "li", 5);
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
 
@@ -444,35 +463,35 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         if (rf & 2) {
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](4);
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("routerLink", _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵpureFunction0"](9, _c0));
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("routerLink", _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵpureFunction0"](9, _c1));
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](3);
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("routerLink", _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵpureFunction0"](10, _c1));
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("routerLink", _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵpureFunction0"](10, _c2));
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](3);
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("routerLink", _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵpureFunction0"](11, _c2));
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("routerLink", _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵpureFunction0"](11, _c3));
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](3);
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("routerLink", _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵpureFunction0"](12, _c3));
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("routerLink", _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵpureFunction0"](12, _c4));
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](3);
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("routerLink", _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵpureFunction0"](13, _c4));
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("routerLink", _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵpureFunction0"](13, _c5));
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](3);
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("routerLink", _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵpureFunction0"](14, _c5));
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("routerLink", _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵpureFunction0"](14, _c6));
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](3);
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("routerLink", _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵpureFunction0"](15, _c6));
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("routerLink", _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵpureFunction0"](15, _c7));
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](3);
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("routerLink", _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵpureFunction0"](16, _c7));
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("routerLink", _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵpureFunction0"](16, _c8));
 
           _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](2);
 
@@ -643,6 +662,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     var _requests_past_requests_past_requests_component__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(
     /*! ./requests/past-requests/past-requests.component */
     "./src/app/requests/past-requests/past-requests.component.ts");
+    /* harmony import */
+
+
+    var _car_statistics_statistics_component__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(
+    /*! ./car/statistics/statistics.component */
+    "./src/app/car/statistics/statistics.component.ts");
 
     var AppModule = function AppModule() {
       _classCallCheck(this, AppModule);
@@ -666,7 +691,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
     (function () {
       (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵsetNgModuleScope"](AppModule, {
-        declarations: [_app_component__WEBPACK_IMPORTED_MODULE_6__["AppComponent"], _auth_login_login_component__WEBPACK_IMPORTED_MODULE_7__["LoginComponent"], _auth_register_register_component__WEBPACK_IMPORTED_MODULE_8__["RegisterComponent"], _chat_chat_component__WEBPACK_IMPORTED_MODULE_9__["ChatComponent"], _requests_requests_component__WEBPACK_IMPORTED_MODULE_10__["RequestsComponent"], _car_new_car_new_car_component__WEBPACK_IMPORTED_MODULE_11__["NewCarComponent"], _car_car_component__WEBPACK_IMPORTED_MODULE_12__["CarComponent"], _car_occupation_occupation_component__WEBPACK_IMPORTED_MODULE_13__["OccupationComponent"], _comment_comment_component__WEBPACK_IMPORTED_MODULE_19__["CommentComponent"], _requests_past_requests_past_requests_component__WEBPACK_IMPORTED_MODULE_20__["PastRequestsComponent"]],
+        declarations: [_app_component__WEBPACK_IMPORTED_MODULE_6__["AppComponent"], _auth_login_login_component__WEBPACK_IMPORTED_MODULE_7__["LoginComponent"], _auth_register_register_component__WEBPACK_IMPORTED_MODULE_8__["RegisterComponent"], _chat_chat_component__WEBPACK_IMPORTED_MODULE_9__["ChatComponent"], _requests_requests_component__WEBPACK_IMPORTED_MODULE_10__["RequestsComponent"], _car_new_car_new_car_component__WEBPACK_IMPORTED_MODULE_11__["NewCarComponent"], _car_car_component__WEBPACK_IMPORTED_MODULE_12__["CarComponent"], _car_occupation_occupation_component__WEBPACK_IMPORTED_MODULE_13__["OccupationComponent"], _comment_comment_component__WEBPACK_IMPORTED_MODULE_19__["CommentComponent"], _requests_past_requests_past_requests_component__WEBPACK_IMPORTED_MODULE_20__["PastRequestsComponent"], _car_statistics_statistics_component__WEBPACK_IMPORTED_MODULE_21__["StatisticsComponent"]],
         imports: [_ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_4__["NgbModule"], _angular_platform_browser__WEBPACK_IMPORTED_MODULE_0__["BrowserModule"], _app_routing_module__WEBPACK_IMPORTED_MODULE_5__["AppRoutingModule"], _angular_common_http__WEBPACK_IMPORTED_MODULE_3__["HttpClientModule"], _angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormsModule"], _angular_forms__WEBPACK_IMPORTED_MODULE_2__["ReactiveFormsModule"]]
       });
     })();
@@ -677,7 +702,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵsetClassMetadata"](AppModule, [{
         type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["NgModule"],
         args: [{
-          declarations: [_app_component__WEBPACK_IMPORTED_MODULE_6__["AppComponent"], _auth_login_login_component__WEBPACK_IMPORTED_MODULE_7__["LoginComponent"], _auth_register_register_component__WEBPACK_IMPORTED_MODULE_8__["RegisterComponent"], _chat_chat_component__WEBPACK_IMPORTED_MODULE_9__["ChatComponent"], _requests_requests_component__WEBPACK_IMPORTED_MODULE_10__["RequestsComponent"], _car_new_car_new_car_component__WEBPACK_IMPORTED_MODULE_11__["NewCarComponent"], _car_car_component__WEBPACK_IMPORTED_MODULE_12__["CarComponent"], _car_occupation_occupation_component__WEBPACK_IMPORTED_MODULE_13__["OccupationComponent"], _comment_comment_component__WEBPACK_IMPORTED_MODULE_19__["CommentComponent"], _requests_past_requests_past_requests_component__WEBPACK_IMPORTED_MODULE_20__["PastRequestsComponent"]],
+          declarations: [_app_component__WEBPACK_IMPORTED_MODULE_6__["AppComponent"], _auth_login_login_component__WEBPACK_IMPORTED_MODULE_7__["LoginComponent"], _auth_register_register_component__WEBPACK_IMPORTED_MODULE_8__["RegisterComponent"], _chat_chat_component__WEBPACK_IMPORTED_MODULE_9__["ChatComponent"], _requests_requests_component__WEBPACK_IMPORTED_MODULE_10__["RequestsComponent"], _car_new_car_new_car_component__WEBPACK_IMPORTED_MODULE_11__["NewCarComponent"], _car_car_component__WEBPACK_IMPORTED_MODULE_12__["CarComponent"], _car_occupation_occupation_component__WEBPACK_IMPORTED_MODULE_13__["OccupationComponent"], _comment_comment_component__WEBPACK_IMPORTED_MODULE_19__["CommentComponent"], _requests_past_requests_past_requests_component__WEBPACK_IMPORTED_MODULE_20__["PastRequestsComponent"], _car_statistics_statistics_component__WEBPACK_IMPORTED_MODULE_21__["StatisticsComponent"]],
           imports: [_ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_4__["NgbModule"], _angular_platform_browser__WEBPACK_IMPORTED_MODULE_0__["BrowserModule"], _app_routing_module__WEBPACK_IMPORTED_MODULE_5__["AppRoutingModule"], _angular_common_http__WEBPACK_IMPORTED_MODULE_3__["HttpClientModule"], _angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormsModule"], _angular_forms__WEBPACK_IMPORTED_MODULE_2__["ReactiveFormsModule"]],
           providers: [_car_shared_car_service__WEBPACK_IMPORTED_MODULE_14__["CarService"], _requests_shared_request_service__WEBPACK_IMPORTED_MODULE_15__["RequestService"], _auth_shared_auth_service__WEBPACK_IMPORTED_MODULE_16__["AuthService"], _chat_shared_chat_service__WEBPACK_IMPORTED_MODULE_17__["ChatService"], {
             provide: _angular_common_http__WEBPACK_IMPORTED_MODULE_3__["HTTP_INTERCEPTORS"],
@@ -2679,6 +2704,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           console.log(adDTO);
           return this.http.post(src_environments_environment__WEBPACK_IMPORTED_MODULE_1__["environment"].api + "/car/ad", adDTO);
         }
+      }, {
+        key: "getStatistics",
+        value: function getStatistics() {
+          return this.http.get(src_environments_environment__WEBPACK_IMPORTED_MODULE_1__["environment"].api + "/car/car/statistics/1");
+        }
       }]);
 
       return CarService;
@@ -2777,6 +2807,227 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }], function () {
         return [{
           type: _angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpClient"]
+        }];
+      }, null);
+    })();
+    /***/
+
+  },
+
+  /***/
+  "./src/app/car/statistics/statistics.component.ts":
+  /*!********************************************************!*\
+    !*** ./src/app/car/statistics/statistics.component.ts ***!
+    \********************************************************/
+
+  /*! exports provided: StatisticsComponent */
+
+  /***/
+  function srcAppCarStatisticsStatisticsComponentTs(module, __webpack_exports__, __webpack_require__) {
+    "use strict";
+
+    __webpack_require__.r(__webpack_exports__);
+    /* harmony export (binding) */
+
+
+    __webpack_require__.d(__webpack_exports__, "StatisticsComponent", function () {
+      return StatisticsComponent;
+    });
+    /* harmony import */
+
+
+    var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(
+    /*! @angular/core */
+    "./node_modules/@angular/core/__ivy_ngcc__/fesm2015/core.js");
+    /* harmony import */
+
+
+    var _shared_car_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(
+    /*! ../shared/car.service */
+    "./src/app/car/shared/car.service.ts");
+
+    var StatisticsComponent = /*#__PURE__*/function () {
+      function StatisticsComponent(carService) {
+        _classCallCheck(this, StatisticsComponent);
+
+        this.carService = carService;
+      }
+
+      _createClass(StatisticsComponent, [{
+        key: "ngOnInit",
+        value: function ngOnInit() {
+          var _this6 = this;
+
+          this.carService.getStatistics().subscribe(function (data) {
+            return _this6.statistics = data;
+          }, function (err) {
+            return console.error('Error in getting statistics');
+          });
+          alert(this.statistics.carWithHighestGrade.markName);
+        }
+      }]);
+
+      return StatisticsComponent;
+    }();
+
+    StatisticsComponent.ɵfac = function StatisticsComponent_Factory(t) {
+      return new (t || StatisticsComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_shared_car_service__WEBPACK_IMPORTED_MODULE_1__["CarService"]));
+    };
+
+    StatisticsComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({
+      type: StatisticsComponent,
+      selectors: [["app-statistics"]],
+      decls: 29,
+      vars: 9,
+      consts: [[1, "d-flex", "justify-content-center"], [1, "d-flex", "flex-column", "col-sm-7"], [1, "card-body"], [1, "card-title"]],
+      template: function StatisticsComponent_Template(rf, ctx) {
+        if (rf & 1) {
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "div", 0);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](1, "div", 1);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](2, "div", 2);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](3, "h5", 3);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](4, "Najbolje ocenjeni automobil");
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](5, "p");
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](6);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](7, "p");
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](8);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](9, "p");
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](10);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](11, "div", 2);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](12, "h5", 3);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](13, "Automobil sa najvi\u0161e komentara");
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](14, "p");
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](15);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](16, "p");
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](17);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](18, "p");
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](19);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](20, "div", 2);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](21, "h5", 3);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](22, "Automobil sa najvi\u0161e pre\u0111enih kilometara");
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](23, "p");
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](24);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](25, "p");
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](26);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](27, "p");
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](28);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+        }
+
+        if (rf & 2) {
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](6);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate"](ctx.statistics.carWithHighestGrade.markName);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](2);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate"](ctx.statistics.carWithHighestGrade.modelName);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](2);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate1"](" prose\u010Dna ocena: ", ctx.statistics.carWithHighestGrade.averageGrade, " ");
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](5);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate"](ctx.statistics.carWithMostComments.markName);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](2);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate"](ctx.statistics.carWithMostComments.modelName);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](2);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate1"](" Broj komentara: ", ctx.statistics.carWithMostComments.numberOfComments, " ");
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](5);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate"](ctx.statistics.carWithMostKilometers.markName);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](2);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate"](ctx.statistics.carWithMostKilometers.modelName);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](2);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate1"](" Pre\u0111eni kilometri: ", ctx.statistics.carWithMostKilometers.kilometrage, " ");
+        }
+      },
+      styles: ["\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL2Nhci9zdGF0aXN0aWNzL3N0YXRpc3RpY3MuY29tcG9uZW50LmNzcyJ9 */"]
+    });
+    /*@__PURE__*/
+
+    (function () {
+      _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](StatisticsComponent, [{
+        type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"],
+        args: [{
+          selector: 'app-statistics',
+          templateUrl: './statistics.component.html',
+          styleUrls: ['./statistics.component.css']
+        }]
+      }], function () {
+        return [{
+          type: _shared_car_service__WEBPACK_IMPORTED_MODULE_1__["CarService"]
         }];
       }, null);
     })();
@@ -3024,10 +3275,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }, {
         key: "getMessages",
         value: function getMessages() {
-          var _this6 = this;
+          var _this7 = this;
 
           this.chatService.getMessages(1).subscribe(function (data) {
-            return _this6.chats = data;
+            return _this7.chats = data;
           });
         }
       }, {
@@ -3039,7 +3290,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }, {
         key: "onSubmit",
         value: function onSubmit(mess) {
-          var _this7 = this;
+          var _this8 = this;
 
           this.newMessage = {
             id: -1,
@@ -3049,7 +3300,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             companionId: this.companionId
           };
           this.chatService.sendMessage(this.newMessage).subscribe(function (data) {
-            return _this7.messages.push(data);
+            return _this8.messages.push(data);
           });
           this.messageForm.reset();
         }
@@ -3349,17 +3600,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       _createClass(CommentComponent, [{
         key: "ngOnInit",
         value: function ngOnInit() {
-          var _this8 = this;
-
-          this.commentService.getComments().subscribe(function (data) {
-            return _this8.comments = data;
-          }, function (err) {
-            return console.error('Error in getting comments');
-          });
-        }
-      }, {
-        key: "refresh",
-        value: function refresh() {
           var _this9 = this;
 
           this.commentService.getComments().subscribe(function (data) {
@@ -3369,14 +3609,25 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           });
         }
       }, {
+        key: "refresh",
+        value: function refresh() {
+          var _this10 = this;
+
+          this.commentService.getComments().subscribe(function (data) {
+            return _this10.comments = data;
+          }, function (err) {
+            return console.error('Error in getting comments');
+          });
+        }
+      }, {
         key: "onClickRefuse",
         value: function onClickRefuse(comment) {
-          var _this10 = this;
+          var _this11 = this;
 
           this.commentService.acceptOrRefuse(comment.id, false).subscribe(function (data) {
             console.log('Comment refused');
 
-            _this10.refresh();
+            _this11.refresh();
           }, function (err) {
             console.error('Error accepting comment');
           });
@@ -3384,12 +3635,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }, {
         key: "onClickAccepte",
         value: function onClickAccepte(comment) {
-          var _this11 = this;
+          var _this12 = this;
 
           this.commentService.acceptOrRefuse(comment.id, true).subscribe(function (data) {
             console.log('Comment accepted');
 
-            _this11.refresh();
+            _this12.refresh();
           }, function (err) {
             console.error('Error accepting comment');
           });
@@ -4269,7 +4520,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }, {
         key: "sendReport",
         value: function sendReport() {
-          var _this12 = this;
+          var _this13 = this;
 
           if (this.textCommentReport == undefined || this.textCommentReport == "" || this.kilometrage == undefined || this.kilometrage == null || this.kilometrage == 0) {
             alert("Enter info properly!");
@@ -4280,10 +4531,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             id: null,
             kilometrage: this.kilometrage,
             comment: this.textCommentReport,
-            car_id: this.request.adId
+            ad_id: this.request.adId
           };
           this.requestService.createReport(newReport).subscribe(function (data) {
-            _this12.report = data;
+            _this13.report = data;
           }, function (err) {
             alert("Error");
           });
@@ -4298,10 +4549,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }, {
         key: "getPast",
         value: function getPast() {
-          var _this13 = this;
+          var _this14 = this;
 
           this.requestService.getPast().subscribe(function (data) {
-            return _this13.requests = data;
+            return _this14.requests = data;
           });
         }
       }, {
@@ -4793,10 +5044,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }, {
         key: "getRequests",
         value: function getRequests() {
-          var _this14 = this;
+          var _this15 = this;
 
           this.requestService.getActive().subscribe(function (data) {
-            return _this14.requests = data;
+            return _this15.requests = data;
           });
         }
       }, {

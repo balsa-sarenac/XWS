@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import xws.team16.adminservice.dto.MessageDTO;
 import xws.team16.adminservice.service.MessageService;
 
+@CrossOrigin
 @RestController @Slf4j
 @RequestMapping("/message")
 public class MessageController {
