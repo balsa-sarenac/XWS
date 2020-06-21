@@ -11,5 +11,5 @@ public class ReportDTO {
     private Long id;
     private double kilometrage;
     private String comment;
-    private Long car_id;
+    private Long ad_id;
 }
