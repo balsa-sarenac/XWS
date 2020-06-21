@@ -6,12 +6,10 @@ import org.springframework.ws.server.endpoint.annotation.Endpoint;
 import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
 import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
-import xws.team16.carservice.generated.car.GetStatisticsRequest;
-import xws.team16.carservice.generated.car.GetStatisticsResponse;
-import xws.team16.carservice.generated.car.PostReportRequest;
-import xws.team16.carservice.generated.car.PostReportResponse;
+import xws.team16.carservice.generated.car.*;
 import xws.team16.carservice.model.Report;
 import xws.team16.carservice.service.CarService;
+import xws.team16.carservice.service.OccupiedService;
 import xws.team16.carservice.service.ReportService;
 
 @Endpoint @Slf4j
@@ -20,11 +18,13 @@ public class CarEndpoint {
 
     private CarService carService;
     private ReportService reportService;
+    private OccupiedService occupiedService;
 
     @Autowired
-    public CarEndpoint(CarService carService, ReportService reportService) {
+    public CarEndpoint(CarService carService, ReportService reportService, OccupiedService occupiedService) {
         this.carService = carService;
         this.reportService = reportService;
+        this.occupiedService = occupiedService;
     }
 
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "GetStatisticsRequest")
@@ -39,5 +39,14 @@ public class CarEndpoint {
     public PostReportResponse postReport(@RequestPayload PostReportRequest request) {
         log.info("Car endpoint - posting report from soap");
         return this.reportService.postReportSoap(request.getReportRequest());
+    }
+
+    @PayloadRoot(namespace = NAMESPACE_URI, localPart = "PostOccupiedRequest")
+    @ResponsePayload
+    public PostOccupiedResponse postReport(@RequestPayload PostOccupiedRequest request) {
+        log.info("Occupied endpoint - post new occupied");
+        PostOccupiedResponse occupiedResponse = new PostOccupiedResponse();
+        occupiedResponse.setOccupiedResponse(this.occupiedService.newOccupied(request));
+        return occupiedResponse;
     }
 }
