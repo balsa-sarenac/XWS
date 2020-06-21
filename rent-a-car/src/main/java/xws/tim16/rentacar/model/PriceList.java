@@ -26,4 +26,6 @@ public class PriceList {
 
     @Column(name = "discount")
     private double discount;
+
+    private Long refId;
 }

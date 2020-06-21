@@ -70,4 +70,6 @@ public class Car {
    @OneToMany(mappedBy = "car")
    private Set<Ad> ads;
 
+   private Long refId;
+
 }

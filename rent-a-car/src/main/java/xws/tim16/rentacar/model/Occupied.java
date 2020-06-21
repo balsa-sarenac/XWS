@@ -37,4 +37,6 @@ public class Occupied {
    @JoinColumn(name = "car_id", nullable = false)
    private Car car;
 
+   private Long refId;
+
 }
