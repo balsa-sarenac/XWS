@@ -57,6 +57,7 @@ public class RentRequestService {
                     .pickUpPlace(request.getPickUpPlace())
                     .adId(request.getAd().getId())
                     .status(String.valueOf(request.getStatus()))
+                    .userId(request.getUser().getId())
                     .bundleId(request.getBundle() != null ? request.getBundle().getId() : -1)
                     .build());
         }
