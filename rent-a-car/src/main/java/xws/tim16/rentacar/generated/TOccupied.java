@@ -12,22 +12,25 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
- * <p>Java class for TReport complex type.
+ * <p>Java class for TOccupied complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="TReport"&gt;
+ * &lt;complexType name="TOccupied"&gt;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
  *         &lt;element name="id" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
- *         &lt;element name="kilometrage" type="{http://www.w3.org/2001/XMLSchema}double"/&gt;
- *         &lt;element name="comment" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="dateTo" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
+ *         &lt;element name="dateFrom" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
  *         &lt;element name="carId" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
+ *         &lt;element name="adsId" type="{http://www.w3.org/2001/XMLSchema}long" maxOccurs="unbounded" minOccurs="0"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
@@ -37,19 +40,21 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "TReport", propOrder = {
+@XmlType(name = "TOccupied", propOrder = {
     "id",
-    "kilometrage",
-    "comment",
-    "carId"
+    "dateTo",
+    "dateFrom",
+    "carId",
+    "adsId"
 })
-public class TReport {
+public class TOccupied {
 
     protected long id;
-    protected double kilometrage;
-    @XmlElement(required = true)
-    protected String comment;
+    protected long dateTo;
+    protected long dateFrom;
     protected long carId;
+    @XmlElement(type = Long.class)
+    protected List<Long> adsId;
 
     /**
      * Gets the value of the id property.
@@ -68,43 +73,35 @@ public class TReport {
     }
 
     /**
-     * Gets the value of the kilometrage property.
+     * Gets the value of the dateTo property.
      * 
      */
-    public double getKilometrage() {
-        return kilometrage;
+    public long getDateTo() {
+        return dateTo;
     }
 
     /**
-     * Sets the value of the kilometrage property.
+     * Sets the value of the dateTo property.
      * 
      */
-    public void setKilometrage(double value) {
-        this.kilometrage = value;
+    public void setDateTo(long value) {
+        this.dateTo = value;
     }
 
     /**
-     * Gets the value of the comment property.
+     * Gets the value of the dateFrom property.
      * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
      */
-    public String getComment() {
-        return comment;
+    public long getDateFrom() {
+        return dateFrom;
     }
 
     /**
-     * Sets the value of the comment property.
+     * Sets the value of the dateFrom property.
      * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
      */
-    public void setComment(String value) {
-        this.comment = value;
+    public void setDateFrom(long value) {
+        this.dateFrom = value;
     }
 
     /**
@@ -121,6 +118,35 @@ public class TReport {
      */
     public void setCarId(long value) {
         this.carId = value;
+    }
+
+    /**
+     * Gets the value of the adsId property.
+     * 
+     * <p>
+     * This accessor method returns a reference to the live list,
+     * not a snapshot. Therefore any modification you make to the
+     * returned list will be present inside the JAXB object.
+     * This is why there is not a <CODE>set</CODE> method for the adsId property.
+     * 
+     * <p>
+     * For example, to add a new item, do as follows:
+     * <pre>
+     *    getAdsId().add(newItem);
+     * </pre>
+     * 
+     * 
+     * <p>
+     * Objects of the following type(s) are allowed in the list
+     * {@link Long }
+     * 
+     * 
+     */
+    public List<Long> getAdsId() {
+        if (adsId == null) {
+            adsId = new ArrayList<Long>();
+        }
+        return this.adsId;
     }
 
 }
