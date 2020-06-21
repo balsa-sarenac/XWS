@@ -28,8 +28,20 @@ public class CarClient extends WebServiceGatewaySupport {
         log.info("Requesting car statistics for user with id " + userId);
 
         GetStatisticsResponse response = (GetStatisticsResponse) getWebServiceTemplate()
-                .marshalSendAndReceive("http://localhost:8083/ad/car", request,
+                .marshalSendAndReceive("http://localhost:8083/ad-soap/car", request,
                         new SoapActionCallback("https://ftn.uns.ac.rs/car/GetStatisticsRequest"));
+        return response;
+    }
+
+    public PostReportResponse postReport(TReport tReport) {
+        PostReportRequest request = new PostReportRequest();
+        request.setReportRequest(tReport);
+
+        log.info("Requesting new report for car with id " + tReport.getCarId());
+
+        PostReportResponse response = (PostReportResponse) getWebServiceTemplate()
+                .marshalSendAndReceive("http://localhost:8083/ad-soap/car", request,
+                        new SoapActionCallback("https://ftn.uns.ac.rs/car/PostReportRequest"));
         return response;
     }
 }

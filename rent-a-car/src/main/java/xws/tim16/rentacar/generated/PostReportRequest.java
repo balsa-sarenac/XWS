@@ -21,7 +21,7 @@ import javax.xml.bind.annotation.*;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
- *         &lt;element name="message" type="{https://ftn.uns.ac.rs/messages}TMessage"/&gt;
+ *         &lt;element name="reportRequest" type="{https://ftn.uns.ac.rs/car}TReport"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
@@ -32,36 +32,36 @@ import javax.xml.bind.annotation.*;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "message"
+    "reportRequest"
 })
-@XmlRootElement(name = "PostMessageRequest", namespace = "https://ftn.uns.ac.rs/messages")
-public class PostMessageRequest {
+@XmlRootElement(name = "PostReportRequest")
+public class PostReportRequest {
 
-    @XmlElement(namespace = "https://ftn.uns.ac.rs/messages", required = true)
-    protected TMessage message;
+    @XmlElement(required = true)
+    protected TReport reportRequest;
 
     /**
-     * Gets the value of the message property.
+     * Gets the value of the reportRequest property.
      * 
      * @return
      *     possible object is
-     *     {@link TMessage }
+     *     {@link TReport }
      *     
      */
-    public TMessage getMessage() {
-        return message;
+    public TReport getReportRequest() {
+        return reportRequest;
     }
 
     /**
-     * Sets the value of the message property.
+     * Sets the value of the reportRequest property.
      * 
      * @param value
      *     allowed object is
-     *     {@link TMessage }
+     *     {@link TReport }
      *     
      */
-    public void setMessage(TMessage value) {
-        this.message = value;
+    public void setReportRequest(TReport value) {
+        this.reportRequest = value;
     }
 
 }

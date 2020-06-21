@@ -239,4 +239,15 @@ public class CarService {
     private void synchroniseStatistics(List<TCarStatistics> responseCars, Set<Car> cars) {
         log.info("Synchronise function");
     }
+
+
+    public Car updateCarsKilometrage(Car car, double newKilometers){
+        log.info("Car service - updating car's kilometers");
+
+        car.setKilometrage(car.getKilometrage() + newKilometers);
+        // carRepository.save(car); // This line is unnecessary. It works without it.
+
+        return car;
+    }
+
 }

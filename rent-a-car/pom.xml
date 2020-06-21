@@ -167,13 +167,13 @@
 					<generatePackage>xws.tim16.rentacar.wsdl</generatePackage>
 					<schemas>
 						<schema>
-							<url>http://localhost:8083/ad/ad.wsdl</url>
+							<url>http://localhost:8083/ad-soap/ad.wsdl</url>
 						</schema>
 						<schema>
 							<url>http://localhost:8082/messages/messages.wsdl</url>
 						</schema>
 						<schema>
-							<url>http://localhost:8083/ad/car.wsdl</url>
+							<url>http://localhost:8083/ad-soap/car.wsdl</url>
 						</schema>
 					</schemas>
 				</configuration>

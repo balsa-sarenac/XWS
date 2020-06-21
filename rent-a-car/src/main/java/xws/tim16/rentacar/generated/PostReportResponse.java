@@ -8,7 +8,10 @@
 
 package xws.tim16.rentacar.generated;
 
-import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
 
 /**
@@ -21,7 +24,7 @@ import javax.xml.bind.annotation.*;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
- *         &lt;element name="message" type="{https://ftn.uns.ac.rs/messages}TMessage"/&gt;
+ *         &lt;element name="reportResponse" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
@@ -32,36 +35,27 @@ import javax.xml.bind.annotation.*;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "message"
+    "reportResponse"
 })
-@XmlRootElement(name = "PostMessageRequest", namespace = "https://ftn.uns.ac.rs/messages")
-public class PostMessageRequest {
+@XmlRootElement(name = "PostReportResponse")
+public class PostReportResponse {
 
-    @XmlElement(namespace = "https://ftn.uns.ac.rs/messages", required = true)
-    protected TMessage message;
+    protected long reportResponse;
 
     /**
-     * Gets the value of the message property.
+     * Gets the value of the reportResponse property.
      * 
-     * @return
-     *     possible object is
-     *     {@link TMessage }
-     *     
      */
-    public TMessage getMessage() {
-        return message;
+    public long getReportResponse() {
+        return reportResponse;
     }
 
     /**
-     * Sets the value of the message property.
+     * Sets the value of the reportResponse property.
      * 
-     * @param value
-     *     allowed object is
-     *     {@link TMessage }
-     *     
      */
-    public void setMessage(TMessage value) {
-        this.message = value;
+    public void setReportResponse(long value) {
+        this.reportResponse = value;
     }
 
 }
