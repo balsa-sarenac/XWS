@@ -37,4 +37,9 @@ public class CarController {
         return carService.getStatistics_ResponseEntity(ownersID);
     }
 
+    @GetMapping(value = "/{car_id}")
+    public ResponseEntity<?> getCarById(@PathVariable Long car_id){
+        log.info("Car controller - get car by its id (id = " + car_id + ")");
+        return carService.getCarById_ResponseEntity(car_id);
+    }
 }
