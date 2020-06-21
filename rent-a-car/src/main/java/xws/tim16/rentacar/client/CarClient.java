@@ -15,7 +15,7 @@ public class CarClient extends WebServiceGatewaySupport {
         log.info("Requesting creation of new car " + tAd.toString());
 
         PostAdResponse response = (PostAdResponse) getWebServiceTemplate()
-                .marshalSendAndReceive("http://localhost:8083/ad/ad", request,
+                .marshalSendAndReceive("http://localhost:8083/ad-soap/ad", request,
                         new SoapActionCallback("https://ftn.uns.ac.rs/ad/PostAdRequest"));
 
         return response;

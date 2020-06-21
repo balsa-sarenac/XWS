@@ -1,12 +1,13 @@
 package xws.team16.carservice.service;
 
+import xws.team16.carservice.dto.*;
 import lombok.extern.slf4j.Slf4j;
 import org.bouncycastle.util.encoders.Base64;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import xws.team16.carservice.dto.*;
 import xws.team16.carservice.generated.ad.TCar;
 import xws.team16.carservice.generated.car.*;
 import xws.team16.carservice.model.*;
@@ -29,11 +30,12 @@ public class CarService {
     private CarClassService carClassService;
     private GearboxService gearboxService;
     private UserService userService;
+    private ModelMapper modelMapper;
+
 
     @Autowired
-    public CarService(CarRepository carRepository, ModelService modelService, MarkService markService,
-                      FuelService fuelService, CarClassService carClassService, GearboxService gearboxService,
-                      UserService userService) {
+    public CarService(CarRepository carRepository, ModelService modelService, MarkService markService, FuelService fuelService,
+                      CarClassService carClassService, GearboxService gearboxService, UserService userService, ModelMapper modelMapper) {
         this.carRepository = carRepository;
         this.modelService = modelService;
         this.markService = markService;
@@ -41,6 +43,7 @@ public class CarService {
         this.carClassService = carClassService;
         this.gearboxService = gearboxService;
         this.userService = userService;
+        this.modelMapper = modelMapper;
     }
 
     public Car newCar(CarDTO carDTO) throws SQLException {
@@ -61,9 +64,11 @@ public class CarService {
 //            images.add(myImage);
 //        }
         Set<MyImage> images = new HashSet<>();
-        for (String image: carDTO.getImages()) {
-            MyImage myImage = extractImage(image);
-            images.add(myImage);
+        if (carDTO.getImages() != null) {
+            for (String image: carDTO.getImages()) {
+                MyImage myImage = extractImage(image);
+                images.add(myImage);
+            }
         }
 
         Car car = new Car();
@@ -90,6 +95,10 @@ public class CarService {
 
         log.info("Car getted with id " + car.getId());
         return car;
+    }
+
+    public Car saveCar(Car car){
+       return this.carRepository.save(car);
     }
 
     public Car newCar(TCar carDTO) {
@@ -129,6 +138,31 @@ public class CarService {
         myImage.setInfo(parts[0]);
         myImage.setType(type);
         return myImage;
+    }
+
+    public ResponseEntity<?> getCarByUser() {
+       // Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        //String username = authentication.getName();
+        //User user  = this.userService.getUserByUsername(username);
+
+        List<Car> cars = this.carRepository.findAllByOwnerId(1L);
+        List<CarInfoDTO> carInfoDTOS = new ArrayList<>();
+
+        for(Car car: cars){
+            CarInfoDTO carInfoDTO = new CarInfoDTO();
+            carInfoDTO.setId(car.getId());
+            carInfoDTO.setFuel(modelMapper.map(car.getFuel(), FuelDTO.class));
+            ModelInfoDTO modelDTO = new ModelInfoDTO();
+            modelDTO.setId(car.getModel().getId());
+            modelDTO.setName(car.getModel().getName());
+            MarkInfoDTO markDTO = new MarkInfoDTO();
+            markDTO.setId(car.getMark().getId());
+            markDTO.setName(car.getMark().getName());
+            carInfoDTO.setMark(markDTO);
+            carInfoDTO.setModel(modelDTO);
+            carInfoDTOS.add(carInfoDTO);
+        }
+        return new ResponseEntity<>(carInfoDTOS, HttpStatus.OK);
     }
 
     public Float getAverageGrade(Car car){
@@ -334,7 +368,7 @@ public class CarService {
 
     private List<TComment> convertToTComment(Set<Comment> comments) {
         List<TComment> tComments = new ArrayList<>();
-        for (Comment comment: comments) {
+        for (Comment comment : comments) {
             TComment tComment = new TComment();
             tComment.setId(comment.getId());
             tComment.setText(comment.getText());
@@ -343,5 +377,32 @@ public class CarService {
             tComments.add(tComment);
         }
         return tComments;
+    }
+
+    public Car updateCarsKilometrage(Car car, double newKilometers){
+        log.info("Car service - updating car's kilometers");
+
+        car.setKilometrage(car.getKilometrage() + newKilometers);
+        // carRepository.save(car); // This line is unnecessary. It works without it.
+
+        return car;
+    }
+
+    public ResponseEntity<?> getCarById_ResponseEntity(Long car_id) {
+        Car car = getCar(car_id);
+
+        if (car == null)
+            return new ResponseEntity<>("Car with id " + car_id + " does not exist", HttpStatus.NOT_FOUND);
+
+        CarDTO carDTO = new CarDTO();
+        carDTO.setId(car.getId());
+        carDTO.setModelId(car.getModel().getId());
+        carDTO.setMarkId(car.getMark().getId());
+        carDTO.setCarClassId(car.getCarClass().getId());
+        carDTO.setFuelId(car.getFuel().getId());
+        carDTO.setGearboxId(car.getGearbox().getId());
+        carDTO.setKilometrage(car.getKilometrage());
+
+        return new ResponseEntity<CarDTO>(carDTO, HttpStatus.FOUND);
     }
 }

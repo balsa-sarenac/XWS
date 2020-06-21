@@ -48,6 +48,12 @@ public class Ad {
    @OneToMany(mappedBy = "ad")
    private Set<RentRequest> request;
 
+   @OneToMany(mappedBy = "ad")
+   private Set<Comment> comments;
+
+   @OneToMany(mappedBy = "ad")
+   private Set<Grade> grades;
+
    @ManyToOne(fetch = FetchType.LAZY)
    @JoinColumn(name = "price_list_id", nullable = false)
    private PriceList priceList;

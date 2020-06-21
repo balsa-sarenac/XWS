@@ -48,7 +48,7 @@ public class CarConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers(HttpMethod.OPTIONS).permitAll()
-                .antMatchers("/h2-console/**", "/new-car")
+                .antMatchers("/h2-console/**", "/**")
                 .permitAll()
                 .anyRequest().authenticated();
 

@@ -20,7 +20,7 @@ public class WebServiceConfig extends WsConfigurerAdapter {
         MessageDispatcherServlet servlet = new MessageDispatcherServlet();
         servlet.setApplicationContext(applicationContext);
         servlet.setTransformWsdlLocations(true);
-        return new ServletRegistrationBean(servlet, "/ad/*");
+        return new ServletRegistrationBean(servlet, "/ad-soap/*");
     }
 
     @Bean(name = "ad")
