@@ -7,9 +7,11 @@ import xws.team16.carservice.model.User;
 
 import java.util.Set;
 
+import java.util.List;
+
 @Repository
 public interface CarRepository extends JpaRepository<Car, Long> {
-
+    List<Car> findAllByOwnerId(Long i);
     Set<Car> getAllByOwner(User owner);
     Set<Car> findAllByOwner(User owner);
 }

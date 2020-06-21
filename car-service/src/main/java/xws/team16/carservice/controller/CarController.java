@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import xws.team16.carservice.dto.CarDTO;
 import xws.team16.carservice.service.CarService;
 
-@CrossOrigin
+@CrossOrigin(origins = "*")
 @Slf4j
 @RestController
 @RequestMapping(value = "/car")
@@ -20,6 +20,15 @@ public class CarController {
     @Autowired
     public CarController(CarService carService) {
         this.carService = carService;
+    }
+
+    /**
+     * Get car for logged user
+     */
+    @GetMapping(value = "/user")
+    private ResponseEntity<?> getCarByUser(){
+        log.info("Car controller - getting cars");
+        return this.carService.getCarByUser();
     }
 
     @GetMapping(value = "/statistics/{ownersID}")

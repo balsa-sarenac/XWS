@@ -10,7 +10,7 @@ import xws.team16.carservice.service.AdService;
 
 import java.sql.SQLException;
 
-@CrossOrigin
+@CrossOrigin(origins = "*")
 @Slf4j
 @RestController
 @RequestMapping(value = "/ad")
@@ -31,6 +31,16 @@ public class AdController {
     public ResponseEntity<?> addNew(@RequestBody AdDTO adDTO) throws SQLException {
         log.info("Ad controller - new ad");
         return this.adService.newAd(adDTO);
+    }
+
+    /**
+     * Get ad with specific id
+     * @param id is id of the ad
+     */
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<?> getAd(@PathVariable Long id) {
+        log.info("Ad controller - new ad");
+        return this.adService.getOneAdById(id);
     }
 
     /**
