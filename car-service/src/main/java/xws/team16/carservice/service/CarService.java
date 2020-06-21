@@ -321,7 +321,7 @@ public class CarService {
             statisticsDTO.setCarWithMostKilometers(carDTO);
         }
 
-        return new ResponseEntity<StatisticsDTO>(statisticsDTO, HttpStatus.FOUND);
+        return new ResponseEntity<StatisticsDTO>(statisticsDTO, HttpStatus.OK);
     }
 
     public GetStatisticsResponse getUserCars(long userId) {
