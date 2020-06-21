@@ -50,7 +50,7 @@ public class AdService {
         log.info("Sending soap request to car service");
         TAd tAd = createAdFromDTO(adDTO);
         PostAdResponse response = this.carClient.postNewCar(tAd);
-        ad.setId(response.getAdResponse());
+        ad.setRefId(response.getAdResponse());
         log.info("Soap request successfully finished");
 
         this.adRepository.save(ad);

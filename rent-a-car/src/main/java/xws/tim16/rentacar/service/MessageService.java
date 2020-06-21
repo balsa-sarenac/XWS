@@ -9,6 +9,7 @@ import xws.tim16.rentacar.client.AdminClient;
 import xws.tim16.rentacar.dto.ChatDTO;
 import xws.tim16.rentacar.dto.MessageDTO;
 import xws.tim16.rentacar.dto.UserDTO;
+import xws.tim16.rentacar.generated.PostMessageResponse;
 import xws.tim16.rentacar.model.Message;
 import xws.tim16.rentacar.model.User;
 import xws.tim16.rentacar.repository.MessageRepository;
@@ -79,13 +80,13 @@ public class MessageService {
                 .receiver(messageDTO.getUser().equals("sent") ? companion : owner)
                 .build();
 
-        message = this.messageRepository.save(message);
-        messageDTO.setId(message.getId());
-
         log.info("Sending soap request to create message");
-        this.adminClient.postMessage(createTMessageFromDTO(messageDTO));
+        PostMessageResponse response = this.adminClient.postMessage(createTMessageFromDTO(messageDTO));
 
         log.info("Soap request successful");
+        message.setRefId(response.getIsSent());
+        message = this.messageRepository.save(message);
+        messageDTO.setId(message.getId());
         return new ResponseEntity<>(messageDTO, HttpStatus.OK);
     }
 

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import xws.tim16.rentacar.client.CarClient;
 import xws.tim16.rentacar.dto.*;
 import xws.tim16.rentacar.generated.GetStatisticsResponse;
+import xws.tim16.rentacar.generated.TCarStatistics;
 import xws.tim16.rentacar.model.*;
 import xws.tim16.rentacar.repository.CarRepository;
 
@@ -173,7 +174,7 @@ public class CarService {
 
         log.info("Soap request successful, synchronising database");
 
-        synchroniseStatistics(response, cars);
+        synchroniseStatistics(response.getCars(), cars);
 
         log.info("Car service - database synchronised, proceeding...");
 
@@ -232,9 +233,10 @@ public class CarService {
 
     /**
      * Evaluates data from other database and this database for selected user
-     * @param response soap response with all users cars and important info
+     * @param responseCars cars from soap response
+     * @param cars cars from database
      */
-    private void synchroniseStatistics(GetStatisticsResponse response, Set<Car> cars) {
-
+    private void synchroniseStatistics(List<TCarStatistics> responseCars, Set<Car> cars) {
+        log.info("Synchronise function");
     }
 }
