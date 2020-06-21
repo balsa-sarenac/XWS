@@ -5,6 +5,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
+import org.joda.time.LocalTime;
 
 import javax.persistence.*;
 
@@ -19,19 +21,19 @@ public class Occupied {
    private Long id;
 
    @Column(name = "date_from", nullable = false)
-   @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime", parameters = {
+   @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDate", parameters = {
            @org.hibernate.annotations.Parameter(name = "databaseZone", value = "UTC"),
            @org.hibernate.annotations.Parameter(name = "javaZone", value = "UTC")
    })
-   private DateTime dateFrom;
+   private LocalDate dateFrom;
 
 
    @Column(name = "date_to", nullable = false)
-   @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime", parameters = {
+   @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDate", parameters = {
            @org.hibernate.annotations.Parameter(name = "databaseZone", value = "UTC"),
            @org.hibernate.annotations.Parameter(name = "javaZone", value = "UTC")
    })
-   private DateTime dateTo;
+   private LocalDate dateTo;
 
    @ManyToOne(fetch = FetchType.LAZY)
    @JoinColumn(name = "car_id", nullable = false)
