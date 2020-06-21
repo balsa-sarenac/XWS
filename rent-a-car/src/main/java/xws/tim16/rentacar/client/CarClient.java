@@ -3,20 +3,16 @@ package xws.tim16.rentacar.client;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ws.client.core.support.WebServiceGatewaySupport;
 import org.springframework.ws.soap.client.core.SoapActionCallback;
-import xws.tim16.rentacar.generated.AdDTOType;
-import xws.tim16.rentacar.generated.PostAdRequest;
-import xws.tim16.rentacar.generated.PostAdResponse;
-import xws.tim16.rentacar.generated.GetStatisticsRequest;
-import xws.tim16.rentacar.generated.GetStatisticsResponse;
+import xws.tim16.rentacar.generated.*;
 
 @Slf4j
 public class CarClient extends WebServiceGatewaySupport {
 
-    public PostAdResponse postNewCar(AdDTOType adDTOType) {
+    public PostAdResponse postNewCar(TAd tAd) {
         PostAdRequest request = new PostAdRequest();
-        request.setAdRequest(adDTOType);
+        request.setAdRequest(tAd);
 
-        log.info("Requesting creation of new car " + adDTOType.toString());
+        log.info("Requesting creation of new car " + tAd.toString());
 
         PostAdResponse response = (PostAdResponse) getWebServiceTemplate()
                 .marshalSendAndReceive("http://localhost:8083/ad/ad", request,
