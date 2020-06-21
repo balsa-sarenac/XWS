@@ -19,4 +19,10 @@ public class ReportController {
     public ReportController(ReportService reportService) {
         this.reportService = reportService;
     }
+
+    @PostMapping(consumes = "application/json")
+    public ResponseEntity<?> newReport (@RequestBody ReportDTO reportDTO){
+        log.info("Report controller - creating new report");
+        return reportService.newReport_ResponseEntity(reportDTO);
+    }
 }
