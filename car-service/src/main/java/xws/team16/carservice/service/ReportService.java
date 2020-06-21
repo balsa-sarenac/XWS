@@ -57,7 +57,7 @@ public class ReportService {
 
     public PostReportResponse postReportSoap(TReport tReport) {
         ReportDTO reportDTO = new ReportDTO();
-        reportDTO.setId(tReport.getId());
+//        reportDTO.setId(tReport.getId());
         reportDTO.setComment(tReport.getComment());
         reportDTO.setKilometrage(tReport.getKilometrage());
         reportDTO.setCar_id(tReport.getCarId());
@@ -66,6 +66,8 @@ public class ReportService {
 
         PostReportResponse response = new PostReportResponse();
         response.setReportResponse(report.getId());
+
+        log.info("Successfully created new report for soap request");
         return response;
     }
 }

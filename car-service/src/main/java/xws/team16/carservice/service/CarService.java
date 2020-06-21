@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import xws.team16.carservice.exceptions.NotFoundException;
 import xws.team16.carservice.generated.ad.TCar;
 import xws.team16.carservice.generated.car.*;
 import xws.team16.carservice.model.*;
@@ -91,7 +92,7 @@ public class CarService {
     public Car getCar(Long id) {
         log.info("Car service - get car");
 
-        Car car = carRepository.getOne(id);
+        Car car = carRepository.findById(id).orElseThrow(() -> new NotFoundException("CAr with given id was not found"));
 
         log.info("Car getted with id " + car.getId());
         return car;
