@@ -296,4 +296,22 @@ public class CarService {
 
         return car;
     }
+
+    public ResponseEntity<?> getCarById_ResponseEntity(Long car_id) {
+        Car car = getCar(car_id);
+
+        if (car == null)
+            return new ResponseEntity<>("Car with id " + car_id + " does not exist", HttpStatus.NOT_FOUND);
+
+        CarDTO carDTO = new CarDTO();
+        carDTO.setId(car.getId());
+        carDTO.setModelId(car.getModel().getId());
+        carDTO.setMarkId(car.getMark().getId());
+        carDTO.setCarClassId(car.getCarClass().getId());
+        carDTO.setFuelId(car.getFuel().getId());
+        carDTO.setGearboxId(car.getGearbox().getId());
+        carDTO.setKilometrage(car.getKilometrage());
+
+        return new ResponseEntity<CarDTO>(carDTO, HttpStatus.FOUND);
+    }
 }
