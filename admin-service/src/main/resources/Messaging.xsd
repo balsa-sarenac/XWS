@@ -42,7 +42,7 @@
     <xs:element name="PostMessageResponse">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="isSent" type="xs:boolean"/>
+                <xs:element name="isSent" type="xs:long"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>

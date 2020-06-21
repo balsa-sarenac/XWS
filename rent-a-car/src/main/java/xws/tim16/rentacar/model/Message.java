@@ -32,4 +32,6 @@ public class Message {
    @JoinColumn(name = "receiver_id", nullable = false)
    private User receiver;
 
+   private Long refId;
+
 }

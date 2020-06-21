@@ -1,23 +1,20 @@
 package xws.team16.carservice.service;
 
 import xws.team16.carservice.dto.*;
-import xws.team16.carservice.generated.CarDTOType;
 import lombok.extern.slf4j.Slf4j;
 import org.bouncycastle.util.encoders.Base64;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import xws.team16.carservice.dto.*;
-import xws.team16.carservice.exceptions.*;
+import xws.team16.carservice.exceptions.NotFoundException;
+import xws.team16.carservice.generated.ad.TCar;
+import xws.team16.carservice.generated.car.*;
 import xws.team16.carservice.model.*;
 import xws.team16.carservice.repository.CarRepository;
 
 import javax.sql.rowset.serial.SerialBlob;
-import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -95,18 +92,17 @@ public class CarService {
     public Car getCar(Long id) {
         log.info("Car service - get car");
 
-        Car car = carRepository.getOne(id);
+        Car car = carRepository.findById(id).orElseThrow(() -> new NotFoundException("CAr with given id was not found"));
 
         log.info("Car getted with id " + car.getId());
         return car;
     }
 
-
     public Car saveCar(Car car){
        return this.carRepository.save(car);
     }
 
-    public Car newCar(CarDTOType carDTO) {
+    public Car newCar(TCar carDTO) {
         log.info("Car service - new car");
         Model model = this.modelService.getModelById(carDTO.getModelId());
         Mark mark = this.markService.getMarkById(carDTO.getMarkId());
@@ -326,6 +322,62 @@ public class CarService {
         }
 
         return new ResponseEntity<StatisticsDTO>(statisticsDTO, HttpStatus.FOUND);
+    }
+
+    public GetStatisticsResponse getUserCars(long userId) {
+        GetStatisticsResponse response = new GetStatisticsResponse();
+        List<Car> cars = this.carRepository.findAllByOwner_Id(userId);
+        for (Car car: cars) {
+            TCarStatistics statistics = new TCarStatistics();
+            statistics.setId(car.getId());
+            List<TComment> comments = convertToTComment(car.getComments());
+            List<TReport> reports = convertToTReport(car.getReports());
+            List<TGrade> grades = convertToTGrade(car.getGrades());
+            statistics.getComments().addAll(comments);
+            statistics.getReports().addAll(reports);
+            statistics.getGrades().addAll(grades);
+            response.getCars().add(statistics);
+        }
+        log.info("Returning cars of a user with statistics info");
+
+        return response;
+    }
+
+    private List<TGrade> convertToTGrade(Set<Grade> grades) {
+        List<TGrade> tGrades = new ArrayList<>();
+        for (Grade grade: grades) {
+            TGrade tGrade = new TGrade();
+            tGrade.setId(grade.getId());
+            tGrade.setGrade(grade.getGrade());
+            tGrade.setUserId(grade.getUser().getId());
+            tGrades.add(tGrade);
+        }
+        return tGrades;
+    }
+
+    private List<TReport> convertToTReport(Set<Report> reports) {
+        List<TReport> tReports = new ArrayList<>();
+        for (Report report: reports) {
+            TReport tReport = new TReport();
+            tReport.setId(report.getId());
+            tReport.setComment(report.getComment());
+            tReport.setKilometrage(report.getKilometrage());
+            tReports.add(tReport);
+        }
+        return tReports;
+    }
+
+    private List<TComment> convertToTComment(Set<Comment> comments) {
+        List<TComment> tComments = new ArrayList<>();
+        for (Comment comment : comments) {
+            TComment tComment = new TComment();
+            tComment.setId(comment.getId());
+            tComment.setText(comment.getText());
+            tComment.setApproved(comment.isApproved());
+            tComment.setUserId(comment.getUser().getId());
+            tComments.add(tComment);
+        }
+        return tComments;
     }
 
     public Car updateCarsKilometrage(Car car, double newKilometers){

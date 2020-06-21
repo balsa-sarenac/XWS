@@ -1,5 +1,6 @@
 package xws.team16.carservice.service;
 
+
 import xws.team16.carservice.exceptions.NotFoundException;
 import xws.team16.carservice.generated.AdDTOType;
 import xws.team16.carservice.generated.PostAdRequest;
@@ -11,16 +12,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import xws.team16.carservice.dto.AdDTO;
+import xws.team16.carservice.generated.ad.PostAdRequest;
+import xws.team16.carservice.generated.ad.TAd;
 import xws.team16.carservice.dto.AdInfoDTO;
-import xws.team16.carservice.dto.CarDTO;
 import xws.team16.carservice.dto.CarInfoDTO;
 import xws.team16.carservice.model.Ad;
 import xws.team16.carservice.model.Car;
 import xws.team16.carservice.model.PriceList;
 import xws.team16.carservice.model.User;
-import xws.team16.carservice.dto.AdInfoDTO;
-import xws.team16.carservice.dto.CarDTO;
-import xws.team16.carservice.dto.CarInfoDTO;
 import xws.team16.carservice.model.*;
 import xws.team16.carservice.repository.AdRepository;
 
@@ -63,7 +62,6 @@ public class AdService {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-
     public Ad getAd(Long id) {
         Ad ad = this.adRepository.findById(id).orElseGet(null);
         return  ad;
@@ -96,10 +94,10 @@ public class AdService {
 
     }
 
-    public boolean newAd(PostAdRequest adRequest) {
+    public long newAd(PostAdRequest adRequest) {
         log.info("Ad service - add new ad and car");
-        AdDTOType adType = adRequest.getAdRequest();
-        Car car = this.carService.newCar(adType.getCarDTO());
+        TAd adType = adRequest.getAdRequest();
+        Car car = this.carService.newCar(adType.getCar());
         PriceList priceList = this.priceListService.getPriceListById(adType.getPriceListId());
         User user = car.getOwner();
 
@@ -115,7 +113,7 @@ public class AdService {
 
         ad = this.adRepository.save(ad);
         log.info("Ad created with id " + ad.getId());
-        return true;
+        return ad.getId();
     }
 
     public Ad getAdById(Long id) {

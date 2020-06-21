@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Collection;
+import java.util.Set;
 
 @Getter @Setter @SuperBuilder
 @NoArgsConstructor @AllArgsConstructor
@@ -63,6 +64,24 @@ public class User implements  UserDetails {
 
    @Column
    private boolean credentialsNonExpired;
+
+   @OneToMany(mappedBy = "owner")
+   private Set<Car> cars;
+
+   @OneToMany(mappedBy = "user")
+   private Set<Ad> ads;
+
+   @OneToMany(mappedBy = "user")
+   private Set<Comment> comments;
+
+   @OneToMany(mappedBy = "user")
+   private Set<Grade> grades;
+
+   @OneToMany(mappedBy = "sender")
+   private Set<Message> sent;
+
+   @OneToMany(mappedBy = "receiver")
+   private Set<Message> received;
 
    @Override
    public Collection<Role> getAuthorities() {

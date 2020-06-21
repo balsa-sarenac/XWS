@@ -1,5 +1,6 @@
 package xws.tim16.rentacar.model;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -7,8 +8,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.util.Set;
 
-@Getter
-@Setter
+@Getter @Setter
 @NoArgsConstructor
 @Entity
 public class Car {
@@ -29,7 +29,7 @@ public class Car {
    private int numberOfGrades;
 
    @OneToMany(mappedBy = "car")
-   private Set<Comment> comment;
+   private Set<Comment> comments;
 
    @ManyToOne(fetch = FetchType.LAZY)
    @JoinColumn(name = "mark_id", nullable = false)
@@ -55,7 +55,7 @@ public class Car {
    private Set<Occupied> occupied;
 
    @OneToMany(mappedBy = "car")
-   private Set<Report> report;
+   private Set<Report> reports;
 
    @ManyToOne(fetch = FetchType.LAZY)
    @JoinColumn(name = "owner_id", nullable = false)
@@ -69,5 +69,9 @@ public class Car {
 
    @OneToMany(mappedBy = "car")
    private Set<Ad> ads;
+
+   private Long refId;
+
+
 
 }

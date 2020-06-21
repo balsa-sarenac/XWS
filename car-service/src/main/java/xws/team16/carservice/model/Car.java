@@ -27,7 +27,7 @@ public class Car {
    @Column(name = "number_of_grades")
    private int numberOfGrades;
 
-   @OneToMany(mappedBy = "car")
+   @OneToMany(mappedBy = "car", fetch = FetchType.EAGER)
    private Set<Comment> comments;
 
    @ManyToOne(fetch = FetchType.LAZY)
@@ -53,14 +53,14 @@ public class Car {
    @OneToMany(mappedBy = "car")
    private Set<Occupied> occupied;
 
-   @OneToMany(mappedBy = "car")
-   private Set<Report> report;
+   @OneToMany(mappedBy = "car", fetch = FetchType.EAGER)
+   private Set<Report> reports;
 
    @ManyToOne(fetch = FetchType.LAZY)
    @JoinColumn(name = "owner_id", nullable = false)
    private User owner;
 
-   @OneToMany(mappedBy = "car")
+   @OneToMany(mappedBy = "car", fetch = FetchType.EAGER)
    private Set<Grade> grades;
 
    @OneToMany(mappedBy = "car", cascade = CascadeType.ALL)

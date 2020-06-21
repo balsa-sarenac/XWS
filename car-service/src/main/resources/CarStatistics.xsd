@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
+    targetNamespace="https://ftn.uns.ac.rs/car" xmlns:car="https://ftn.uns.ac.rs/car">
+
+    <xs:complexType name="TCarStatistics">
+        <xs:sequence>
+            <xs:element maxOccurs="unbounded" minOccurs="0" name="comments" type="car:TComment"/>
+            <xs:element maxOccurs="unbounded" minOccurs="0" name="grades" type="car:TGrade"/>
+            <xs:element maxOccurs="unbounded" minOccurs="0" name="reports" type="car:TReport"/>
+            <xs:element name="id" type="xs:long"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="TComment">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long"/>
+            <xs:element name="text" type="xs:string"/>
+            <xs:element name="approved" type="xs:boolean"/>
+            <xs:element name="userId" type="xs:long"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="TReport">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long"/>
+            <xs:element name="kilometrage" type="xs:double"/>
+            <xs:element name="comment" type="xs:string"/>
+            <xs:element name="carId" type="xs:long"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="TGrade">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long"/>
+            <xs:element name="grade" type="xs:int"/>
+            <xs:element name="userId" type="xs:long"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:element name="GetStatisticsRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="userId" type="xs:long"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="GetStatisticsResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" minOccurs="0" name="cars"
+                    type="car:TCarStatistics"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="PostReportRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="reportRequest" type="car:TReport"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="PostReportResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="reportResponse" type="xs:long"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

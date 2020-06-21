@@ -48,4 +48,13 @@ public class RentRequest {
             @org.hibernate.annotations.Parameter(name = "javaZone", value = "UTC")
     })
     private LocalDate returnDate;
+
+    @Column(name = "pick_up_place")
+    private String pickUpPlace;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+    private Long refId;
 }
