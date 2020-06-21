@@ -287,4 +287,13 @@ public class CarService {
 
         return new ResponseEntity<StatisticsDTO>(statisticsDTO, HttpStatus.FOUND);
     }
+
+    public Car updateCarsKilometrage(Car car, double newKilometers){
+        log.info("Car service - updating car's kilometers");
+
+        car.setKilometrage(car.getKilometrage() + newKilometers);
+        // carRepository.save(car); // This line is unnecessary. It works without it.
+
+        return car;
+    }
 }
