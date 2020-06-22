@@ -1,15 +1,15 @@
 package xws.tim16.rentacar.dto;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.joda.time.LocalDate;
 
 import java.util.List;
 
+@Builder
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class OccupiedDTO {
     private Long id;
     private LocalDate dateTo;

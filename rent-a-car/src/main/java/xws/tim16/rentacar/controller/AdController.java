@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import xws.tim16.rentacar.dto.AdDTO;
 import xws.tim16.rentacar.service.AdService;
 
+@CrossOrigin
 @Slf4j
 @RestController
 @RequestMapping(value = "/ad")
@@ -28,5 +29,15 @@ public class AdController {
     public ResponseEntity<?> addNew(@RequestBody AdDTO adDTO) {
         log.info("Ad controller - new ad");
         return this.adService.newAd(adDTO);
+    }
+
+    /**
+     * Get ad with specific id
+     * @param id is id of the ad
+     */
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<?> getAd(@PathVariable Long id) {
+        log.info("Ad controller - new ad");
+        return this.adService.getOneAdById(id);
     }
 }

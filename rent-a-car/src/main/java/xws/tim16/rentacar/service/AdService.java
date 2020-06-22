@@ -1,17 +1,19 @@
 package xws.tim16.rentacar.service;
 
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.ModelMap;
 import xws.tim16.rentacar.client.CarClient;
 import xws.tim16.rentacar.dto.AdDTO;
+import xws.tim16.rentacar.dto.AdInfoDTO;
+import xws.tim16.rentacar.dto.CarInfoDTO;
+import xws.tim16.rentacar.exception.NotFoundException;
 import xws.tim16.rentacar.generated.*;
-import xws.tim16.rentacar.model.Ad;
-import xws.tim16.rentacar.model.Car;
-import xws.tim16.rentacar.model.PriceList;
-import xws.tim16.rentacar.model.User;
+import xws.tim16.rentacar.model.*;
 import xws.tim16.rentacar.repository.AdRepository;
 
 @Service @Slf4j
@@ -21,13 +23,15 @@ public class AdService {
     private CarService carService;
     private PriceListService priceListService;
     private CarClient carClient;
+    private ModelMapper modelMapper;
 
     @Autowired
     public AdService(AdRepository adRepository, CarService carService, PriceListService priceListService,
-                     CarClient carClient) {
+                     ModelMapper modelMapper, CarClient carClient) {
         this.adRepository = adRepository;
         this.carService = carService;
         this.priceListService = priceListService;
+        this.modelMapper = modelMapper;
         this.carClient = carClient;
     }
 
@@ -49,9 +53,13 @@ public class AdService {
 
         log.info("Sending soap request to car service");
         TAd tAd = createAdFromDTO(adDTO);
-        PostAdResponse response = this.carClient.postNewCar(tAd);
-        ad.setRefId(response.getAdResponse());
-        log.info("Soap request successfully finished");
+        try {
+            PostAdResponse response = this.carClient.postNewCar(tAd);
+            ad.setRefId(response.getAdResponse());
+            log.info("Soap request successfully finished");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         this.adRepository.save(ad);
         log.info("Ad created with id " + ad.getId());
@@ -79,6 +87,38 @@ public class AdService {
 //        tCar.setId(adDTO.getCarDTO().getId());
         tAd.setCar(tCar);
         return tAd;
+
+    }
+
+    public Ad getAdById(Long adId) {
+        log.info("Ad service - get ad by id");
+        return this.adRepository.findById(adId).orElseThrow(() -> new NotFoundException("Ad with given id was nto found."));
+    }
+
+    public ResponseEntity<?> getOneAdById(Long id) {
+        Ad ad = this.adRepository.getOne(id);
+        AdInfoDTO adDTO = new AdInfoDTO();
+        adDTO.setAllowedKilometrage(ad.getAllowedKilometrage());
+        adDTO.setCdwAvailable(ad.isCdwAvailable());
+        adDTO.setFromDate(ad.getFromDate());
+        adDTO.setToDate(ad.getToDate());
+        adDTO.setId(ad.getId());
+        adDTO.setPickUpPlace(ad.getPickUpPlace());
+        adDTO.setPriceListId(ad.getPriceList().getId());
+        CarInfoDTO car = modelMapper.map(ad.getCar(), CarInfoDTO.class);
+        float grade  = 0;
+        if(ad.getCar().getGrades().size()!=0){
+            float sum = 0;
+            for(Grade g: ad.getCar().getGrades()){
+                sum = sum + g.getGrade();
+            }
+
+            grade = sum / ad.getCar().getGrades().size();
+        }
+        car.setOverallGrade(grade);
+        adDTO.setCar(car);
+
+        return new ResponseEntity<>(adDTO,HttpStatus.OK);
 
     }
 }

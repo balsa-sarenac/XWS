@@ -2,15 +2,13 @@ package xws.tim16.rentacar.dto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.util.List;
 
 @Getter
-@Setter
 @NoArgsConstructor
-public class MarkDTO {
+public class BundleDTO {
     private Long id;
-    private String name;
-    private List<ModelDTO> models;
+    private String status;
+    private List<RequestDTO> requests;
 }

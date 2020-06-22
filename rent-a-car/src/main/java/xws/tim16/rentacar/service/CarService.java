@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import xws.tim16.rentacar.client.CarClient;
 import xws.tim16.rentacar.dto.*;
+import xws.tim16.rentacar.exception.NotFoundException;
 import xws.tim16.rentacar.generated.GetStatisticsResponse;
 import xws.tim16.rentacar.generated.TCarStatistics;
 import xws.tim16.rentacar.model.*;
@@ -72,8 +73,8 @@ public class CarService {
 
     public Car getCar(Long id) {
         log.info("Car service - get car");
-
-        Car car = carRepository.getOne(id);
+        if (id == null) id = 1L;
+        Car car = carRepository.findById(id).orElseThrow(() -> new NotFoundException("Car with given id was not found"));
 
         log.info("Car getted with id " + car.getId());
         return car;
@@ -197,11 +198,15 @@ public class CarService {
         log.info("Car service - sending soap synchronisation request");
 
         Set<Car> cars = this.carRepository.findAllByOwner_Id(ownersID);
-        GetStatisticsResponse response = this.carClient.getStatistics(ownersID);
+        try {
+            GetStatisticsResponse response = this.carClient.getStatistics(ownersID);
 
-        log.info("Soap request successful, synchronising database");
+            log.info("Soap request successful, synchronising database");
 
-        synchroniseStatistics(response.getCars(), cars);
+            synchroniseStatistics(response.getCars(), cars);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         log.info("Car service - database synchronised, proceeding...");
 
@@ -255,7 +260,7 @@ public class CarService {
             statisticsDTO.setCarWithMostKilometers(carDTO);
         }
 
-        return new ResponseEntity<StatisticsDTO>(statisticsDTO, HttpStatus.FOUND);
+        return new ResponseEntity<StatisticsDTO>(statisticsDTO, HttpStatus.OK);
     }
 
     /**

@@ -63,19 +63,19 @@ public class OccupiedService {
                 LocalDate rentTo = rent.getReturnDate();
                 if(rent.getStatus().equals(RequestStatus.pending)) {
                     if (rentFrom.isAfter(occupiedFrom) && rentTo.isBefore(occupiedTo)) {
-                        rent.setStatus(RequestStatus.canceled);
+                        rent.setStatus(RequestStatus.cancelled);
                         this.rentRequestRepository.save(rent);
                     }
                     if (rentFrom.isBefore(occupiedFrom) && rentTo.isAfter(occupiedTo)) {
-                        rent.setStatus(RequestStatus.canceled);
+                        rent.setStatus(RequestStatus.cancelled);
                         this.rentRequestRepository.save(rent);
                     }
                     if (rentFrom.isBefore(occupiedFrom) && rentTo.isBefore(occupiedTo) && rentTo.isAfter(occupiedFrom)) {
-                        rent.setStatus(RequestStatus.canceled);
+                        rent.setStatus(RequestStatus.cancelled);
                         this.rentRequestRepository.save(rent);
                     }
                     if (rentFrom.isAfter(occupiedFrom) && rentTo.isAfter(occupiedTo) && rentFrom.isBefore(occupiedTo)) {
-                        rent.setStatus(RequestStatus.canceled);
+                        rent.setStatus(RequestStatus.cancelled);
                         this.rentRequestRepository.save(rent);
                     }
                 }
@@ -89,7 +89,11 @@ public class OccupiedService {
         tOccupied.setDateFrom(dateTime.getMillis());
         dateTime = dateTime.plusDays(3);
         tOccupied.setDateTo(dateTime.getMillis());
-        PostOccupiedResponse response = this.carClient.postNewOccupied(tOccupied);
+        try {
+            PostOccupiedResponse response = this.carClient.postNewOccupied(tOccupied);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         log.info("Soap request successfully finished");
 
         return new ResponseEntity<>(HttpStatus.CREATED);

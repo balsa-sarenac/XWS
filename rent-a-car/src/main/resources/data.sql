@@ -72,3 +72,18 @@ insert into AD (cdw_available, pick_up_place, from_date, to_date, allowed_kilome
 -- insert into car (id, user_id) values (5, 3);
 -- insert into car (id, user_id) values (6, 3);
 -- insert into car (id, user_id) values (7, 3);
+
+-- REQUESTS
+
+-- RENT BUNDLES
+insert into rent_bundle (id, bundle_status) values (1, 'pending');
+insert into rent_bundle (id, bundle_status) values (2, 'paid');
+
+-- RENT REQUESTS
+insert into RENT_REQUEST (id, status, date_created, pick_up_date, return_date, pick_up_place, ad_id, bundle_id, user_id) values (1, 'pending', '2020-06-03T21:39:45.618', '2020-06-05', '2020-06-15', 'Nevesinje', 1, null, 1);
+insert into RENT_REQUEST (id, status, date_created, pick_up_date, return_date, pick_up_place, ad_id, bundle_id, user_id) values (2, 'pending', '2020-06-03T21:39:45.618', '2020-06-09', '2020-06-21', 'Trebinje', 2, 1, 1);
+insert into RENT_REQUEST (id, status, date_created, pick_up_date, return_date, pick_up_place, ad_id, bundle_id, user_id) values (3, 'pending', '2020-06-01T21:39:45.618', '2020-06-03', '2020-06-15', 'Nevesinje', 4, 1, 1);
+insert into RENT_REQUEST (id, status, date_created, pick_up_date, return_date, pick_up_place, ad_id, bundle_id, user_id) values (4, 'pending', '2020-06-01T21:39:45.618', '2020-06-06', '2020-06-26', 'Trebinje', 2, null, 1);
+insert into RENT_REQUEST (id, status, date_created, pick_up_date, return_date, pick_up_place, ad_id, bundle_id, user_id) values (5, 'paid', '2020-06-01T21:39:45.618', '2020-06-03', '2020-06-30', 'Nevesinje', 5, null, 1);
+insert into RENT_REQUEST (id, status, date_created, pick_up_date, return_date, pick_up_place, ad_id, bundle_id, user_id) values (6, 'paid', '2020-06-01T21:39:45.618', '2020-06-03', '2020-06-30', 'Novi Sad', 5, 2, 1);
+insert into RENT_REQUEST (id, status, date_created, pick_up_date, return_date, pick_up_place, ad_id, bundle_id, user_id) values (7, 'paid', '2020-06-01T21:39:45.618', '2020-06-03', '2020-06-30', 'Novi Sad', 5, 2, 1);

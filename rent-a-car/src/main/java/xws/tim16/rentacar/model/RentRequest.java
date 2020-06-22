@@ -21,9 +21,6 @@ public class RentRequest {
     @Enumerated(value = EnumType.STRING)
     private RequestStatus status;
 
-    @Column(name = "bundle", nullable = false)
-    private boolean bundle;
-
     @Column(name = "date_created", nullable = false)
     @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime", parameters = {
             @org.hibernate.annotations.Parameter(name = "databaseZone", value = "UTC"),
@@ -55,6 +52,10 @@ public class RentRequest {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "bundle_id", nullable = true)
+    private RentBundle bundle;
 
     private Long refId;
 }

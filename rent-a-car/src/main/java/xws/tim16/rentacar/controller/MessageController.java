@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import xws.tim16.rentacar.dto.MessageDTO;
 import xws.tim16.rentacar.service.MessageService;
 
+@CrossOrigin
 @RestController @Slf4j
 @RequestMapping("/message")
 public class MessageController {

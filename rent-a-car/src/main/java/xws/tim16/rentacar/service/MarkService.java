@@ -4,8 +4,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import xws.tim16.rentacar.dto.MarkDTO;
+import xws.tim16.rentacar.dto.ModelDTO;
 import xws.tim16.rentacar.exception.NotFoundException;
 import xws.tim16.rentacar.model.Mark;
+import xws.tim16.rentacar.model.Model;
 import xws.tim16.rentacar.repository.MarkRepository;
 
 import java.util.ArrayList;
@@ -36,7 +38,14 @@ public class MarkService {
             MarkDTO markDTO = new MarkDTO();
             markDTO.setId(m.getId());
             markDTO.setName(m.getName());
-
+            List<ModelDTO> modelDTOList = new ArrayList<>();
+            for (Model model: m.getModels()) {
+                ModelDTO modelDTO = new ModelDTO();
+                modelDTO.setId(model.getId());
+                modelDTO.setName(model.getName());
+                modelDTOList.add(modelDTO);
+            }
+            markDTO.setModels(modelDTOList);
             markDTOS.add(markDTO);
         }
 

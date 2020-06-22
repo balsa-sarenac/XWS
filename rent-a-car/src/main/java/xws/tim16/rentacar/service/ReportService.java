@@ -45,10 +45,14 @@ public class ReportService {
         TReport tReport = new TReport();
         tReport.setComment(reportDTO.getComment());
         tReport.setKilometrage(reportDTO.getKilometrage());
-        tReport.setCarId(reportDTO.getCar_id());
-        PostReportResponse response = this.carClient.postReport(tReport);
-        log.info("Soap successful - proceeding");
-        report.setRefId(response.getReportResponse());
+        tReport.setCarId(reportDTO.getCar_id() == null ? 1L : reportDTO.getCar_id());
+        try {
+            PostReportResponse response = this.carClient.postReport(tReport);
+            log.info("Soap successful - proceeding");
+            report.setRefId(response.getReportResponse());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         report =this.reportRepository.save(report);
 
         return report;

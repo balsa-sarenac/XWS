@@ -48,7 +48,7 @@ public class ModelService {
             ModelDTO modelDTO = new ModelDTO();
             modelDTO.setId(m.getId());
             modelDTO.setName(m.getName());
-            modelDTO.setMark(markDTO);
+//            modelDTO.setMark(markDTO);
 
             modelDTOS.add(modelDTO);
         }

@@ -81,10 +81,14 @@ public class MessageService {
                 .build();
 
         log.info("Sending soap request to create message");
-        PostMessageResponse response = this.adminClient.postMessage(createTMessageFromDTO(messageDTO));
+        try {
+            PostMessageResponse response = this.adminClient.postMessage(createTMessageFromDTO(messageDTO));
 
-        log.info("Soap request successful");
-        message.setRefId(response.getIsSent());
+            log.info("Soap request successful");
+            message.setRefId(response.getIsSent());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         message = this.messageRepository.save(message);
         messageDTO.setId(message.getId());
         return new ResponseEntity<>(messageDTO, HttpStatus.OK);
