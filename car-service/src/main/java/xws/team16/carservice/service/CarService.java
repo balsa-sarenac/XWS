@@ -380,14 +380,14 @@ public class CarService {
         return tComments;
     }
 
-    public Car updateCarsKilometrage(Car car, double newKilometers){
-        log.info("Car service - updating car's kilometers");
-
-        car.setKilometrage(car.getKilometrage() + newKilometers);
-        // carRepository.save(car); // This line is unnecessary. It works without it.
-
-        return car;
-    }
+//    public Car updateCarsKilometrage(Car car, double newKilometers){
+//        log.info("Car service - updating car's kilometers");
+//
+//        car.setKilometrage(car.getKilometrage() + newKilometers);
+//        // carRepository.save(car); // This line is unnecessary. It works without it.
+//
+//        return car;
+//    }
 
     public ResponseEntity<?> getCarById_ResponseEntity(Long car_id) {
         Car car = getCar(car_id);

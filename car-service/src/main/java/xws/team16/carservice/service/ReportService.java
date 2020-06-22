@@ -36,7 +36,7 @@ public class ReportService {
         Car car = ad.getCar();
         // if(car == null) return null;
 
-        car = carService.updateCarsKilometrage(car, reportDTO.getKilometrage());
+        car.setKilometrage(car.getKilometrage() + reportDTO.getKilometrage());
 
         Report report = new Report();
         report.setCar(car);

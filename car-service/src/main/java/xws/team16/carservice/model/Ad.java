@@ -41,7 +41,7 @@ public class Ad {
    @Column(name = "allowed_kilometrage")
    private double allowedKilometrage;
 
-   @ManyToOne(fetch = FetchType.LAZY)
+   @ManyToOne(fetch = FetchType.EAGER)
    @JoinColumn(name = "car_id", nullable = false)
    private Car car;
 

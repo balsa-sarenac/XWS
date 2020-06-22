@@ -490,8 +490,8 @@ module.exports = exported;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\Users\Bax\Documents\Current projects\rent-a-car\src\styles.css */"./src/styles.css");
-module.exports = __webpack_require__(/*! C:\Users\Bax\Documents\Current projects\rent-a-car\node_modules\bootstrap\dist\css\bootstrap.min.css */"./node_modules/bootstrap/dist/css/bootstrap.min.css");
+__webpack_require__(/*! c:\Users\Bax\Documents\Current projects\rent-a-car\src\styles.css */"./src/styles.css");
+module.exports = __webpack_require__(/*! c:\Users\Bax\Documents\Current projects\rent-a-car\node_modules\bootstrap\dist\css\bootstrap.min.css */"./node_modules/bootstrap/dist/css/bootstrap.min.css");
 
 
 /***/ })
