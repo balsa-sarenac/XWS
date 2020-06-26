@@ -1,3 +1,4 @@
+
 package xws.tim16.rentacar.controller;
 
 import lombok.extern.slf4j.Slf4j;
@@ -16,7 +17,7 @@ public class FuelController {
     private FuelService fuelService;
 
     @Autowired
-    public FuelController(FuelService fuelService){
+    public FuelController(FuelService fuelService) {
         this.fuelService = fuelService;
     }
 
@@ -26,7 +27,7 @@ public class FuelController {
         return fuelService.getFuelById_ResponseEntity(id);
     }
 
-    @GetMapping(value = "/all")
+    @GetMapping()
     public ResponseEntity<?> getAllFuels() {
         log.info("Fuel Controller - getAllFuels()");
         return fuelService.getAllFuels_ResponseEntity();
@@ -44,9 +45,5 @@ public class FuelController {
         return fuelService.update_ResponseEntity(fuelDTO);
     }
 
-    @DeleteMapping(value = "{id}")
-    public ResponseEntity<?> deleteFuelById(@PathVariable Long id) {
-        log.info("Fuel Controller - deleteFuelById(" + id + ")");
-        return fuelService.deleteFuelById_ResponseEntity(id);
-    }
 }
+

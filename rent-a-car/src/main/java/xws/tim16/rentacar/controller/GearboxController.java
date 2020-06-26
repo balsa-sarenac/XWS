@@ -1,3 +1,4 @@
+
 package xws.tim16.rentacar.controller;
 
 import lombok.extern.slf4j.Slf4j;
@@ -8,11 +9,9 @@ import xws.tim16.rentacar.dto.GearboxDTO;
 import xws.tim16.rentacar.service.GearboxService;
 
 @CrossOrigin
-@Slf4j
-@RestController
+@RestController @Slf4j
 @RequestMapping(value = "/gearbox")
 public class GearboxController {
-
     private GearboxService gearboxService;
 
     @Autowired
@@ -26,7 +25,7 @@ public class GearboxController {
         return gearboxService.getGearboxById_ResponseEntity(id);
     }
 
-    @GetMapping(value = "/all")
+    @GetMapping()
     public ResponseEntity<?> getAllGearboxes() {
         log.info("Gearbox Controller - getAllGearboxes()");
         return gearboxService.getAllGearboxes_ResponseEntity();
@@ -50,3 +49,4 @@ public class GearboxController {
         return gearboxService.deleteGearboxById_ResponseEntity(id);
     }
 }
+

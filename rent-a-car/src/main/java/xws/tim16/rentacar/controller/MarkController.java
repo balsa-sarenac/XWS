@@ -1,3 +1,4 @@
+
 package xws.tim16.rentacar.controller;
 
 import lombok.extern.slf4j.Slf4j;
@@ -8,24 +9,21 @@ import org.springframework.web.bind.annotation.*;
 import xws.tim16.rentacar.dto.MarkDTO;
 import xws.tim16.rentacar.model.Mark;
 import xws.tim16.rentacar.service.MarkService;
-
-import java.util.ArrayList;
 import java.util.List;
 
-@CrossOrigin
-@Slf4j
-@RestController
-@RequestMapping(value = "/mark")
-public class MarkController {
 
+@CrossOrigin
+@RestController @Slf4j
+@RequestMapping(value="/mark")
+public class MarkController {
     private MarkService markService;
 
     @Autowired
-    public MarkController(MarkService markService){
+    public MarkController(MarkService markService) {
         this.markService = markService;
     }
 
-    @GetMapping(value = "/all")
+    @GetMapping()
     public ResponseEntity<?> getAll(){
         log.info("Mark Controller - get all marks.");
 
@@ -86,3 +84,4 @@ public class MarkController {
     }
 
 }
+
