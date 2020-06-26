@@ -1,8 +1,12 @@
 package xws.tim16.rentacar.service;
 
 import lombok.extern.slf4j.Slf4j;
+import org.joda.time.DateTime;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -12,9 +16,13 @@ import xws.tim16.rentacar.dto.AdDTO;
 import xws.tim16.rentacar.dto.AdInfoDTO;
 import xws.tim16.rentacar.dto.CarInfoDTO;
 import xws.tim16.rentacar.exception.NotFoundException;
+import xws.tim16.rentacar.dto.SearchDTO;
 import xws.tim16.rentacar.generated.*;
 import xws.tim16.rentacar.model.*;
 import xws.tim16.rentacar.repository.AdRepository;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service @Slf4j
 public class AdService {
@@ -90,6 +98,7 @@ public class AdService {
 
     }
 
+
     public Ad getAdById(Long adId) {
         log.info("Ad service - get ad by id");
         return this.adRepository.findById(adId).orElseThrow(() -> new NotFoundException("Ad with given id was nto found."));
@@ -121,4 +130,71 @@ public class AdService {
         return new ResponseEntity<>(adDTO,HttpStatus.OK);
 
     }
+
+    public ResponseEntity<List<AdInfoDTO>> searchAds(SearchDTO search, int page) {
+        log.info("Ad service - searching ads");
+        if(search.getFromDate().isAfter(search.getToDate()) || search.getFromDate().isBefore(DateTime.now())){
+            return  new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        List<AdInfoDTO> adDTOS = new ArrayList<>();
+        String pickUpPlace = search.getPickUpPlace();
+        DateTime fromDate = search.getFromDate();
+        DateTime toDate = search.getToDate();
+        Long markId = search.getMark().getId();
+        Long modelId = search.getModel().getId();
+        Long fuelId = search.getFuel().getId();
+        Long gearboxId = search.getGearbox().getId();
+        Long carClassId = search.getCarClass().getId();
+        Double priceFrom = search.getPriceFrom();
+        Double priceTo = search.getPriceTo();
+        if(priceTo == 0)
+            priceTo = 1000000.0;
+        Double kilometrageTo = search.getKilometrageTo();
+        if (kilometrageTo == 0)
+            kilometrageTo = 1000000.0;
+        Double kilomterageFrom = search.getKilometrageFrom();
+        Double kilometrageDrive = search.getKilometrageDrive();
+        Integer numberOfChildSeats = search.getNumberOfChildSeats();
+        Boolean cdw = search.getCdw();
+
+        log.info("Ad service - searching...");
+        Pageable pageable = PageRequest.of(page, 10);
+        Page<Ad> ads = this.adRepository.searchAds(pickUpPlace, fromDate, toDate, modelId, markId, carClassId, fuelId, gearboxId, priceFrom, priceTo,
+                kilomterageFrom, kilometrageTo, kilometrageDrive, cdw, numberOfChildSeats, pageable);
+
+        for (Ad ad: ads){
+            AdInfoDTO adInfoDTO = modelMapper.map(ad, AdInfoDTO.class);
+            int sum = 0;
+            for(Grade g: ad.getCar().getGrades()){
+                sum = sum + g.getGrade();
+            }
+            if(ad.getCar().getGrades().size() !=0)
+                adInfoDTO.getCar().setOverallGrade(sum/ad.getCar().getGrades().size());
+            else
+                adInfoDTO.getCar().setOverallGrade(0);
+            adInfoDTO.setPages(ads.getTotalPages());
+            adDTOS.add(adInfoDTO);
+        }
+
+        log.info("Ad service - sending founded ads");
+        return new ResponseEntity<>(adDTOS, HttpStatus.OK);
+    }
+
+    public ResponseEntity<?> findCities() {
+        List<String> cities = new ArrayList<>();
+        List<Ad> ads = this.adRepository.findAllByToDateAfter(DateTime.now().minusDays(30));
+
+        for(Ad a: ads){
+            if(cities.contains(a.getPickUpPlace()))
+                continue;
+
+            cities.add(a.getPickUpPlace());
+        }
+
+        return new ResponseEntity<>(cities, HttpStatus.OK);
+
+    }
+
+
 }
