@@ -1,5 +1,5 @@
-package xws.tim16.rentacar.controller;
 
+package xws.tim16.rentacar.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,7 +7,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import xws.tim16.rentacar.dto.ModelDTO;
 import xws.tim16.rentacar.service.ModelService;
-
 import javax.jws.WebParam;
 
 @CrossOrigin
@@ -23,7 +22,7 @@ public class ModelController {
         this.modelService = modelService;
     }
 
-    @GetMapping(value = "/all")
+    @GetMapping()
     public ResponseEntity<?> getAll(){
         log.info("Model Controller - get all models.");
         return modelService.getAll();
@@ -52,5 +51,5 @@ public class ModelController {
         log.info("Model Controller - delete model.");
         return modelService.delete(id);
     }
-
 }
+

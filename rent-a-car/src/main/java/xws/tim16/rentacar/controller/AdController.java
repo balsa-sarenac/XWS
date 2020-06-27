@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import xws.tim16.rentacar.dto.AdDTO;
+import xws.tim16.rentacar.dto.SearchDTO;
 import xws.tim16.rentacar.service.AdService;
 
 @CrossOrigin
@@ -40,4 +41,17 @@ public class AdController {
         log.info("Ad controller - new ad");
         return this.adService.getOneAdById(id);
     }
+
+    @PostMapping(value = "/search/{page}")
+    public ResponseEntity<?> searchAds(@RequestBody SearchDTO search, @PathVariable int page) {
+        log.info("Ad controller - searching ads");
+        return this.adService.searchAds(search,page);
+    }
+
+    @GetMapping( value = "/city")
+    public ResponseEntity<?> searchAds() {
+        log.info("Ad controller - searching cities");
+        return this.adService.findCities();
+    }
+
 }

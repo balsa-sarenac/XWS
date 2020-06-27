@@ -1,3 +1,4 @@
+
 package xws.tim16.rentacar.controller;
 
 import lombok.extern.slf4j.Slf4j;
@@ -8,11 +9,9 @@ import xws.tim16.rentacar.dto.CarClassDTO;
 import xws.tim16.rentacar.service.CarClassService;
 
 @CrossOrigin
-@Slf4j
-@RestController
+@RestController @Slf4j
 @RequestMapping(value = "/carclass")
 public class CarClassController {
-
     private CarClassService carClassService;
 
     @Autowired
@@ -26,7 +25,7 @@ public class CarClassController {
         return carClassService.getCarClassById_ResponseEntity(id);
     }
 
-    @GetMapping(value = "/all")
+    @GetMapping()
     public ResponseEntity<?> getAllCarClasses() {
         log.info("CarClass Controller - getAllCarClasses()");
         return carClassService.getAllCarClasses_ResponseEntity();
@@ -49,4 +48,6 @@ public class CarClassController {
         log.info("CarClass Controller - deleteCarClassById(" + id + ")");
         return carClassService.deleteCarClassById_ResponseEntity(id);
     }
+
 }
+

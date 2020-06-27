@@ -1,6 +1,7 @@
 package xws.tim16.rentacar.service;
 
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.internal.util.Iterables;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -133,8 +134,9 @@ public class CustomUserDetailsService implements UserDetailsService{
         int expiresIn = tokenUtils.getExpiredIn();
         String refresh = tokenUtils.generateRefreshToken(user.getUsername());
         String username = user.getUsername();
+        String role = user.getRoles().iterator().next().getName();
 
-        return ResponseEntity.ok(new UserTokenState(jwt, expiresIn, username, refresh));
+        return ResponseEntity.ok(new UserTokenState(jwt, expiresIn, username, refresh, role));
     }
 
     public void enable(Long userId) {
