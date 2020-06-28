@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Profile;
 @Configuration
 public class ProducerConfiguration {
 
-    @Value("${myqueue}")
+    @Value("mail-queue")
     String queue;
 
     @Bean
