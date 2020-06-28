@@ -57,6 +57,12 @@ public class Ad {
    @JoinColumn(name = "user_id", nullable = false)
    private User user;
 
+   @OneToMany(mappedBy = "ad")
+   private Set<Comment> comments;
+
+   @OneToMany(mappedBy = "ad")
+   private Set<Grade> grades;
+
    private Long refId;
 
 }

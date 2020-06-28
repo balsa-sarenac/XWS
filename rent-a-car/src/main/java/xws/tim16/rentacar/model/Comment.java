@@ -1,15 +1,16 @@
 package xws.tim16.rentacar.model;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @Entity
+@Builder
+@AllArgsConstructor
 public class Comment {
    @Id
    @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,6 +25,10 @@ public class Comment {
    @ManyToOne
    @JoinColumn(name = "user_id", nullable = false)
    private User user;
+
+   @ManyToOne
+   @JoinColumn(name = "ad_id", nullable = false)
+   private Ad ad;
 
    @ManyToOne
    @JoinColumn(name = "car_id", nullable = false)
