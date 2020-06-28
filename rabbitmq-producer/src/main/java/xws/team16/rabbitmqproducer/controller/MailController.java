@@ -19,7 +19,7 @@ public class MailController {
     @PostMapping(value = "/mail")
     public ResponseEntity<?> sendMail() {
         logger.info("Sending mail");
-        this.mailProducer.sendTo("mail", "hey");
+        this.mailProducer.sendTo("mail-queue", "hey");
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }
