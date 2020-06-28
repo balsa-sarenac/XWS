@@ -19,4 +19,5 @@ public class CarInfoDTO {
     private int numberOfChildSeats;
     private boolean hasAndroid;
     private float overallGrade;
+    private int numberGrades;
 }
