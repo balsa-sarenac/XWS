@@ -7,16 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.ModelMap;
 import xws.tim16.rentacar.client.CarClient;
-import xws.tim16.rentacar.dto.AdDTO;
-import xws.tim16.rentacar.dto.AdInfoDTO;
-import xws.tim16.rentacar.dto.CarInfoDTO;
+import xws.tim16.rentacar.dto.*;
 import xws.tim16.rentacar.exception.NotFoundException;
-import xws.tim16.rentacar.dto.SearchDTO;
 import xws.tim16.rentacar.generated.*;
 import xws.tim16.rentacar.model.*;
 import xws.tim16.rentacar.repository.AdRepository;
@@ -105,6 +103,7 @@ public class AdService {
     }
 
     public ResponseEntity<?> getOneAdById(Long id) {
+        log.info("Ad service - getting one ad");
         Ad ad = this.adRepository.getOne(id);
         AdInfoDTO adDTO = new AdInfoDTO();
         adDTO.setAllowedKilometrage(ad.getAllowedKilometrage());
@@ -114,24 +113,34 @@ public class AdService {
         adDTO.setId(ad.getId());
         adDTO.setPickUpPlace(ad.getPickUpPlace());
         adDTO.setPriceListId(ad.getPriceList().getId());
+        PriceListDTO priceListDTO = modelMapper.map(ad.getPriceList(), PriceListDTO.class);
+        adDTO.setPriceList(priceListDTO);
         CarInfoDTO car = modelMapper.map(ad.getCar(), CarInfoDTO.class);
         float grade  = 0;
+        int numberGrades = 0;
+
         if(ad.getCar().getGrades().size()!=0){
             float sum = 0;
             for(Grade g: ad.getCar().getGrades()){
                 sum = sum + g.getGrade();
             }
-
-            grade = sum / ad.getCar().getGrades().size();
+            numberGrades = ad.getCar().getGrades().size();
+            grade = sum / numberGrades;
         }
+
         car.setOverallGrade(grade);
+        car.setNumberGrades(numberGrades);
         adDTO.setCar(car);
 
         return new ResponseEntity<>(adDTO,HttpStatus.OK);
-
     }
 
-    public ResponseEntity<List<AdInfoDTO>> searchAds(SearchDTO search, int page) {
+    public Ad getAd(Long id) {
+        Ad ad = this.adRepository.findById(id).orElseGet(null);
+        return  ad;
+    }
+
+    public ResponseEntity<List<AdInfoDTO>> searchAds(SearchDTO search, int page, String sort) {
         log.info("Ad service - searching ads");
         if(search.getFromDate().isAfter(search.getToDate()) || search.getFromDate().isBefore(DateTime.now())){
             return  new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -158,27 +167,39 @@ public class AdService {
         Integer numberOfChildSeats = search.getNumberOfChildSeats();
         Boolean cdw = search.getCdw();
 
+        Sort sortby = sortBy(sort);
+
         log.info("Ad service - searching...");
-        Pageable pageable = PageRequest.of(page, 10);
+        Pageable pageable = PageRequest.of(page, 10, sortby);
         Page<Ad> ads = this.adRepository.searchAds(pickUpPlace, fromDate, toDate, modelId, markId, carClassId, fuelId, gearboxId, priceFrom, priceTo,
                 kilomterageFrom, kilometrageTo, kilometrageDrive, cdw, numberOfChildSeats, pageable);
 
         for (Ad ad: ads){
             AdInfoDTO adInfoDTO = modelMapper.map(ad, AdInfoDTO.class);
-            int sum = 0;
-            for(Grade g: ad.getCar().getGrades()){
-                sum = sum + g.getGrade();
-            }
-            if(ad.getCar().getGrades().size() !=0)
-                adInfoDTO.getCar().setOverallGrade(sum/ad.getCar().getGrades().size());
-            else
-                adInfoDTO.getCar().setOverallGrade(0);
+            adInfoDTO.getCar().setOverallGrade(ad.getCar().getOverallGrade());
             adInfoDTO.setPages(ads.getTotalPages());
             adDTOS.add(adInfoDTO);
         }
 
         log.info("Ad service - sending founded ads");
         return new ResponseEntity<>(adDTOS, HttpStatus.OK);
+    }
+
+    public Sort sortBy(String sort){
+        if(sort.equals("Price higher")){
+            return Sort.by(Sort.Direction.ASC, "priceList.perDay");
+        }else if(sort.equals("Price lower")){
+            return Sort.by(Sort.Direction.DESC, "priceList.perDay");
+        }else if(sort.equals("Kilometrage higher")){
+            return Sort.by(Sort.Direction.ASC, "car.kilometrage");
+        }else if(sort.equals("Kilometrage lower")){
+            return Sort.by(Sort.Direction.DESC, "car.kilometrage");
+        }else if(sort.equals("Grade higher")){
+            return Sort.by(Sort.Direction.ASC, "car.overallGrade");
+        }else if(sort.equals("Grade lower")){
+            return Sort.by(Sort.Direction.DESC, "car.overallGrade");
+        }
+        return Sort.by(Sort.Direction.ASC, "fromDate");
     }
 
     public ResponseEntity<?> findCities() {

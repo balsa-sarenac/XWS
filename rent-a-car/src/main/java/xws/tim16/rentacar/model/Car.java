@@ -64,7 +64,7 @@ public class Car {
    @OneToMany(mappedBy = "car")
    private Set<Grade> grades;
 
-   @Transient
+   @Column
    private float overallGrade;
 
    @OneToMany(mappedBy = "car")
