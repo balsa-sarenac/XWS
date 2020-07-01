@@ -57,6 +57,19 @@ public class RentBundleService {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    public void cancelBundleRequest(Long bundleId) {
+        log.info("Rent bundle service - cancel bundle");
+        RentBundle bundle = this.rentBundleRepository.findById(bundleId).orElseThrow(() -> new NotFoundException("Bundle with given id was not found"));
+        if (bundle.getBundleStatus().equals(RequestStatus.paid))
+            throw new InvalidOperationException("Bundle request has already been paid. It cannot be cancelled.");
+        bundle.setBundleStatus(RequestStatus.cancelled);
+        for (RentRequest request: bundle.getRequests()) {
+            request.setStatus(RequestStatus.cancelled);
+        }
+        this.rentBundleRepository.save(bundle);
+        log.info("Bundle and all requests cancelled successfully");
+    }
+
     public ResponseEntity<?> acceptBundle(Long bundleId) {
         log.info("Rent bundle service - accept bundle");
         RentBundle rentBundle = this.rentBundleRepository.findById(bundleId).orElseThrow(() -> new NotFoundException("Bundle with given id was not found"));
