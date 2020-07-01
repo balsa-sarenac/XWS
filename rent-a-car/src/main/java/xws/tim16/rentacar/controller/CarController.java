@@ -28,10 +28,10 @@ public class CarController {
     /**
      * Get car for logged user
      */
-    @GetMapping(value = "/user")
-    private ResponseEntity<?> getCarByUser(){
+    @GetMapping(value = "/user/{username}")
+    private ResponseEntity<?> getCarByUser(@PathVariable String username){
         log.info("Car controller - getting cars");
-        return this.carService.getCarByUser();
+        return this.carService.getCarByUser(username);
     }
 
 }

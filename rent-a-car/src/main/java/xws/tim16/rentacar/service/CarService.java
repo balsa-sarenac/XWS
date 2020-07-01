@@ -80,6 +80,10 @@ public class CarService {
         return car;
     }
 
+    public Car saveCar(Car car){
+        return this.carRepository.save(car);
+    }
+
     public Float getAverageGrade(Car car){
         /* Returns null if car has no grades. */
         /* Returns null if car equals to null. */
@@ -169,12 +173,9 @@ public class CarService {
         return carWithMostKilometers;
     }
 
-    public ResponseEntity<?> getCarByUser() {
-        // Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        //String username = authentication.getName();
-        //User user  = this.userService.getUserByUsername(username);
-
-        List<Car> cars = this.carRepository.findAllByOwnerId(1L);
+    public ResponseEntity<?> getCarByUser(String username) {
+        User user = this.userService.getUserByUsername(username);
+        List<Car> cars = this.carRepository.findAllByOwnerId(user.getId());
         List<CarInfoDTO> carInfoDTOS = new ArrayList<>();
 
         for (Car car : cars) {
@@ -192,6 +193,12 @@ public class CarService {
             carInfoDTOS.add(carInfoDTO);
         }
         return new ResponseEntity<>(carInfoDTOS, HttpStatus.OK);
+    }
+
+    public List<Car> getCarByUserUsername(String username) {
+        User user = this.userService.getUserByUsername(username);
+        List<Car> cars = this.carRepository.findAllByOwnerId(user.getId());
+        return cars;
     }
 
     public ResponseEntity<?> getStatistics_ResponseEntity(Long ownersID) {
