@@ -34,4 +34,10 @@ public class OccupiedController {
         return this.occupiedService.getOccupied(id);
     }
 
+    @GetMapping(value = "/user/{username}")
+    public ResponseEntity<?> getOccupationUser(@PathVariable String username ) {
+        log.info("Occupied controller - get occupations");
+        return this.occupiedService.getOccupiedByUser(username);
+    }
+
 }
