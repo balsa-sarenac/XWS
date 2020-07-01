@@ -42,10 +42,10 @@ public class AdController {
         return this.adService.getOneAdById(id);
     }
 
-    @PostMapping(value = "/search/{page}")
-    public ResponseEntity<?> searchAds(@RequestBody SearchDTO search, @PathVariable int page) {
+    @PostMapping(value = "/search/{page}/{sort}")
+    public ResponseEntity<?> searchAds(@RequestBody SearchDTO search, @PathVariable int page,@PathVariable String sort) {
         log.info("Ad controller - searching ads");
-        return this.adService.searchAds(search,page);
+        return this.adService.searchAds(search,page, sort);
     }
 
     @GetMapping( value = "/city")

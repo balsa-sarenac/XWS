@@ -37,13 +37,21 @@ public class AuthenticationController {
         return this.userDetailsService.register(userDTO);
     }
 
+
+    //@PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @GetMapping(value = "/users")
+    public ResponseEntity<?> getUsers() {
+        log.info("Auth controller - get all users");
+        return this.userDetailsService.getUsers();
+    }
+
     /**
      * Enables user to log in to application
      * @param userId id of the user
      * @return 200 ok if successful or 404 not found if user does not exist
      */
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    @PutMapping(value = "/enable/{userId}")
+    //@PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @GetMapping(value = "/enable/{userId}")
     public ResponseEntity<Void> enable(@PathVariable Long userId) {
         log.info("Controller /enable reached by user id " + userId);
         this.userDetailsService.enable(userId);
@@ -55,8 +63,8 @@ public class AuthenticationController {
      * @param userId id of the user
      * @return 200 ok if successful or 404 not found if user does not exist
      */
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    @PutMapping(value = "/disable/{userId}")
+    //@PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @GetMapping(value = "/disable/{userId}")
     public ResponseEntity<Void> disable(@PathVariable Long userId) {
         log.info("Controller /disable reached by user id " + userId);
         this.userDetailsService.disable(userId);

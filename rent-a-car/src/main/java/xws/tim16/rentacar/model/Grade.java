@@ -26,5 +26,9 @@ public class Grade {
     @JoinColumn(name = "car_id", nullable = false)
     private Car car;
 
+    @ManyToOne
+    @JoinColumn(name = "ad_id", nullable = false)
+    private Ad ad;
+
     private Long refId;
 }

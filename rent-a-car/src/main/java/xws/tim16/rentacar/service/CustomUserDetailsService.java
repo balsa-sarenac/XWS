@@ -1,6 +1,7 @@
 package xws.tim16.rentacar.service;
 
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.modelmapper.internal.util.Iterables;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -42,16 +43,17 @@ public class CustomUserDetailsService implements UserDetailsService{
     private AuthenticationManager authenticationManager;
     private UserRepository userRepository;
     private PasswordEncoder passwordEncoder;
-    private UserDetailsService userDetailsService;
     private RoleRepository roleRepository;
+    private ModelMapper modelMapper;
 
     @Autowired
-    public CustomUserDetailsService(TokenUtils tokenUtils, AuthenticationManager authenticationManager, UserRepository userRepository, PasswordEncoder passwordEncoder,  RoleRepository roleRepository) {
+    public CustomUserDetailsService(TokenUtils tokenUtils, AuthenticationManager authenticationManager, UserRepository userRepository, PasswordEncoder passwordEncoder, RoleRepository roleRepository, ModelMapper modelMapper) {
         this.tokenUtils = tokenUtils;
         this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.roleRepository = roleRepository;
+        this.modelMapper = modelMapper;
     }
 
     @Override
@@ -99,7 +101,7 @@ public class CustomUserDetailsService implements UserDetailsService{
                 .address(userDTO.getAddress())
                 .password(passwordEncoder.encode(userDTO.getPassword()))
                 .isAdmin(false)
-                .enabled(false)
+                .enabled(true)
                 .companyName("")
                 .businessID("")
                 .build();
@@ -109,8 +111,10 @@ public class CustomUserDetailsService implements UserDetailsService{
             user.setBusinessID(userDTO.getBusinessID());
         }else if(userDTO.getRoles().get(0).equals("ROLE_ADMIN")){
             user.setAdmin(true);
-            user.setEnabled(true);
+        }else if(userDTO.getRoles().get(0).equals("ROLE_USER")){
+            user.setEnabled(false);
         }
+
 
         Role role = this.roleRepository.findByName(userDTO.getRoles().get(0));
         user.setRoles(new ArrayList<Role>());
@@ -209,5 +213,17 @@ public class CustomUserDetailsService implements UserDetailsService{
             authorities.add(new SimpleGrantedAuthority(privilege));
         }
         return authorities;
+    }
+
+    public ResponseEntity<?> getUsers() {
+        List<User> users = this.userRepository.findAll();
+        List<UserDTO> userDTOS = new ArrayList<>();
+        for(User u: users){
+            if (u.getRoles().iterator().next().getName().equals("ROLE_USER")){
+                userDTOS.add(modelMapper.map(u, UserDTO.class));
+            }
+        }
+
+        return new ResponseEntity<>(userDTOS, HttpStatus.OK);
     }
 }
