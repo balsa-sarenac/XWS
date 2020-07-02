@@ -9,6 +9,7 @@ import xws.tim16.rentacar.client.CarClient;
 import xws.tim16.rentacar.dto.ReportDTO;
 import xws.tim16.rentacar.generated.PostReportResponse;
 import xws.tim16.rentacar.generated.TReport;
+import xws.tim16.rentacar.model.Ad;
 import xws.tim16.rentacar.model.Car;
 import xws.tim16.rentacar.model.Report;
 import xws.tim16.rentacar.repository.ReportRepository;
@@ -19,19 +20,26 @@ public class ReportService {
 
     private ReportRepository reportRepository;
     private CarService carService;
+    private AdService adService;
     private CarClient carClient;
+    private BillService billService;
 
     @Autowired
-    ReportService(ReportRepository reportRepository, CarService carService, CarClient carClient) {
+    public ReportService(ReportRepository reportRepository, CarService carService, AdService adService, CarClient carClient, BillService billService) {
         this.reportRepository = reportRepository;
         this.carService = carService;
+        this.adService = adService;
         this.carClient = carClient;
+        this.billService = billService;
     }
+
+
 
     public Report newReport(ReportDTO reportDTO){
         log.info("Report service - creating new report");
 
-        Car car = carService.getCar(reportDTO.getCar_id());
+        Ad ad = adService.getCar(reportDTO.getAd_id());
+        Car car = ad.getCar();
         // if(car == null) return null;
 
         car = carService.updateCarsKilometrage(car, reportDTO.getKilometrage());
@@ -40,6 +48,10 @@ public class ReportService {
         report.setCar(car);
         report.setComment(reportDTO.getComment());
         report.setKilometrage(reportDTO.getKilometrage());
+
+        if(ad.getAllowedKilometrage() != 0 && ad.getAllowedKilometrage() < report.getKilometrage()){
+            this.billService.createBill(report.getKilometrage()-ad.getAllowedKilometrage(), ad.getPriceList(), reportDTO.getUser_id());
+        }
 
         log.info("Requesting new report via soap");
         TReport tReport = new TReport();
@@ -53,7 +65,7 @@ public class ReportService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        report =this.reportRepository.save(report);
+        report = this.reportRepository.save(report);
 
         return report;
     }
