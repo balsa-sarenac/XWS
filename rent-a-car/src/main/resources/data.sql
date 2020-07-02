@@ -3,17 +3,21 @@ insert into role (name, id) values ('ROLE_ADMIN', 1);
 insert into role (name, id) values ('ROLE_AGENT', 2);
 insert into role (name, id) values ('ROLE_USER', 3);
 
+--Privileges
+
+insert into privilege  (name, id) values ('PRIVILEGE_RENT', 1);
+
 -- USERS
-insert into user_table (id, username, first_name, last_name, address, password, enabled, account_non_expired, account_non_locked, credentials_non_expired, is_admin)
-values (1, 'bax', 'balsa', 'sarenac', 'luke vuklalovica 93', '$2a$10$U9jvaVCEV.48aHuR2vck/emgRLXJ3d5jleYyCTwdO/X9fmDtZ0bgG', true, false, false, false, false);
-insert into user_table (id, username, first_name, last_name, address, password, enabled, account_non_expired, account_non_locked, credentials_non_expired, is_admin)
-values (2, 'mica', 'milica', 'injac', 'luke vuklalovica 93', '$2a$10$U9jvaVCEV.48aHuR2vck/emgRLXJ3d5jleYyCTwdO/X9fmDtZ0bgG', true, false, false, false, false);
-insert into user_table (id, username, first_name, last_name, address, company_name, business_id, password, enabled, account_non_expired, account_non_locked, credentials_non_expired, is_admin)
-values (3, 'milica', 'milica', 'injac', 'luke vuklalovica 93', 'firma wow low', 'xae12', '$2a$10$U9jvaVCEV.48aHuR2vck/emgRLXJ3d5jleYyCTwdO/X9fmDtZ0bgG', true, false, false, false, false);
-insert into user_table (id, username, first_name, last_name, address, password, enabled, account_non_expired, account_non_locked, credentials_non_expired, is_admin)
-values (4, 'balsa', 'sarenac', 'bax', 'tamo daleko', '$2a$10$U9jvaVCEV.48aHuR2vck/emgRLXJ3d5jleYyCTwdO/X9fmDtZ0bgG', true, false, false, false, false );
-insert into user_table (id, username, first_name, last_name, address, password, enabled, account_non_expired, account_non_locked, credentials_non_expired, is_admin)
-values (5, 'admin', 'admin', 'admin', 'admin', '$2a$10$U9jvaVCEV.48aHuR2vck/emgRLXJ3d5jleYyCTwdO/X9fmDtZ0bgG', true, false, false, false, true );
+insert into user_table (id, username, first_name, last_name, address, password, enabled, account_non_expired, account_non_locked, credentials_non_expired, is_admin, status, num_can_req)
+values (1, 'bax', 'balsa', 'sarenac', 'luke vuklalovica 93', '$2a$10$U9jvaVCEV.48aHuR2vck/emgRLXJ3d5jleYyCTwdO/X9fmDtZ0bgG', true, false, false, false, false, 0, 3);
+insert into user_table (id, username, first_name, last_name, address, password, enabled, account_non_expired, account_non_locked, credentials_non_expired, is_admin, status, num_can_req)
+values (2, 'mica', 'milica', 'injac', 'luke vuklalovica 93', '$2a$10$U9jvaVCEV.48aHuR2vck/emgRLXJ3d5jleYyCTwdO/X9fmDtZ0bgG', true, false, false, false, false, 0, 0);
+insert into user_table (id, username, first_name, last_name, address, company_name, business_id, password, enabled, account_non_expired, account_non_locked, credentials_non_expired, is_admin, status, num_can_req)
+values (3, 'milica', 'milica', 'injac', 'luke vuklalovica 93', 'firma wow low', 'xae12', '$2a$10$U9jvaVCEV.48aHuR2vck/emgRLXJ3d5jleYyCTwdO/X9fmDtZ0bgG', true, false, false, false, false, 0, 1);
+insert into user_table (id, username, first_name, last_name, address, password, enabled, account_non_expired, account_non_locked, credentials_non_expired, is_admin, status, num_can_req)
+values (4, 'balsa', 'sarenac', 'bax', 'tamo daleko', '$2a$10$U9jvaVCEV.48aHuR2vck/emgRLXJ3d5jleYyCTwdO/X9fmDtZ0bgG', true, false, false, false, false, 0 ,4);
+insert into user_table (id, username, first_name, last_name, address, password, enabled, account_non_expired, account_non_locked, credentials_non_expired, is_admin, status, num_can_req)
+values (5, 'admin', 'admin', 'admin', 'admin', '$2a$10$U9jvaVCEV.48aHuR2vck/emgRLXJ3d5jleYyCTwdO/X9fmDtZ0bgG', true, false, false, false, true, 0 ,0);
 
 insert into users_roles (user_id, role_id) values (1, 3);
 insert into users_roles (user_id, role_id) values (2, 3);
@@ -21,7 +25,10 @@ insert into users_roles (user_id, role_id) values (3, 2);
 insert into users_roles (user_id, role_id) values (4, 3);
 insert into users_roles (user_id, role_id) values (5, 1);
 
--- COMMENTS
+insert into users_privileges (user_id, privilege_id) values (1, 1);
+insert into users_privileges (user_id, privilege_id) values (2, 1);
+insert into users_privileges (user_id, privilege_id) values (3, 1);
+insert into users_privileges (user_id, privilege_id) values (4, 1);
 
 -- MESSAGES
 insert into message (id, text, date_sent, sender_id, receiver_id) values (1, 'hi', '2020-06-03T21:39:45.618', 1, 3);
@@ -53,10 +60,10 @@ insert into CAR_CLASS (name ) values ('karavan');
 insert into CAR_CLASS (name ) values ('terenac');
 insert into GEARBOX (type) values ('automatic');
 insert into GEARBOX (type) values ('manuelni');
-insert into PRICE_LIST (per_day, extra_kilometrage, cdw, discount) values (7, 4, false, 10);
-insert into PRICE_LIST (per_day, extra_kilometrage, cdw, discount) values (8, 6, false, 11);
-insert into PRICE_LIST (per_day, extra_kilometrage, cdw, discount) values (9, 5, false, 12);
-insert into PRICE_LIST (per_day, extra_kilometrage, cdw, discount) values (11, 6, true, 10);
+insert into PRICE_LIST (per_day, extra_kilometrage, cdw, discount, discount_days, user_id) values (7, 4, 10, 10, 20, 1);
+insert into PRICE_LIST (per_day, extra_kilometrage, cdw, discount, discount_days, user_id) values (8, 6, 150, 11, 30, 1);
+insert into PRICE_LIST (per_day, extra_kilometrage, cdw, discount, discount_days, user_id) values (9, 5, 100, 12, 20, 1);
+insert into PRICE_LIST (per_day, extra_kilometrage, cdw, discount, discount_days, user_id) values (11, 6, 200, 10, 25, 1);
 insert into CAR (kilometrage, number_of_child_seats, has_android,  mark_id, car_class_id, fuel_id, model_id, gearbox_id, owner_id, number_of_grades, overall_grade) values (100010, 0,false, 1,2,1,1,1,1,0,4.5);
 insert into CAR (kilometrage, number_of_child_seats, has_android,  mark_id, car_class_id, fuel_id, model_id, gearbox_id, owner_id, number_of_grades, overall_grade) values (25555, 0,false, 1,2,2,2,2,1,0,0.0);
 insert into CAR (kilometrage, number_of_child_seats, has_android,  mark_id, car_class_id, fuel_id, model_id, gearbox_id, owner_id, number_of_grades, overall_grade) values (100100, 1,false, 2,1,3,3,2,2,0,0.0);
@@ -95,6 +102,8 @@ insert into RENT_REQUEST (id, status, date_created, pick_up_date, return_date, p
 insert into RENT_REQUEST (id, status, date_created, pick_up_date, return_date, pick_up_place, ad_id, bundle_id, user_id) values (6, 'paid', '2020-06-01T21:39:45.618', '2020-06-03', '2020-07-03', 'Novi Sad', 5, 2, 1);
 insert into RENT_REQUEST (id, status, date_created, pick_up_date, return_date, pick_up_place, ad_id, bundle_id, user_id) values (7, 'paid', '2020-06-01T21:39:45.618', '2020-06-03', '2020-07-02', 'Novi Sad', 5, 2, 1);
 
+
+--COMMENTS
 insert into COMMENT (text, approved, user_id, car_id, ad_id) values ('Odlicno sve, monogo mi se svidja', true, 1, 1, 1);
 insert into COMMENT (text, approved, user_id, car_id, ad_id) values ('Preporucujem', true, 1, 2, 2);
 insert into COMMENT (text, approved, user_id, car_id, ad_id) values ('Sve korektno', true, 2, 2, 2);
@@ -106,3 +115,8 @@ insert into COMMENT (text, approved, user_id, car_id, ad_id) values ('Preporucuj
 
 insert into GRADE (grade, user_id, car_id, ad_id) values (5, 1, 1, 1);
 insert into GRADE (grade, user_id, car_id, ad_id) values (4, 1, 1, 1);
+
+delete from users_privileges where user_id = 1 and privilege_id = 1;
+insert into bill (id, user_id, price, paid) values (1, 1, 200, false);
+insert into bill (id, user_id, price, paid) values (2, 1, 200, false);
+insert into bill (id, user_id, price, paid) values (3, 1, 200, false);
