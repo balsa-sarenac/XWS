@@ -25,6 +25,8 @@ public class UserDTO {
     private Timestamp lastPasswordResetDate;
     private List<String> roles;
     private String email;
+    private boolean flagPaid;
+    public int numCanReq;
 
     public UserDTO(Long id, String firstName, String lastName, String companyName) {
         this.id = id;

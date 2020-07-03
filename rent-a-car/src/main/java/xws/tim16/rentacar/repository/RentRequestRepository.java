@@ -21,4 +21,6 @@ public interface RentRequestRepository extends JpaRepository<RentRequest, Long> 
     List<RentRequest> findByUserAndStatusAndReturnDateAfter(User user, RequestStatus status, LocalDate returnDate);
 
     List<RentRequest> findAllByAdCarIdAndStatus(Long carId, RequestStatus paid);
+
+    List<RentRequest> findAllByStatusAndUserId(RequestStatus cancelled, Long id);
 }

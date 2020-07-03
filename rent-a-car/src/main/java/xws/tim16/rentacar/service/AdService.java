@@ -21,6 +21,7 @@ import xws.tim16.rentacar.repository.AdRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Service @Slf4j
 public class AdService {
@@ -30,15 +31,18 @@ public class AdService {
     private PriceListService priceListService;
     private CarClient carClient;
     private ModelMapper modelMapper;
+    @Autowired
+    private RentRequestService rentRequestService;
+    @Autowired
+    private RentBundleService rentBundleService;
 
     @Autowired
-    public AdService(AdRepository adRepository, CarService carService, PriceListService priceListService,
-                     ModelMapper modelMapper, CarClient carClient) {
+    public AdService(AdRepository adRepository, CarService carService, PriceListService priceListService, CarClient carClient, ModelMapper modelMapper) {
         this.adRepository = adRepository;
         this.carService = carService;
         this.priceListService = priceListService;
-        this.modelMapper = modelMapper;
         this.carClient = carClient;
+        this.modelMapper = modelMapper;
     }
 
     public ResponseEntity<Void> newAd(AdDTO adDTO) {
@@ -218,4 +222,26 @@ public class AdService {
     }
 
 
+    public void deleteAds(Set<Ad> ads) {
+        for(Ad a: ads){
+            a.setToDate(DateTime.now().minusDays(1));
+            a.setFromDate(DateTime.now().minusDays(2));
+            for(RentRequest r: a.getRequest()){
+                this.rentRequestService.cancelRequest(r.getId());
+                if(r.getBundle() != null){
+                    this.rentBundleService.cancelBundleRequest(r.getBundle().getId());
+                }
+            }
+            this.adRepository.save(a);
+        }
+    }
+
+    public Ad getCar(Long ad_id) {
+        log.info("Ad service - get ad");
+        if (ad_id == null) ad_id = 1L;
+        Ad ad = adRepository.findById(ad_id).orElseThrow(() -> new NotFoundException("Ad with given id was not found"));
+
+        log.info("Ad getted with id " + ad.getId());
+        return  ad;
+    }
 }

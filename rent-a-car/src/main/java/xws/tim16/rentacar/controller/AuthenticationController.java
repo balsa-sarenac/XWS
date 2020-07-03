@@ -13,6 +13,7 @@ import xws.tim16.rentacar.service.CustomUserDetailsService;
 
 import javax.servlet.http.HttpServletResponse;
 
+@CrossOrigin(value = "*")
 @RestController
 @Slf4j
 @RequestMapping(produces = "application/json")
@@ -37,12 +38,48 @@ public class AuthenticationController {
         return this.userDetailsService.register(userDTO);
     }
 
+    @PatchMapping(value = "")
+    public ResponseEntity<?> edit(@RequestBody UserDTO userDTO) {
+        log.info("Controller /edit reached by user: " + userDTO.getUsername());
+        return this.userDetailsService.edit(userDTO);
+    }
+
+    /**
+     * Delete user from application
+     * @param userId id of the user
+     * @return 200 ok if successful or 404 not found if user does not exist
+     */
+    //@PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @DeleteMapping(value = "/{userId}")
+    public ResponseEntity<Void> delete(@PathVariable Long userId) {
+        log.info("Controller /delete reached by user id " + userId);
+        this.userDetailsService.delete(userId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 
     //@PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @GetMapping(value = "/users")
     public ResponseEntity<?> getUsers() {
         log.info("Auth controller - get all users");
         return this.userDetailsService.getUsers();
+    }
+
+    @GetMapping(value = "/rentPrivilege/{privilege}/{id}")
+    public ResponseEntity<?> rentPrivileges(@PathVariable Boolean privilege, @PathVariable Long id) {
+        log.info("Auth controller - setting rent privileges");
+        boolean flag =  this.userDetailsService.rentPrivilege(privilege, id);
+        if(flag == true){
+            return new ResponseEntity<>(HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping(value = "/{username}")
+    public ResponseEntity<?> getUser(@PathVariable String username) {
+        log.info("Auth controller - get all users");
+        return this.userDetailsService.getUser(username);
     }
 
     /**

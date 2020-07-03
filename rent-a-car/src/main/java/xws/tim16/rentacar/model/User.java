@@ -47,6 +47,12 @@ public class User implements  UserDetails {
    @Column(name = "email")
    private String email;
 
+   @Column(name = "status")
+   private Integer status;
+
+   @Column(name = "numCanReq")
+   private Integer numCanReq;
+
    @Column
    private Timestamp lastPasswordResetDate;
 
@@ -55,6 +61,12 @@ public class User implements  UserDetails {
            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
    private Collection<Role> roles;
+
+   @ManyToMany(fetch = FetchType.LAZY)
+   @JoinTable(name = "users_privileges",
+           joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+           inverseJoinColumns = @JoinColumn(name = "privilege_id", referencedColumnName = "id"))
+   private Collection<Privilege> privileges;
 
    @Column
    private boolean accountNonExpired;
@@ -72,10 +84,16 @@ public class User implements  UserDetails {
    private Set<Ad> ads;
 
    @OneToMany(mappedBy = "user")
+   private Set<PriceList> priceLists;
+
+   @OneToMany(mappedBy = "user")
    private Set<Comment> comments;
 
    @OneToMany(mappedBy = "user")
    private Set<Grade> grades;
+
+   @OneToMany(mappedBy = "user")
+   private Set<Bill> bills;
 
    @OneToMany(mappedBy = "sender")
    private Set<Message> sent;

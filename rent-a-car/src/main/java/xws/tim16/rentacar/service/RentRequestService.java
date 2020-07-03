@@ -207,4 +207,10 @@ public class RentRequestService {
         log.info("Successfully refused rent request");
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    public int numberOfCancelled(Long id){
+        List<RentRequest> rentRequests = this.rentRequestRepository.findAllByStatusAndUserId(RequestStatus.cancelled, id);
+        return  rentRequests.size();
+    }
+
 }
