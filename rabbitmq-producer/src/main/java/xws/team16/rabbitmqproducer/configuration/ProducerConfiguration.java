@@ -6,9 +6,7 @@ import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 
-@Profile({"configuration","mailing"})
 @Configuration
 public class ProducerConfiguration {
 
@@ -26,8 +24,12 @@ public class ProducerConfiguration {
      */
     @Bean
     public ConnectionFactory connectionFactory() {
-        CachingConnectionFactory connectionFactory =
-                new CachingConnectionFactory("localhost");
+        CachingConnectionFactory connectionFactory = new CachingConnectionFactory();
+        connectionFactory.setUsername("falysqic");
+        connectionFactory.setPassword("WGXFaLcXLNsampQVJGT8FO-6nXQne-zh");
+        connectionFactory.setVirtualHost("falysqic");
+        connectionFactory.setHost("wasp.rmq.cloudamqp.com");
+//        connectionFactory.setPort();
         return connectionFactory;
     }
 }
