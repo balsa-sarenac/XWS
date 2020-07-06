@@ -12,6 +12,7 @@ search-service,
 sercurity-service
 
 Front end application can be found [here](https://github.com/baxbaxbax/rent-a-car)
+Deployed mail service can be found [here](https://github.com/baxbaxbax/mailing-service)
 
 ## Usage
 To install and start this application you will need Docker. Application can be started with only one command:
