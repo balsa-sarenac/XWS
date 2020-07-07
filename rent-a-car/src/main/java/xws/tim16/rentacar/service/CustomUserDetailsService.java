@@ -154,8 +154,9 @@ public class CustomUserDetailsService implements UserDetailsService{
         String refresh = tokenUtils.generateRefreshToken(user.getUsername());
         String username = user.getUsername();
         String role = user.getRoles().iterator().next().getName();
+        Long id = user.getId();
 
-        return ResponseEntity.ok(new UserTokenState(jwt, expiresIn, username, refresh, role));
+        return ResponseEntity.ok(new UserTokenState(jwt, expiresIn, username, refresh, role, id));
     }
 
     public void enable(Long userId) {
