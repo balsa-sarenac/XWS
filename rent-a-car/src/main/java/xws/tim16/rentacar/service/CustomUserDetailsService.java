@@ -19,7 +19,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import xws.tim16.rentacar.dto.RoleDTO;
 import xws.tim16.rentacar.dto.UserDTO;
+import xws.tim16.rentacar.exception.InvalidOperationException;
 import xws.tim16.rentacar.exception.NotFoundException;
+import xws.tim16.rentacar.exception.RegistrationNotApprovedException;
 import xws.tim16.rentacar.model.Privilege;
 import xws.tim16.rentacar.model.Role;
 import xws.tim16.rentacar.model.User;
@@ -42,7 +44,6 @@ public class CustomUserDetailsService implements UserDetailsService{
     private TokenUtils tokenUtils;
     private AuthenticationManager authenticationManager;
     private UserRepository userRepository;
-    private RentRequestService rentRequestService;
     private PasswordEncoder passwordEncoder;
     private RoleRepository roleRepository;
     private AdService adService;
@@ -53,11 +54,16 @@ public class CustomUserDetailsService implements UserDetailsService{
     private BillService billService;
 
     @Autowired
-    public CustomUserDetailsService(TokenUtils tokenUtils, AuthenticationManager authenticationManager, UserRepository userRepository, RentRequestService rentRequestService, PasswordEncoder passwordEncoder, RoleRepository roleRepository, AdService adService, ModelMapper modelMapper, PrivilegeRepository privilegeRepository) {
+    private RentRequestService rentRequestService;
+
+    @Autowired
+    public CustomUserDetailsService(TokenUtils tokenUtils, AuthenticationManager authenticationManager,
+                                    UserRepository userRepository, PasswordEncoder passwordEncoder,
+                                    RoleRepository roleRepository, AdService adService, ModelMapper modelMapper,
+                                    PrivilegeRepository privilegeRepository) {
         this.tokenUtils = tokenUtils;
         this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
-        this.rentRequestService = rentRequestService;
         this.passwordEncoder = passwordEncoder;
         this.roleRepository = roleRepository;
         this.adService = adService;
@@ -148,6 +154,9 @@ public class CustomUserDetailsService implements UserDetailsService{
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         User user = (User) authentication.getPrincipal();
+        if (user.getLastPasswordResetDate() == null) {
+            throw new RegistrationNotApprovedException("Your registration request is not yet approved. Please be patient we are working on it");
+        }
 
         String jwt = tokenUtils.generateToken(user.getUsername());
         int expiresIn = tokenUtils.getExpiredIn();
@@ -292,4 +301,47 @@ public class CustomUserDetailsService implements UserDetailsService{
     }
 
 
+    public ResponseEntity<?> approveRequest(Long id) {
+        log.info("Approving registration request");
+        User user = this.userRepository.findById(id).orElseThrow(() -> new NotFoundException("User with given  id was not found"));
+        if (user.getLastPasswordResetDate() != null) {
+            throw new InvalidOperationException("Registration request has already been processed");
+        }
+        user.setLastPasswordResetDate(new Timestamp(0));
+        user.setEnabled(true);
+        this.userRepository.save(user);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    public ResponseEntity<?> refuseRequest(Long id) {
+        log.info("Refusing registration request");
+        User user = this.userRepository.findById(id).orElseThrow(() -> new NotFoundException("User with given  id was not found"));
+        if (user.getLastPasswordResetDate() != null) {
+            throw new InvalidOperationException("Registration request has already been processed");
+        }
+        user.setLastPasswordResetDate(new Timestamp(-1));
+        user.setEnabled(false);
+        this.userRepository.save(user);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    public ResponseEntity<?> getRegistrationRequests() {
+        log.info("Getting all registration requests");
+        List<User> requests = this.userRepository.findByLastPasswordResetDate(null);
+        if (requests.size() == 0)
+            return new ResponseEntity<>(HttpStatus.OK);
+
+        List<UserDTO> users = new ArrayList<>();
+        for (User user: requests) {
+            UserDTO userDTO = new UserDTO();
+            userDTO.setId(user.getId());
+            userDTO.setFirstName(user.getFirstName());
+            userDTO.setLastName(user.getLastName());
+            userDTO.setEmail(user.getEmail());
+            userDTO.setUsername(user.getUsername());
+            users.add(userDTO);
+        }
+
+        return new ResponseEntity<>(users, HttpStatus.OK);
+    }
 }
