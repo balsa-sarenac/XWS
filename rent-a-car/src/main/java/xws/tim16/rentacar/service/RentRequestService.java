@@ -27,6 +27,9 @@ public class RentRequestService {
     private UserService userService;
 
     @Autowired
+    private OccupiedService occupiedService;
+
+    @Autowired
     private RentBundleService rentBundleService;
 
     @Autowired
@@ -168,6 +171,8 @@ public class RentRequestService {
 
         log.info("Successfully canceled other requests, saving in database");
         this.rentRequestRepository.save(request);
+
+        this.occupiedService.saveRequestAsOccupied(request);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setAccessControlAllowOrigin("*");

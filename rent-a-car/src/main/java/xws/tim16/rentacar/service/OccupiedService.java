@@ -201,4 +201,13 @@ public class OccupiedService {
 
         return new ResponseEntity<>(occupiedDTOS, HttpStatus.OK);
     }
+
+    public void saveRequestAsOccupied(RentRequest request) {
+        log.info("Adding new occupation for accepted request");
+        Occupied occupied = new Occupied();
+        occupied.setCar(request.getAd().getCar());
+        occupied.setDateFrom(request.getPickUpDate());
+        occupied.setDateTo(request.getReturnDate());
+        this.occupiedRepository.save(occupied);
+    }
 }
