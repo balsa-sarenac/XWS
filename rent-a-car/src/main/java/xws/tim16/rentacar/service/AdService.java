@@ -182,6 +182,7 @@ public class AdService {
             AdInfoDTO adInfoDTO = modelMapper.map(ad, AdInfoDTO.class);
             adInfoDTO.getCar().setOverallGrade(ad.getCar().getOverallGrade());
             adInfoDTO.setPages(ads.getTotalPages());
+            adInfoDTO.setUserId(ad.getUser().getId());
             adDTOS.add(adInfoDTO);
         }
 
@@ -227,7 +228,8 @@ public class AdService {
             a.setToDate(DateTime.now().minusDays(1));
             a.setFromDate(DateTime.now().minusDays(2));
             for(RentRequest r: a.getRequest()){
-                this.rentRequestService.cancelRequest(r.getId());
+                if (!r.getStatus().equals(RequestStatus.paid))
+                    this.rentRequestService.cancelRequest(r.getId());
                 if(r.getBundle() != null){
                     this.rentBundleService.cancelBundleRequest(r.getBundle().getId());
                 }
