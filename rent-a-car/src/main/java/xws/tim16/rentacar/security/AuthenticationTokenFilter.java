@@ -1,44 +1,53 @@
 package xws.tim16.rentacar.security;
 
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
 
-public class AuthenticationTokenFilter extends UsernamePasswordAuthenticationFilter {
+public class AuthenticationTokenFilter extends OncePerRequestFilter {
+
+    private TokenUtils tokenUtils;
+
+    private UserDetailsService userDetailsService;
+
+    public AuthenticationTokenFilter(TokenUtils tokenHelper, UserDetailsService userDetailsService) {
+        this.tokenUtils = tokenHelper;
+        this.userDetailsService = userDetailsService;
+    }
+
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+    public void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
+            throws IOException, ServletException {
 
-        HttpServletRequest httpRequest = (HttpServletRequest) request;
-        String username = httpRequest.getHeader("Username");
-        String roles = httpRequest.getHeader("Roles");
-//        String privileges = httpRequest.getHeader("Privileges");
+        String username;
+        String authToken = tokenUtils.getToken(request);
 
-        if (roles != null) {
-            Set<SimpleGrantedAuthority> authorities = new HashSet<>();
+        if (authToken != null) {
+            // uzmi username iz tokena
+            username = tokenUtils.getUsernameFromToken(authToken);
 
-            String[] tokens = roles.split("-");
-            for (String token : tokens) {
-                if (!token.equals("")) {
-                    authorities.add(new SimpleGrantedAuthority(token));
+            if (username != null) {
+                // uzmi user-a na osnovu username-a
+                UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+
+                // proveri da li je prosledjeni token validan
+                if (tokenUtils.validateToken(authToken, userDetails)) {
+                    // kreiraj autentifikaciju
+                    TokenBasedAuthentication authentication = new TokenBasedAuthentication(userDetails);
+                    authentication.setToken(authToken);
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
                 }
             }
-
-            UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(username, null, authorities);
-            auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpRequest));
-            SecurityContextHolder.getContext().setAuthentication(auth);
         }
 
+        // prosledi request dalje u sledeci filter
         chain.doFilter(request, response);
     }
 }
