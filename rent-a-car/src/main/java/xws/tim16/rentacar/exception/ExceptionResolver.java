@@ -17,6 +17,12 @@ public class ExceptionResolver {
         return new ResponseEntity<String>(exception.getMessage(), headers, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(RegistrationNotApprovedException.class)
+    public ResponseEntity<?> notApproved(RegistrationNotApprovedException exception) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.TEXT_PLAIN);
+        return new ResponseEntity<String>(exception.getMessage(), headers, HttpStatus.UNAUTHORIZED);
+    }
 
     @ExceptionHandler(InvalidOperationException.class)
     public ResponseEntity<?> invalidOperation(InvalidOperationException exception) {
