@@ -46,9 +46,11 @@ public class CustomUserDetailsService implements UserDetailsService{
     private UserRepository userRepository;
     private PasswordEncoder passwordEncoder;
     private RoleRepository roleRepository;
-    private AdService adService;
     private ModelMapper modelMapper;
     private PrivilegeRepository privilegeRepository;
+
+    @Autowired
+    private AdService adService;
 
     @Autowired
     private BillService billService;
@@ -59,14 +61,13 @@ public class CustomUserDetailsService implements UserDetailsService{
     @Autowired
     public CustomUserDetailsService(TokenUtils tokenUtils, AuthenticationManager authenticationManager,
                                     UserRepository userRepository, PasswordEncoder passwordEncoder,
-                                    RoleRepository roleRepository, AdService adService, ModelMapper modelMapper,
+                                    RoleRepository roleRepository, ModelMapper modelMapper,
                                     PrivilegeRepository privilegeRepository) {
         this.tokenUtils = tokenUtils;
         this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.roleRepository = roleRepository;
-        this.adService = adService;
         this.modelMapper = modelMapper;
         this.privilegeRepository = privilegeRepository;
     }
@@ -279,8 +280,12 @@ public class CustomUserDetailsService implements UserDetailsService{
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    public User findByUsername(String username) {
+        return this.userRepository.findByUsername(username);
+    }
+
     public ResponseEntity<?> getUser(String username) {
-        User user = this.userRepository.findByUsername(username);
+        User user = this.findByUsername(username);
         UserDTO userDTO = modelMapper.map(user,UserDTO.class);
         return  new ResponseEntity<>(userDTO, HttpStatus.OK);
     }
