@@ -20,12 +20,11 @@ public class RequestController {
 
     /**
      * Returns all requests of a user
-     * @param userId id of a user !!!!!!!!!!!!!!!will be replaced!!!!!!!!!!!
      * @return List of requests
      */
-    @GetMapping(value = "/")
-    public ResponseEntity<?> getAll(@PathVariable Long userId) {
-        log.info("Request controller - get all requests for user " + userId);
+    @GetMapping
+    public ResponseEntity<?> getAll() {
+        log.info("Request controller - get all requests for user ");
         return this.rentRequestService.getAll();
     }
 
