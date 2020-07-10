@@ -174,6 +174,8 @@ public class CarService {
     }
 
     public ResponseEntity<?> getCarsByUser(String username) {
+        log.info("Car service - getting " + username + "\'s cars");
+
         User user = this.userService.getUserByUsername(username);
         List<Car> cars = this.carRepository.findAllByOwnerId(user.getId());
         List<CarInfoDTO> carInfoDTOS = new ArrayList<>();
