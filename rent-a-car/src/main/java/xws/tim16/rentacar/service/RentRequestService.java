@@ -8,6 +8,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import xws.tim16.rentacar.dto.AllRequestsDTO;
 import xws.tim16.rentacar.dto.OccupiedDTO;
 import xws.tim16.rentacar.dto.RequestDTO;
 import xws.tim16.rentacar.dto.ShoppingCartDTO;
@@ -33,6 +34,9 @@ public class RentRequestService {
     private RentBundleService rentBundleService;
 
     @Autowired
+    private CustomUserDetailsService userDetailsService;
+
+    @Autowired
     public RentRequestService(RentRequestRepository rentRequestRepository, AdService adService,
                               UserService userService) {
         this.rentRequestRepository = rentRequestRepository;
@@ -40,14 +44,52 @@ public class RentRequestService {
         this.userService = userService;
     }
 
-    public ResponseEntity<?> getAll(Long userId) {
-        log.info("Rent request service - get all requests for user");
-        User user = this.userService.getUserById(userId);
+    public ResponseEntity<?> getAll() {
+        log.info("Get all requests for user");
+        User user = this.userDetailsService.getLoggedInUser();
         List<RentRequest> requests = this.rentRequestRepository.findByUser(user);
 
         List<RequestDTO> retVal = getRequestDTOS(requests);
+        AllRequestsDTO requestsDTO = this.filterRequests(retVal);
+
         log.info("Returning list of requests");
-        return new ResponseEntity<>(retVal, HttpStatus.OK);
+        return new ResponseEntity<>(requestsDTO, HttpStatus.OK);
+    }
+
+    public ResponseEntity<?> getAllReceived() {
+        log.info("Get all received requests for user");
+        User user = this.userDetailsService.getLoggedInUser();
+        List<RentRequest> requests = this.rentRequestRepository.findAllByAd_User_Id(user.getId());
+
+        List<RequestDTO> retVal = getRequestDTOS(requests);
+        AllRequestsDTO requestsDTO = this.filterRequests(retVal);
+
+        log.info("Returning list of requests");
+        return new ResponseEntity<>(requestsDTO, HttpStatus.OK);
+    }
+
+    public AllRequestsDTO filterRequests(List<RequestDTO> retVal) {
+        AllRequestsDTO requestsDTO = new AllRequestsDTO();
+        List<RequestDTO> pending = new ArrayList<>();
+        List<RequestDTO> paid = new ArrayList<>();
+        List<RequestDTO> finished = new ArrayList<>();
+        retVal.forEach(req -> {
+            if (req.getStatus().equals(RequestStatus.pending.toString())) {
+                pending.add(req);
+            } else if (req.getStatus().equals(RequestStatus.paid.toString())) {
+                if (req.getReturnDate().isBefore(new LocalDate())) {
+                    finished.add(req);
+                } else {
+                    paid.add(req);
+                }
+            }
+        });
+
+        requestsDTO.setAll(retVal);
+        requestsDTO.setPending(pending);
+        requestsDTO.setPaid(paid);
+        requestsDTO.setFinished(finished);
+        return requestsDTO;
     }
 
     public List<RequestDTO> getRequestDTOS(List<RentRequest> requests) {
@@ -67,20 +109,10 @@ public class RentRequestService {
         return retVal;
     }
 
-    public ResponseEntity<?> getAllActive(Long userId) {
-        log.info("Rent request service - get all active requests for user");
+    public ResponseEntity<?> getAllActive(Long userId, RequestStatus status) {
+        log.info("Get all active requests for user");
         User user = this.userService.getUserById(userId);
-        List<RentRequest> requests = this.rentRequestRepository.findByUserAndStatus(user, RequestStatus.pending);
-
-        List<RequestDTO> retVal = getRequestDTOS(requests);
-        log.info("Returning list of requests");
-        return new ResponseEntity<>(retVal, HttpStatus.OK);
-    }
-
-    public ResponseEntity<?> getAllPast(Long userId) {
-        log.info("Rent request service - get all past requests for user");
-        User user = this.userService.getUserById(userId);
-        List<RentRequest> requests = this.rentRequestRepository.findByUserAndStatusAndReturnDateAfter(user, RequestStatus.paid, new LocalDate());
+        List<RentRequest> requests = this.rentRequestRepository.findByUserAndStatus(user, status);
 
         List<RequestDTO> retVal = getRequestDTOS(requests);
         log.info("Returning list of requests");
@@ -88,7 +120,7 @@ public class RentRequestService {
     }
 
     public ResponseEntity<?> newRequests(ShoppingCartDTO shoppingCart) {
-        log.info("Rent request service - add new ads");
+        log.info("Add new ads");
         this.rentBundleService.newBundles(shoppingCart.getBundles());
 
         for (RequestDTO request : shoppingCart.getRequests()) {

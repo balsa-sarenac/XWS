@@ -100,7 +100,11 @@ insert into RENT_REQUEST (id, status, date_created, pick_up_date, return_date, p
 insert into RENT_REQUEST (id, status, date_created, pick_up_date, return_date, pick_up_place, ad_id, bundle_id, user_id) values (4, 'pending', '2020-08-01T21:39:45.618', '2020-08-08', '2020-08-26', 'Trebinje', 1, null, 1);
 insert into RENT_REQUEST (id, status, date_created, pick_up_date, return_date, pick_up_place, ad_id, bundle_id, user_id) values (5, 'paid', '2020-08-01T21:39:45.618', '2020-08-03', '2020-08-12', 'Nevesinje', 5, null, 1);
 insert into RENT_REQUEST (id, status, date_created, pick_up_date, return_date, pick_up_place, ad_id, bundle_id, user_id) values (6, 'paid', '2020-08-01T21:39:45.618', '2020-08-03', '2020-08-03', 'Novi Sad', 5, 2, 1);
-insert into RENT_REQUEST (id, status, date_created, pick_up_date, return_date, pick_up_place, ad_id, bundle_id, user_id) values (7, 'paid', '2020-08-01T21:39:45.618', '2020-08-03', '2020-09-02', 'Novi Sad', 5, 2, 1);
+insert into RENT_REQUEST (id, status, date_created, pick_up_date, return_date, pick_up_place, ad_id, bundle_id, user_id) values (7, 'paid', '2020-08-01T21:39:45.618', '2020-08-03', '2020-09-02', 'Novi Sad', 1, 2, 1);
+insert into RENT_REQUEST (id, status, date_created, pick_up_date, return_date, pick_up_place, ad_id, bundle_id, user_id) values (8, 'paid', '2020-05-01T21:39:45.618', '2020-05-03', '2020-06-02', 'Novi Sad', 1, 2, 1);
+insert into RENT_REQUEST (id, status, date_created, pick_up_date, return_date, pick_up_place, ad_id, bundle_id, user_id) values (9, 'paid', '2020-04-01T21:39:45.618', '2020-05-03', '2020-06-02', 'Novi Sad', 1, 2, 1);
+insert into RENT_REQUEST (id, status, date_created, pick_up_date, return_date, pick_up_place, ad_id, bundle_id, user_id) values (10, 'paid', '2020-05-01T21:39:45.618', '2020-05-03', '2020-06-02', 'Novi Sad', 1, 2, 1);
+insert into RENT_REQUEST (id, status, date_created, pick_up_date, return_date, pick_up_place, ad_id, bundle_id, user_id) values (10, 'paid', '2020-05-01T21:39:45.618', '2020-05-03', '2020-06-02', 'Novi Sad', 5, 2, 1);
 
 
 --COMMENTS
