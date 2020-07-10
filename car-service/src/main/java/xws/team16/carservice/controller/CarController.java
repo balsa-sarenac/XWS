@@ -24,12 +24,12 @@ public class CarController {
 
     /**
      * Get car for logged user
-     */
+
     @GetMapping(value = "/user")
     private ResponseEntity<?> getCarByUser(){
         log.info("Car controller - getting cars");
         return this.carService.getCarByUser();
-    }
+    }*/
 
     @GetMapping(value = "/statistics/{ownersID}")
     public ResponseEntity<?> getStatistics(@PathVariable Long ownersID){
@@ -41,5 +41,11 @@ public class CarController {
     public ResponseEntity<?> getCarById(@PathVariable Long car_id){
         log.info("Car controller - get car by its id (id = " + car_id + ")");
         return carService.getCarById_ResponseEntity(car_id);
+    }
+
+    @GetMapping(value = "/user/{username}")
+    private ResponseEntity<?> getCarByUser(@PathVariable String username){
+        log.info("Car controller - getting cars");
+        return this.carService.getCarByUser(username);
     }
 }

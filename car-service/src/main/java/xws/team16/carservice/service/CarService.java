@@ -141,15 +141,12 @@ public class CarService {
         return myImage;
     }
 
-    public ResponseEntity<?> getCarByUser() {
-       // Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        //String username = authentication.getName();
-        //User user  = this.userService.getUserByUsername(username);
-
-        List<Car> cars = this.carRepository.findAllByOwnerId(1L);
+    public ResponseEntity<?> getCarByUser(String username) {
+        User user = this.userService.getUserByUsername(username);
+        List<Car> cars = this.carRepository.findAllByOwnerId(user.getId());
         List<CarInfoDTO> carInfoDTOS = new ArrayList<>();
 
-        for(Car car: cars){
+        for (Car car : cars) {
             CarInfoDTO carInfoDTO = new CarInfoDTO();
             carInfoDTO.setId(car.getId());
             carInfoDTO.setFuel(modelMapper.map(car.getFuel(), FuelDTO.class));
@@ -405,5 +402,20 @@ public class CarService {
         carDTO.setKilometrage(car.getKilometrage());
 
         return new ResponseEntity<CarDTO>(carDTO, HttpStatus.FOUND);
+    }
+
+    public Car updateCarsKilometrage(Car car, double newKilometers){
+        log.info("Car service - updating car's kilometers");
+
+        car.setKilometrage(car.getKilometrage() + newKilometers);
+        // carRepository.save(car); // This line is unnecessary. It works without it.
+
+        return car;
+    }
+
+    public List<Car> getCarByUserUsername(String username) {
+        User user = this.userService.getUserByUsername(username);
+        List<Car> cars = this.carRepository.findAllByOwnerId(user.getId());
+        return cars;
     }
 }
