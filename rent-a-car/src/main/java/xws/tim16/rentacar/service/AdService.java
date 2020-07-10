@@ -100,7 +100,6 @@ public class AdService {
 
     }
 
-
     public Ad getAdById(Long adId) {
         log.info("Ad service - get ad by id");
         return this.adRepository.findById(adId).orElseThrow(() -> new NotFoundException("Ad with given id was nto found."));
@@ -146,7 +145,7 @@ public class AdService {
 
     public ResponseEntity<List<AdInfoDTO>> searchAds(SearchDTO search, int page, String sort) {
         log.info("Ad service - searching ads");
-        if(search.getFromDate().isAfter(search.getToDate()) || search.getFromDate().isBefore(DateTime.now())){
+        if(search.getFromDate().isAfter(search.getToDate()) || search.getFromDate().isBefore(DateTime.now().plusDays(2))){
             return  new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
@@ -220,7 +219,6 @@ public class AdService {
         return new ResponseEntity<>(cities, HttpStatus.OK);
 
     }
-
 
     public void deleteAds(Set<Ad> ads) {
         for(Ad a: ads){
