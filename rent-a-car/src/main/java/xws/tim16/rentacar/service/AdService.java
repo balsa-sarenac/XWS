@@ -10,10 +10,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.ModelMap;
 import xws.tim16.rentacar.client.CarClient;
 import xws.tim16.rentacar.dto.*;
+import xws.tim16.rentacar.exception.InvalidOperationException;
 import xws.tim16.rentacar.exception.NotFoundException;
 import xws.tim16.rentacar.generated.*;
 import xws.tim16.rentacar.model.*;
@@ -35,6 +39,8 @@ public class AdService {
     private RentRequestService rentRequestService;
     @Autowired
     private RentBundleService rentBundleService;
+    @Autowired
+    private CustomUserDetailsService userDetailsService;
 
     @Autowired
     public AdService(AdRepository adRepository, CarService carService, PriceListService priceListService, CarClient carClient, ModelMapper modelMapper) {
@@ -47,9 +53,32 @@ public class AdService {
 
     public ResponseEntity<Void> newAd(AdDTO adDTO) {
         log.info("Ad service - add new ad and car");
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+
+        User user = this.userDetailsService.findByUsername(username);
+        for (GrantedAuthority authority: authentication.getAuthorities()) {
+            if (authority.getAuthority().equals("ROLE_USER")) {
+                log.info("Checking if user can post new ads");
+                if (user.getPrivileges().contains("RENT_CAR")) {
+                    log.info("User can rent cars");
+                }
+                int i = 0;
+                for (Ad ad: user.getAds()) {
+                    if (ad.getToDate().isAfter(new DateTime())) {
+                        i++;
+                    }
+                }
+                if (i > 2) {
+                    log.info("Maximum number of ads posted");
+                    throw new InvalidOperationException("User can post maximum of 3 ads.");
+                }
+            }
+        }
+
         Car car = this.carService.newCar(adDTO.getCarDTO());
         PriceList priceList = this.priceListService.getPriceListById(adDTO.getPriceListId());
-        User user = car.getOwner();
+//        User user = car.getOwner();
 
         Ad ad = new Ad();
         ad.setCar(car);
