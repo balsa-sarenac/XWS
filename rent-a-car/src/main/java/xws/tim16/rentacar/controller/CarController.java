@@ -36,4 +36,10 @@ public class CarController {
         return this.carService.getCarsByUser(username);
     }
 
+    @GetMapping(value = "/{car_id}")
+    public ResponseEntity<?> getCarById(@PathVariable Long car_id){
+        log.info("Car controller - get car by its id (id = " + car_id + ")");
+        return carService.getCarById_ResponseEntity(car_id);
+    }
+
 }
