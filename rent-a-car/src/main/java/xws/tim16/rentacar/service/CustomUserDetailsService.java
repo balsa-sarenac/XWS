@@ -350,4 +350,9 @@ public class CustomUserDetailsService implements UserDetailsService{
 
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
+
+    public User getLoggedInUser() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        return this.findByUsername(username);
+    }
 }

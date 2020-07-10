@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import xws.tim16.rentacar.dto.OccupiedDTO;
 import xws.tim16.rentacar.dto.PatchRequestDTO;
 import xws.tim16.rentacar.dto.ShoppingCartDTO;
+import xws.tim16.rentacar.model.RequestStatus;
 import xws.tim16.rentacar.service.RentRequestService;
 
 @CrossOrigin(origins = "*")
@@ -22,32 +23,20 @@ public class RequestController {
      * @param userId id of a user !!!!!!!!!!!!!!!will be replaced!!!!!!!!!!!
      * @return List of requests
      */
-    @GetMapping(value = "/{userId}")
+    @GetMapping(value = "/")
     public ResponseEntity<?> getAll(@PathVariable Long userId) {
         log.info("Request controller - get all requests for user " + userId);
-        return this.rentRequestService.getAll(userId);
+        return this.rentRequestService.getAll();
     }
 
     /**
-     * Returns all active requests of a user
-     * @param userId id of a user !!!!!!!!!!!!!!!will be replaced!!!!!!!!!!!
-     * @return List of requests
+     * Returns all request that user have received
+     * @return list of requests
      */
-    @GetMapping(value = "/active/{userId}")
-    public ResponseEntity<?> getAllActive(@PathVariable Long userId) {
-        log.info("Request controller - get all active requests for user " + userId);
-        return this.rentRequestService.getAllActive(userId);
-    }
-
-    /**
-     * Returns all past requests of a user
-     * @param userId id of a user !!!!!!!!!!!!!!!will be replaced!!!!!!!!!!!
-     * @return List of requests
-     */
-    @GetMapping(value = "/past/{userId}")
-    public ResponseEntity<?> getAllPast(@PathVariable Long userId) {
-        log.info("Request controller - get all past requests for user " + userId);
-        return this.rentRequestService.getAllPast(userId);
+    @GetMapping(value = "/received")
+    public ResponseEntity<?> getReceivedRequests() {
+        log.info("Get all received requests");
+        return this.rentRequestService.getAllReceived();
     }
 
     /**
