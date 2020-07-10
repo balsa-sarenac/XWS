@@ -1,9 +1,12 @@
 package xws.team16.securityservice.service.impl;
 
+import feign.FeignException;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -17,10 +20,14 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import xws.team16.securityservice.client.CarClient;
+import xws.team16.securityservice.client.RequestClient;
 import xws.team16.securityservice.dto.RoleDTO;
 import xws.team16.securityservice.dto.UserDTO;
 import xws.team16.securityservice.exception.NotFoundException;
 import xws.team16.securityservice.model.*;
+import xws.team16.securityservice.repository.PrivilegeRepository;
+import xws.team16.securityservice.repository.RoleRepository;
 import xws.team16.securityservice.repository.UserRepository;
 import xws.team16.securityservice.security.TokenUtils;
 import xws.team16.securityservice.security.auth.JwtAuthenticationRequest;
@@ -38,15 +45,24 @@ public class CustomUserDetailsService implements UserDetailsService {
     private AuthenticationManager authenticationManager;
     private UserRepository userRepository;
     private PasswordEncoder passwordEncoder;
-    private UserDetailsService userDetailsService;
+    private RoleRepository roleRepository;
+    private PrivilegeRepository privilegeRepository;
+    private ModelMapper modelMapper;
 
     @Autowired
-    public CustomUserDetailsService(TokenUtils tokenUtils, AuthenticationManager authenticationManager,
-                                    UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    private RequestClient requestClient;
+    @Autowired
+    private CarClient carClient;
+
+    @Autowired
+    public CustomUserDetailsService(TokenUtils tokenUtils, AuthenticationManager authenticationManager, UserRepository userRepository, PasswordEncoder passwordEncoder, RoleRepository roleRepository, PrivilegeRepository privilegeRepository, ModelMapper modelMapper) {
         this.tokenUtils = tokenUtils;
         this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.roleRepository = roleRepository;
+        this.privilegeRepository = privilegeRepository;
+        this.modelMapper = modelMapper;
     }
 
     @Override
@@ -81,16 +97,67 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     }
 
-    public void register(UserDTO userDTO) {
+    public ResponseEntity<?> register(UserDTO userDTO) {
         log.info("User service - registration function");
+        User username = this.userRepository.findByUsername(userDTO.getUsername());
+        if(username != null){
+            return new ResponseEntity<>("Username already in use",HttpStatus.BAD_REQUEST);
+        }
         User user = User.builder()
                 .firstName(userDTO.getFirstName())
                 .lastName(userDTO.getLastName())
                 .username(userDTO.getUsername())
+                .email(userDTO.getEmail())
+                .address(userDTO.getAddress())
                 .password(passwordEncoder.encode(userDTO.getPassword()))
-                .enabled(false)
+                .isAdmin(false)
+                .enabled(true)
+                .companyName("")
+                .businessID("")
+                .status(0)
+                .numCanReq(0)
                 .build();
-        userRepository.save(user);
+
+        user.setPrivileges(new ArrayList<>());
+        if(userDTO.getRoles().get(0).equals("ROLE_AGENT")){
+            user.setCompanyName(userDTO.getCompanyName());
+            user.setBusinessID(userDTO.getBusinessID());
+            Privilege privilege = this.privilegeRepository.findByName("POST_ADS");
+            user.getPrivileges().add(privilege);
+        }else if(userDTO.getRoles().get(0).equals("ROLE_ADMIN")){
+            user.setAdmin(true);
+        }else if(userDTO.getRoles().get(0).equals("ROLE_USER")){
+            user.setEnabled(false);
+            Privilege privilege = this.privilegeRepository.findByName("POST_ADS");
+            user.getPrivileges().add(privilege);
+        }
+
+        Role role = this.roleRepository.findByName(userDTO.getRoles().get(0));
+        user.setRoles(new ArrayList<Role>());
+        user.getRoles().add(role);
+        user = userRepository.save(user);
+        userDTO.setId(user.getId());
+        userDTO.setPassword(user.getPassword());
+        this.synchronizeDatabase(userDTO);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    public void synchronizeDatabase(UserDTO userDTO){
+        log.info("User service - calling feign car");
+        try {
+            this.carClient.addUser(userDTO);
+            log.info("Successufully called car service");
+        } catch (FeignException.NotFound e) {
+            log.info("Error calling car service");
+        }
+
+        log.info("User service - calling feign request");
+        try {
+            this.requestClient.addUser(userDTO);
+            log.info("Successufully called request service");
+        } catch (FeignException.NotFound e) {
+            log.info("Error calling request service");
+        }
     }
 
     public ResponseEntity<?> login(JwtAuthenticationRequest jwtAuthenticationRequest, HttpServletResponse httpServletResponse) throws AuthenticationException, IOException {
@@ -108,8 +175,9 @@ public class CustomUserDetailsService implements UserDetailsService {
         int expiresIn = tokenUtils.getExpiredIn();
         String refresh = tokenUtils.generateRefreshToken(user.getUsername());
         String username = user.getUsername();
+        String role = user.getRoles().iterator().next().getName();
 
-        return ResponseEntity.ok(new UserTokenState(jwt, expiresIn, username, refresh));
+        return ResponseEntity.ok(new UserTokenState(jwt, expiresIn, username, refresh, role));
     }
 
     public void enable(Long userId) {
@@ -158,19 +226,15 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
     private Collection<? extends GrantedAuthority> getAuthorities(
-            Collection<Role> roles) {
+            User user) {
 
-        return getGrantedAuthorities(getPrivileges(roles));
+        return getGrantedAuthorities(getPrivileges(user.getPrivileges()));
     }
 
-    private List<String> getPrivileges(Collection<Role> roles) {
+    private List<String> getPrivileges(Collection<Privilege> privilegess) {
 
         List<String> privileges = new ArrayList<>();
-        List<Privilege> collection = new ArrayList<>();
-        for (Role role : roles) {
-            collection.addAll(role.getPrivileges());
-        }
-        for (Privilege item : collection) {
+        for (Privilege item : privilegess) {
             privileges.add(item.getName());
         }
         return privileges;
@@ -183,4 +247,87 @@ public class CustomUserDetailsService implements UserDetailsService {
         }
         return authorities;
     }
+
+    public ResponseEntity<?> getUsers() {
+        log.info("User service - getting all users");
+        List<User> users = this.userRepository.findAllByStatus(0);
+        List<UserDTO> userDTOS = new ArrayList<>();
+        for(User u: users){
+            if (u.getRoles().iterator().next().getName().equals("ROLE_USER")){
+                UserDTO userDTO = modelMapper.map(u, UserDTO.class);
+                userDTO.setRoles(new ArrayList<>());
+                for(Role r: u.getRoles()){
+                    userDTO.getRoles().add(r.getName());
+                }
+                for(Privilege p: u.getPrivileges()){
+                    userDTO.getRoles().add(p.getName());
+                }
+                log.info("User service - calling feign request");
+                try {
+                    userDTO.setFlagPaid(this.requestClient.checkPaid(u.getId()));
+                    log.info("Successufully called request service");
+                } catch (FeignException.NotFound e) {
+                    log.info("Error calling request service");
+                }
+                userDTOS.add(userDTO);
+            }
+        }
+        log.info("User service -sending all users");
+        return new ResponseEntity<>(userDTOS, HttpStatus.OK);
+    }
+
+    public void delete(Long userId) {
+        User user  = this.userRepository.getOne(userId);
+        user.setEnabled(false);
+        user.setStatus(-1);
+        log.info("User service - calling feign car");
+        try {
+            this.carClient.removeAds(user.getId());
+            log.info("Successufully called car service");
+        } catch (FeignException.NotFound e) {
+            log.info("Error calling car service");
+        }
+        this.userRepository.save(user);
+    }
+
+    public ResponseEntity<?> edit(UserDTO userDTO) {
+        User user = this.userRepository.getOne(userDTO.getId());
+        user.setCompanyName(userDTO.getCompanyName());
+        user.setBusinessID(userDTO.getBusinessID());
+        user.setEmail(userDTO.getEmail());
+        user.setAddress(userDTO.getAddress());
+        user.setLastName(userDTO.getLastName());
+        user.setFirstName(userDTO.getFirstName());
+
+        this.userRepository.save(user);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    public ResponseEntity<?> getUser(String username) {
+        User user = this.userRepository.findByUsername(username);
+        UserDTO userDTO = modelMapper.map(user,UserDTO.class);
+        return  new ResponseEntity<>(userDTO, HttpStatus.OK);
+    }
+
+    public boolean rentPrivilege(Boolean privilege, Long id) {
+        User user =  this.userRepository.getOne(id);
+        Privilege privilegee = this.privilegeRepository.findByName("POST_ADS");
+        if(privilege  == true){
+            if(!user.getPrivileges().contains(privilegee)) {
+                user.getPrivileges().add(privilegee);
+                this.userRepository.save(user);
+            }
+            return true;
+        }else if(privilege == false){
+            if(user.getPrivileges().contains(privilegee)) {
+                user.getPrivileges().remove(privilegee);
+                this.userRepository.save(user);
+            }
+            return true;
+        }else {
+            return false;
+        }
+    }
+
 }
