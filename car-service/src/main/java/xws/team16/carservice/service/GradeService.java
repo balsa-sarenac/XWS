@@ -39,6 +39,11 @@ public class GradeService {
         Ad ad  = this.adService.getAd(gradeDTO.getAdId());
         Car car = ad.getCar();
         car.setNumberOfGrades(car.getNumberOfGrades()+1);
+        int sum = 0;
+        for(Grade g: car.getGrades()){
+            sum = sum + g.getGrade();
+        }
+        car.setOverallGrade(sum/car.getNumberOfGrades());
         grade.setCar(car);
         grade.setAd(ad);
         grade.setUser(user);
@@ -70,10 +75,22 @@ public class GradeService {
                     .grade(grade.getGrade())
                     .carId(grade.getCar().getId())
                     .userUsername(grade.getUser().getUsername())
+                    .adId(grade.getAd().getId())
                     .build();
             gradeDTOS.add(gradeDTO);
         }
         log.info("Grade service - returning grades");
         return new ResponseEntity<>(gradeDTOS, HttpStatus.OK);
+    }
+
+    public ResponseEntity<?> check(String username, Long id) {
+        log.info("Comment service - checking comment already created");
+        User user = this.userService.getUserByUsername(username);
+        Grade gradeCheck = this.gradeRepository.findByUserIdAndAdId(user.getId(), id);
+
+        if (gradeCheck != null) {
+            return new ResponseEntity<>(true, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(false, HttpStatus.OK);
     }
 }
