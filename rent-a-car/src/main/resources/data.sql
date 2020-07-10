@@ -8,16 +8,16 @@ insert into role (name, id) values ('ROLE_USER', 3);
 insert into privilege  (name, id) values ('POST_ADS', 1);
 
 -- USERS
-insert into user_table (id, username, first_name, last_name, address, password, enabled, account_non_expired, account_non_locked, credentials_non_expired, is_admin, status, num_can_req)
-values (1, 'bax', 'balsa', 'sarenac', 'luke vuklalovica 93', '$2a$10$U9jvaVCEV.48aHuR2vck/emgRLXJ3d5jleYyCTwdO/X9fmDtZ0bgG', true, false, false, false, false, 0, 3);
-insert into user_table (id, username, first_name, last_name, address, password, enabled, account_non_expired, account_non_locked, credentials_non_expired, is_admin, status, num_can_req)
-values (2, 'mica', 'milica', 'injac', 'luke vuklalovica 93', '$2a$10$U9jvaVCEV.48aHuR2vck/emgRLXJ3d5jleYyCTwdO/X9fmDtZ0bgG', true, false, false, false, false, 0, 0);
-insert into user_table (id, username, first_name, last_name, address, company_name, business_id, password, enabled, account_non_expired, account_non_locked, credentials_non_expired, is_admin, status, num_can_req)
-values (3, 'milica', 'milica', 'injac', 'luke vuklalovica 93', 'firma wow low', 'xae12', '$2a$10$U9jvaVCEV.48aHuR2vck/emgRLXJ3d5jleYyCTwdO/X9fmDtZ0bgG', true, false, false, false, false, 0, 1);
+insert into user_table (id, username, first_name, last_name, address, password, enabled, account_non_expired, account_non_locked, credentials_non_expired, is_admin, status, num_can_req, last_password_reset_date)
+values (1, 'bax', 'balsa', 'sarenac', 'luke vuklalovica 93', '$2a$10$U9jvaVCEV.48aHuR2vck/emgRLXJ3d5jleYyCTwdO/X9fmDtZ0bgG', true, false, false, false, false, 0, 3, '2020-06-09T21:39:42.000');
+insert into user_table (id, username, first_name, last_name, address, password, enabled, account_non_expired, account_non_locked, credentials_non_expired, is_admin, status, num_can_req, last_password_reset_date)
+values (2, 'mica', 'milica', 'injac', 'luke vuklalovica 93', '$2a$10$U9jvaVCEV.48aHuR2vck/emgRLXJ3d5jleYyCTwdO/X9fmDtZ0bgG', true, false, false, false, false, 0, 0, '2020-06-09T21:39:42.000');
+insert into user_table (id, username, first_name, last_name, address, company_name, business_id, password, enabled, account_non_expired, account_non_locked, credentials_non_expired, is_admin, status, num_can_req, last_password_reset_date)
+values (3, 'milica', 'milica', 'injac', 'luke vuklalovica 93', 'firma wow low', 'xae12', '$2a$10$U9jvaVCEV.48aHuR2vck/emgRLXJ3d5jleYyCTwdO/X9fmDtZ0bgG', true, false, false, false, false, 0, 1, '2020-06-09T21:39:42.000');
 insert into user_table (id, username, first_name, last_name, address, password, enabled, account_non_expired, account_non_locked, credentials_non_expired, is_admin, status, num_can_req)
 values (4, 'balsa', 'sarenac', 'bax', 'tamo daleko', '$2a$10$U9jvaVCEV.48aHuR2vck/emgRLXJ3d5jleYyCTwdO/X9fmDtZ0bgG', true, false, false, false, false, 0 ,4);
-insert into user_table (id, username, first_name, last_name, address, password, enabled, account_non_expired, account_non_locked, credentials_non_expired, is_admin, status, num_can_req)
-values (5, 'admin', 'admin', 'admin', 'admin', '$2a$10$U9jvaVCEV.48aHuR2vck/emgRLXJ3d5jleYyCTwdO/X9fmDtZ0bgG', true, false, false, false, true, 0 ,0);
+insert into user_table (id, username, first_name, last_name, address, password, enabled, account_non_expired, account_non_locked, credentials_non_expired, is_admin, status, num_can_req, last_password_reset_date)
+values (5, 'admin', 'admin', 'admin', 'admin', '$2a$10$U9jvaVCEV.48aHuR2vck/emgRLXJ3d5jleYyCTwdO/X9fmDtZ0bgG', true, false, false, false, true, 0 ,0, '2020-06-09T21:39:42.000');
 
 insert into users_roles (user_id, role_id) values (1, 3);
 insert into users_roles (user_id, role_id) values (2, 3);
@@ -70,12 +70,12 @@ insert into CAR (kilometrage, number_of_child_seats, has_android,  mark_id, car_
 insert into CAR (kilometrage, number_of_child_seats, has_android,  mark_id, car_class_id, fuel_id, model_id, gearbox_id, owner_id, number_of_grades, overall_grade) values (250203, 2,false, 2,2,1,4,1,2,0,0.0);
 insert into CAR (kilometrage, number_of_child_seats, has_android,  mark_id, car_class_id, fuel_id, model_id, gearbox_id, owner_id, number_of_grades, overall_grade) values (10503, 0,false, 3,2,3,5,1,3,0,0.0);
 insert into CAR (kilometrage, number_of_child_seats, has_android,  mark_id, car_class_id, fuel_id, model_id, gearbox_id, owner_id, number_of_grades, overall_grade) values (150000, 2,false, 4,1,2,7,2,3,0,0.0);
-insert into AD (cdw_available, pick_up_place, from_date, to_date, allowed_kilometrage, car_id, price_list_id, user_id) values (true, 'Nevesinje', '2020-06-01T21:39:45.618', '2020-07-19T21:39:45.618', 350, 1,1,1);
-insert into AD (cdw_available, pick_up_place, from_date, to_date, allowed_kilometrage, car_id, price_list_id, user_id) values (true, 'Trebinje', '2020-06-01T21:39:45.618', '2020-07-19T21:39:45.618', 100, 2,2,1);
-insert into AD (cdw_available, pick_up_place, from_date, to_date, allowed_kilometrage, car_id, price_list_id, user_id) values (false, 'BanjaLuka', '2020-06-02T21:39:45.618', '2020-07-10T21:39:45.618', 200, 3,3,2);
-insert into AD (cdw_available, pick_up_place, from_date, to_date, allowed_kilometrage, car_id, price_list_id, user_id) values (false, 'Nevesinje', '2020-06-02T21:39:45.618', '2020-07-10T21:39:45.618', 300, 4,4,2);
-insert into AD (cdw_available, pick_up_place, from_date, to_date, allowed_kilometrage, car_id, price_list_id, user_id) values (true, 'Nevesinje', '2020-06-03T21:39:45.618', '2020-07-11T21:39:45.618', 0, 5,2,3);
-insert into AD (cdw_available, pick_up_place, from_date, to_date, allowed_kilometrage, car_id, price_list_id, user_id) values (true, 'Nevesinje', '2020-06-03T21:39:45.618', '2020-07-11T21:39:45.618', 250, 6,4,3);
+insert into AD (cdw_available, pick_up_place, from_date, to_date, allowed_kilometrage, car_id, price_list_id, user_id) values (true, 'Nevesinje', '2020-08-01T21:39:45.618', '2020-08-19T21:39:45.618', 350, 1,1,1);
+insert into AD (cdw_available, pick_up_place, from_date, to_date, allowed_kilometrage, car_id, price_list_id, user_id) values (true, 'Trebinje', '2020-08-01T21:39:45.618', '2020-08-19T21:39:45.618', 100, 2,2,1);
+insert into AD (cdw_available, pick_up_place, from_date, to_date, allowed_kilometrage, car_id, price_list_id, user_id) values (false, 'BanjaLuka', '2020-08-02T21:39:45.618', '2020-08-10T21:39:45.618', 200, 3,3,2);
+insert into AD (cdw_available, pick_up_place, from_date, to_date, allowed_kilometrage, car_id, price_list_id, user_id) values (false, 'Nevesinje', '2020-08-02T21:39:45.618', '2020-08-10T21:39:45.618', 300, 4,4,2);
+insert into AD (cdw_available, pick_up_place, from_date, to_date, allowed_kilometrage, car_id, price_list_id, user_id) values (true, 'Nevesinje', '2020-08-03T21:39:45.618', '2020-08-11T21:39:45.618', 0, 5,2,3);
+insert into AD (cdw_available, pick_up_place, from_date, to_date, allowed_kilometrage, car_id, price_list_id, user_id) values (true, 'Nevesinje', '2020-08-03T21:39:45.618', '2020-08-11T21:39:45.618', 250, 6,4,3);
 
 
 -- CARS
@@ -94,13 +94,13 @@ insert into rent_bundle (id, bundle_status) values (1, 'pending');
 insert into rent_bundle (id, bundle_status) values (2, 'paid');
 
 -- RENT REQUESTS
-insert into RENT_REQUEST (id, status, date_created, pick_up_date, return_date, pick_up_place, ad_id, bundle_id, user_id) values (1, 'pending', '2020-06-03T21:39:45.618', '2020-06-05', '2020-07-15', 'Nevesinje', 1, null, 1);
-insert into RENT_REQUEST (id, status, date_created, pick_up_date, return_date, pick_up_place, ad_id, bundle_id, user_id) values (2, 'pending', '2020-06-03T21:39:45.618', '2020-06-09', '2020-07-21', 'Trebinje', 2, 1, 1);
-insert into RENT_REQUEST (id, status, date_created, pick_up_date, return_date, pick_up_place, ad_id, bundle_id, user_id) values (3, 'pending', '2020-06-01T21:39:45.618', '2020-06-03', '2020-07-15', 'Nevesinje', 4, 1, 1);
-insert into RENT_REQUEST (id, status, date_created, pick_up_date, return_date, pick_up_place, ad_id, bundle_id, user_id) values (4, 'pending', '2020-06-01T21:39:45.618', '2020-06-06', '2020-07-26', 'Trebinje', 1, null, 1);
-insert into RENT_REQUEST (id, status, date_created, pick_up_date, return_date, pick_up_place, ad_id, bundle_id, user_id) values (5, 'paid', '2020-06-01T21:39:45.618', '2020-06-03', '2020-07-12', 'Nevesinje', 5, null, 1);
-insert into RENT_REQUEST (id, status, date_created, pick_up_date, return_date, pick_up_place, ad_id, bundle_id, user_id) values (6, 'paid', '2020-06-01T21:39:45.618', '2020-06-03', '2020-07-03', 'Novi Sad', 5, 2, 1);
-insert into RENT_REQUEST (id, status, date_created, pick_up_date, return_date, pick_up_place, ad_id, bundle_id, user_id) values (7, 'paid', '2020-06-01T21:39:45.618', '2020-06-03', '2020-07-02', 'Novi Sad', 5, 2, 1);
+insert into RENT_REQUEST (id, status, date_created, pick_up_date, return_date, pick_up_place, ad_id, bundle_id, user_id) values (1, 'pending', '2020-08-03T21:39:45.618', '2020-08-05', '2020-08-15', 'Nevesinje', 1, null, 1);
+insert into RENT_REQUEST (id, status, date_created, pick_up_date, return_date, pick_up_place, ad_id, bundle_id, user_id) values (2, 'pending', '2020-08-03T21:39:45.618', '2020-08-09', '2020-08-21', 'Trebinje', 2, 1, 1);
+insert into RENT_REQUEST (id, status, date_created, pick_up_date, return_date, pick_up_place, ad_id, bundle_id, user_id) values (3, 'pending', '2020-08-01T21:39:45.618', '2020-08-03', '2020-08-15', 'Nevesinje', 4, 1, 1);
+insert into RENT_REQUEST (id, status, date_created, pick_up_date, return_date, pick_up_place, ad_id, bundle_id, user_id) values (4, 'pending', '2020-08-01T21:39:45.618', '2020-08-08', '2020-08-26', 'Trebinje', 1, null, 1);
+insert into RENT_REQUEST (id, status, date_created, pick_up_date, return_date, pick_up_place, ad_id, bundle_id, user_id) values (5, 'paid', '2020-08-01T21:39:45.618', '2020-08-03', '2020-08-12', 'Nevesinje', 5, null, 1);
+insert into RENT_REQUEST (id, status, date_created, pick_up_date, return_date, pick_up_place, ad_id, bundle_id, user_id) values (6, 'paid', '2020-08-01T21:39:45.618', '2020-08-03', '2020-08-03', 'Novi Sad', 5, 2, 1);
+insert into RENT_REQUEST (id, status, date_created, pick_up_date, return_date, pick_up_place, ad_id, bundle_id, user_id) values (7, 'paid', '2020-08-01T21:39:45.618', '2020-08-03', '2020-09-02', 'Novi Sad', 5, 2, 1);
 
 
 --COMMENTS

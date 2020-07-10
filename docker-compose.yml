@@ -56,6 +56,17 @@ services:
     depends_on:
       - eureka
 
+  rabbitmq-producer:
+    build: ./rabbitmq-producer
+    ports:
+      - 8090:8090
+      - 15672:15672
+    environment:
+      - REGISTRY_HOST=eureka
+    tty: true
+    depends_on:
+      - eureka
+
   zuul:
     build: ./zuul
     ports:

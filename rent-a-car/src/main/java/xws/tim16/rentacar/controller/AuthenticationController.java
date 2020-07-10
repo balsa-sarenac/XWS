@@ -49,7 +49,7 @@ public class AuthenticationController {
      * @param userId id of the user
      * @return 200 ok if successful or 404 not found if user does not exist
      */
-    //@PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @DeleteMapping(value = "/{userId}")
     public ResponseEntity<Void> delete(@PathVariable Long userId) {
         log.info("Controller /delete reached by user id " + userId);
@@ -65,6 +65,7 @@ public class AuthenticationController {
         return this.userDetailsService.getUsers();
     }
 
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @GetMapping(value = "/rentPrivilege/{privilege}/{id}")
     public ResponseEntity<?> rentPrivileges(@PathVariable Boolean privilege, @PathVariable Long id) {
         log.info("Auth controller - setting rent privileges");
@@ -116,5 +117,20 @@ public class AuthenticationController {
     public ResponseEntity<?> verify(@RequestBody String token) {
         log.info("Controller /verify invoked with token - " + token);
         return this.userDetailsService.verify(token);
+    }
+
+    @PostMapping(value = "/approve/{id}")
+    public ResponseEntity<?> approveRegRequest(@PathVariable Long id) {
+        return this.userDetailsService.approveRequest(id);
+    }
+
+    @PostMapping(value = "/refuse/{id}")
+    public ResponseEntity<?> refuseRegRequest(@PathVariable Long id) {
+        return this.userDetailsService.refuseRequest(id);
+    }
+
+    @GetMapping(value = "/registration-requests")
+    public ResponseEntity<?> getRegistrationRequests() {
+        return this.userDetailsService.getRegistrationRequests();
     }
 }

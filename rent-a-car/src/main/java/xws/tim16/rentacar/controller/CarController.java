@@ -3,6 +3,7 @@ package xws.tim16.rentacar.controller;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import xws.tim16.rentacar.service.CarService;
 
@@ -28,10 +29,11 @@ public class CarController {
     /**
      * Get car for logged user
      */
+    @PreAuthorize("hasAuthority('ROLE_USER') or hasAuthority('ROLE_AGENT')")
     @GetMapping(value = "/user/{username}")
-    private ResponseEntity<?> getCarByUser(@PathVariable String username){
-        log.info("Car controller - getting cars");
-        return this.carService.getCarByUser(username);
+    public ResponseEntity<?> getCarsByUser(@PathVariable String username){
+        log.info("Car controller - getting " + username + "\'s cars");
+        return this.carService.getCarsByUser(username);
     }
 
 }

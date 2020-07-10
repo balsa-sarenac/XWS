@@ -24,4 +24,5 @@ public class AdInfoDTO {
     private boolean hasAndroid;
     private PriceListDTO priceList;
     private Integer pages;
+    private Long userId;
 }

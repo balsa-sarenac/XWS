@@ -185,7 +185,7 @@ public class OccupiedService {
     }
 
     public ResponseEntity<?> getOccupiedByUser(String username) {
-        List<Car> cars = this.carService.getCarByUserUsername(username);
+        List<Car> cars = this.carService.getCarsByUserUsername(username);
         List<OccupiedDTO> occupiedDTOS = new ArrayList<>();
         for(Car c: cars){
             List<Occupied> occupieds = this.occupiedRepository.findAllByCarAndDateToAfter(c, LocalDate.now());
@@ -200,5 +200,14 @@ public class OccupiedService {
         }
 
         return new ResponseEntity<>(occupiedDTOS, HttpStatus.OK);
+    }
+
+    public void saveRequestAsOccupied(RentRequest request) {
+        log.info("Adding new occupation for accepted request");
+        Occupied occupied = new Occupied();
+        occupied.setCar(request.getAd().getCar());
+        occupied.setDateFrom(request.getPickUpDate());
+        occupied.setDateTo(request.getReturnDate());
+        this.occupiedRepository.save(occupied);
     }
 }
