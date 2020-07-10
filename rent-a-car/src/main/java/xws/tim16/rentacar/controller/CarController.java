@@ -31,9 +31,9 @@ public class CarController {
      */
     @PreAuthorize("hasAuthority('ROLE_USER')")
     @GetMapping(value = "/user/{username}")
-    private ResponseEntity<?> getCarByUser(@PathVariable String username){
+    private ResponseEntity<?> getCarsByUser(@PathVariable String username){
         log.info("Car controller - getting cars");
-        return this.carService.getCarByUser(username);
+        return this.carService.getCarsByUser(username);
     }
 
 }

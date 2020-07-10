@@ -185,7 +185,7 @@ public class OccupiedService {
     }
 
     public ResponseEntity<?> getOccupiedByUser(String username) {
-        List<Car> cars = this.carService.getCarByUserUsername(username);
+        List<Car> cars = this.carService.getCarsByUserUsername(username);
         List<OccupiedDTO> occupiedDTOS = new ArrayList<>();
         for(Car c: cars){
             List<Occupied> occupieds = this.occupiedRepository.findAllByCarAndDateToAfter(c, LocalDate.now());

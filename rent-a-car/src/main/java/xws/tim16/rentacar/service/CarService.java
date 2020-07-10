@@ -173,7 +173,7 @@ public class CarService {
         return carWithMostKilometers;
     }
 
-    public ResponseEntity<?> getCarByUser(String username) {
+    public ResponseEntity<?> getCarsByUser(String username) {
         User user = this.userService.getUserByUsername(username);
         List<Car> cars = this.carRepository.findAllByOwnerId(user.getId());
         List<CarInfoDTO> carInfoDTOS = new ArrayList<>();
@@ -195,7 +195,7 @@ public class CarService {
         return new ResponseEntity<>(carInfoDTOS, HttpStatus.OK);
     }
 
-    public List<Car> getCarByUserUsername(String username) {
+    public List<Car> getCarsByUserUsername(String username) {
         User user = this.userService.getUserByUsername(username);
         List<Car> cars = this.carRepository.findAllByOwnerId(user.getId());
         return cars;
