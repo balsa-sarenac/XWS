@@ -12,4 +12,5 @@ public class CommentDTO {
     private String userUsername;
     private Long carId;
     private Long adId;
+    private String role;
 }

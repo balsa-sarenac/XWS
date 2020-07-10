@@ -69,7 +69,7 @@ public class BillService {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    public boolean chekPaid(Long id) {
+    public boolean checkPaid(Long id) {
         List<Bill> bills = this.billRepository.findAllByUserIdAndPaid(id, false);
         if(bills.size() == 0) {
             return false;

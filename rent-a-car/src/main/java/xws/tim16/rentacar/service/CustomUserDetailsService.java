@@ -239,7 +239,7 @@ public class CustomUserDetailsService implements UserDetailsService{
                 for(Privilege p: u.getPrivileges()){
                     userDTO.getRoles().add(p.getName());
                 }
-                userDTO.setFlagPaid(this.billService.chekPaid(u.getId()));
+                userDTO.setFlagPaid(this.billService.checkPaid(u.getId()));
                 userDTOS.add(userDTO);
             }
         }
@@ -277,7 +277,7 @@ public class CustomUserDetailsService implements UserDetailsService{
 
     public boolean rentPrivilege(Boolean privilege, Long id) {
         User user =  this.userRepository.getOne(id);
-        Privilege privilegee = this.privilegeRepository.findByName("PRIVILEGE_RENT");
+        Privilege privilegee = this.privilegeRepository.findByName("POST_ADS");
         if(privilege  == true){
             user.getPrivileges().add(privilegee);
             this.userRepository.save(user);
