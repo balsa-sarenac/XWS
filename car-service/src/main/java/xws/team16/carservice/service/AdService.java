@@ -1,6 +1,9 @@
 package xws.team16.carservice.service;
 
 
+import feign.FeignException;
+import xws.team16.carservice.client.RequestClient;
+import xws.team16.carservice.client.SearchClient;
 import xws.team16.carservice.exceptions.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -22,6 +25,8 @@ import xws.team16.carservice.model.*;
 import xws.team16.carservice.repository.AdRepository;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service @Slf4j
 public class AdService {
@@ -30,6 +35,12 @@ public class AdService {
     private CarService carService;
     private PriceListService priceListService;
     private ModelMapper modelMapper;
+
+    @Autowired
+    private RequestClient requestClient;
+
+    @Autowired
+    private SearchClient searchClient;
 
     @Autowired
     public AdService(ModelMapper modelMapper, AdRepository adRepository, CarService carService, PriceListService priceListService) {
@@ -117,5 +128,44 @@ public class AdService {
     public Ad getAdById(Long id) {
         log.info("Ad service - getAdById(" + id + ")");
         return adRepository.findById(id).orElseThrow(() -> new NotFoundException("Ad with id " + id + " was not found."));
+    }
+
+    public Ad getCar(Long ad_id) {
+        log.info("Ad service - get ad");
+        if (ad_id == null) ad_id = 1L;
+        Ad ad = adRepository.findById(ad_id).orElseThrow(() -> new NotFoundException("Ad with given id was not found"));
+
+        log.info("Ad getted with id " + ad.getId());
+        return  ad;
+    }
+
+    public ResponseEntity<?> removeAds(Long user_id) {
+        List<Ad> ads  = this.adRepository.findAllByUserId(user_id);
+        List<Long> adsId = new ArrayList<>();
+        for(Ad a: ads){
+            a.setToDate(DateTime.now().minusDays(1));
+            a.setFromDate(DateTime.now().minusDays(2));
+            adsId.add(a.getId());
+            for(RentRequest r: a.getRequest()){
+                log.info("Ad service - calling feign request");
+                try {
+                    this.requestClient.cancelRequest(r.getId());
+                    log.info("Successufully called request service");
+                } catch (FeignException.NotFound e) {
+                    log.info("Error calling request service");
+                }
+            }
+            this.adRepository.save(a);
+        }
+
+        log.info("Ad service - calling feign search");
+        try {
+            this.searchClient.removeAds(adsId);
+            log.info("Successufully called search service");
+        } catch (FeignException.NotFound e) {
+            log.info("Error calling search service");
+        }
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

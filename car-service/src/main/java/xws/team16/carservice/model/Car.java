@@ -66,7 +66,7 @@ public class Car {
    @OneToMany(mappedBy = "car", cascade = CascadeType.ALL)
    private Set<MyImage> images;
 
-   @Transient
+   @Column
    private float overallGrade;
 
    @OneToMany(mappedBy = "car")

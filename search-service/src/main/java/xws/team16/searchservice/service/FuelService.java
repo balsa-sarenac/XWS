@@ -22,19 +22,26 @@ public class FuelService {
         this.fuelRepository = fuelRepository;
     }
 
-    public ResponseEntity<List<FuelDTO>> getFuels() {
-        log.info("Fuel service - get all fuels");
-        List<Fuel> fuels = this.fuelRepository.findAll();
+    public ResponseEntity<?> getAllFuels_ResponseEntity() {
+        log.info("Fuel Service - getAllFuels_ResponseEntity");
+
+        List<Fuel> fuels = getAllFuels();
 
         List<FuelDTO> fuelDTOS = new ArrayList<>();
-        for (Fuel fuel : fuels ){
+        for (Fuel f : fuels) {
             FuelDTO fuelDTO = new FuelDTO();
-            fuelDTO.setId(fuel.getId());
-            fuelDTO.setType(fuel.getType());
+
+            fuelDTO.setId(f.getId());
+            fuelDTO.setType(f.getType());
 
             fuelDTOS.add(fuelDTO);
         }
 
-        return new ResponseEntity<>(fuelDTOS,HttpStatus.OK);
+        return new ResponseEntity<List<FuelDTO>>(fuelDTOS, HttpStatus.OK);
+    }
+
+    public List<Fuel> getAllFuels() {
+        log.info("Fuel Service - getAllFuels()");
+        return fuelRepository.findAll();
     }
 }

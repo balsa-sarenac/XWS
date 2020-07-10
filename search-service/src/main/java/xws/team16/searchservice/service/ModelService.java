@@ -24,19 +24,22 @@ public class ModelService {
         this.modelRepository = modelRepository;
     }
 
-    public ResponseEntity<List<ModelDTO>> getModels() {
-        log.info("Model service - get all models");
-        List<Model> models = this.modelRepository.findAll();
+    public ResponseEntity<List<ModelDTO>> getAll(){
+        log.info("Model service - get all models.");
+
+        List<Model> models = modelRepository.findAll();
 
         List<ModelDTO> modelDTOS = new ArrayList<>();
-        for (Model model : models ){
-            ModelDTO modelDTO = new ModelDTO();
-            modelDTO.setId(model.getId());
-            modelDTO.setName(model.getName());
+        for (Model m : models){
             MarkDTO markDTO = new MarkDTO();
-            markDTO.setId(model.getMark().getId());
-            markDTO.setName(model.getMark().getName());
+            markDTO.setId(m.getMark().getId());
+            markDTO.setName(m.getMark().getName());
+
+            ModelDTO modelDTO = new ModelDTO();
+            modelDTO.setId(m.getId());
+            modelDTO.setName(m.getName());
             modelDTO.setMark(markDTO);
+
             modelDTOS.add(modelDTO);
         }
 

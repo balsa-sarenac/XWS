@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Collection;
+import java.util.Set;
 
 @Getter @Setter @SuperBuilder
 @NoArgsConstructor @AllArgsConstructor
@@ -32,20 +33,26 @@ public class User implements UserDetails {
    @Column(nullable = false)
    private boolean enabled;
 
-//   @Column(name = "adsPosted")
-//   private int adsPosted;
-
-   @Column(name = "isAdmin")
+   @Column(name = "is_admin")
    private boolean isAdmin;
 
-   @Column(name = "companyName")
+   @Column(name = "company_name")
    private String companyName;
 
    @Column(name = "address")
    private String address;
 
-   @Column(name = "businessID")
+   @Column(name = "business_id")
    private String businessID;
+
+   @Column(name = "email")
+   private String email;
+
+   @Column(name = "status")
+   private Integer status;
+
+   @Column(name = "numCanReq")
+   private Integer numCanReq;
 
    @Column
    private Timestamp lastPasswordResetDate;
@@ -55,6 +62,12 @@ public class User implements UserDetails {
            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
    private Collection<Role> roles;
+
+   @ManyToMany(fetch = FetchType.LAZY)
+   @JoinTable(name = "users_privileges",
+           joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+           inverseJoinColumns = @JoinColumn(name = "privilege_id", referencedColumnName = "id"))
+   private Collection<Privilege> privileges;
 
    @Column
    private boolean accountNonExpired;

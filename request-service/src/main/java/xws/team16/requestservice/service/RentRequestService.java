@@ -126,20 +126,32 @@ public class RentRequestService {
                 LocalDate rentFrom = rent.getPickUpDate();
                 LocalDate rentTo = rent.getReturnDate();
                 if(rent.getStatus().equals(RequestStatus.pending)) {
-                    if (rentFrom.isAfter(occupiedFrom) && rentTo.isBefore(occupiedTo)) {
+                    if (!rentFrom.isBefore(occupiedFrom) && !rentTo.isAfter(occupiedTo)) {
                         rent.setStatus(RequestStatus.cancelled);
+                        if(rent.getBundle() != null){
+                            this.rentBundleService.cancelBundle(rent.getBundle().getId());
+                        }
                         this.rentRequestRepository.save(rent);
                     }
-                    if (rentFrom.isBefore(occupiedFrom) && rentTo.isAfter(occupiedTo)) {
+                    if (!rentFrom.isAfter(occupiedFrom) && !rentTo.isBefore(occupiedTo)) {
                         rent.setStatus(RequestStatus.cancelled);
+                        if(rent.getBundle() != null){
+                            this.rentBundleService.cancelBundle(rent.getBundle().getId());
+                        }
                         this.rentRequestRepository.save(rent);
                     }
-                    if (rentFrom.isBefore(occupiedFrom) && rentTo.isBefore(occupiedTo) && rentTo.isAfter(occupiedFrom)) {
+                    if (!rentFrom.isAfter(occupiedFrom) && !rentTo.isAfter(occupiedTo) && !rentTo.isBefore(occupiedFrom)) {
                         rent.setStatus(RequestStatus.cancelled);
+                        if(rent.getBundle() != null){
+                            this.rentBundleService.cancelBundle(rent.getBundle().getId());
+                        }
                         this.rentRequestRepository.save(rent);
                     }
-                    if (rentFrom.isAfter(occupiedFrom) && rentTo.isAfter(occupiedTo) && rentFrom.isBefore(occupiedTo)) {
+                    if (!rentFrom.isBefore(occupiedFrom) && !rentTo.isBefore(occupiedTo) && !rentFrom.isAfter(occupiedTo)) {
                         rent.setStatus(RequestStatus.cancelled);
+                        if(rent.getBundle() != null){
+                            this.rentBundleService.cancelBundle(rent.getBundle().getId());
+                        }
                         this.rentRequestRepository.save(rent);
                     }
                 }
@@ -205,6 +217,23 @@ public class RentRequestService {
         request.setStatus(RequestStatus.refused);
         this.rentRequestRepository.save(request);
         log.info("Successfully refused rent request");
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    public ResponseEntity<?> cancel(Long id) {
+        log.info("Rent request service - cancel request");
+        RentRequest rentRequest = this.rentRequestRepository.findById(id).orElseThrow(() -> new NotFoundException("Request with given id was not found"));
+        if (rentRequest.getStatus().equals(RequestStatus.paid))
+            throw new InvalidOperationException("Rent request has already been paid. It cannot be cancelled.");
+        rentRequest.setStatus(RequestStatus.cancelled);
+        this.rentRequestRepository.save(rentRequest);
+        log.info("Request cancelled");
+        if(rentRequest.getBundle() != null){
+            log.info("Rent request service - canceling bundle");
+            this.rentBundleService.cancelBundle(rentRequest.getBundle().getId());
+            log.info("Rent request service - bundle cancelled");
+        }
+
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

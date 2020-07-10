@@ -12,4 +12,5 @@ public class PriceListDTO {
     private double extraKilometrage;
     private double cdw;
     private double discount;
+    private double discountDays;
 }

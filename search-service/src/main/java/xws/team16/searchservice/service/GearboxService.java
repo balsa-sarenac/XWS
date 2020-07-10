@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service @Slf4j
-public class GearboxService {
+public class    GearboxService {
     private GearboxRepository gearboxRepository;
 
     @Autowired
@@ -21,19 +21,26 @@ public class GearboxService {
         this.gearboxRepository = gearboxRepository;
     }
 
-    public ResponseEntity<List<GearboxDTO>> getGearboxes() {
-        log.info("Gearbox service - get all gearboxes");
-        List<Gearbox> gearboxes = this.gearboxRepository.findAll();
+    public ResponseEntity<?> getAllGearboxes_ResponseEntity() {
+        log.info("Gearbox Service - getAllGearboxes_ResponseEntity");
+
+        List<Gearbox> gearboxes = getAllGearboxes();
 
         List<GearboxDTO> gearboxDTOS = new ArrayList<>();
-        for (Gearbox gearbox : gearboxes ){
+        for (Gearbox g : gearboxes) {
             GearboxDTO gearboxDTO = new GearboxDTO();
-            gearboxDTO.setId(gearbox.getId());
-            gearboxDTO.setType(gearbox.getType());
+
+            gearboxDTO.setId(g.getId());
+            gearboxDTO.setType(g.getType());
 
             gearboxDTOS.add(gearboxDTO);
         }
 
-        return new ResponseEntity<>(gearboxDTOS, HttpStatus.OK);
+        return new ResponseEntity<List<GearboxDTO>>(gearboxDTOS, HttpStatus.OK);
+    }
+
+    public List<Gearbox> getAllGearboxes() {
+        log.info("Gearbox Service - getAllGearboxes()");
+        return gearboxRepository.findAll();
     }
 }

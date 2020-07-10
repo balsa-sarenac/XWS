@@ -25,6 +25,9 @@ public class Car {
    @Column(name = "has_android")
    private boolean hasAndroid;
 
+   @Column(name = "number_of_grades")
+   private int numberOfGrades;
+
    @Column(name = "overall_grade")
    private float overallGrade;
 

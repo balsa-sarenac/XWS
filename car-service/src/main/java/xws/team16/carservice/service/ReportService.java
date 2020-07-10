@@ -1,10 +1,14 @@
 package xws.team16.carservice.service;
 
+import feign.FeignException;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import xws.team16.carservice.client.RequestClient;
+import xws.team16.carservice.dto.PriceListDTO;
 import xws.team16.carservice.dto.ReportDTO;
 import xws.team16.carservice.generated.car.PostReportResponse;
 import xws.team16.carservice.generated.car.TReport;
@@ -20,31 +24,44 @@ public class ReportService {
     private ReportRepository reportRepository;
     private CarService carService;
     private AdService adService;
+    private ModelMapper modelMapper;
 
     @Autowired
-    ReportService(ReportRepository reportRepository, CarService carService, AdService adService){
+    private RequestClient requestClient;
+
+    @Autowired
+    ReportService(ModelMapper modelMapper, ReportRepository reportRepository, CarService carService, AdService adService){
         this.reportRepository = reportRepository;
         this.carService = carService;
         this.adService = adService;
+        this.modelMapper = modelMapper;
     }
 
     public Report newReport(ReportDTO reportDTO){
         log.info("Report service - creating new report");
 
-        Ad ad = adService.getAdById(reportDTO.getAd_id());
-
+        Ad ad = adService.getCar(reportDTO.getAd_id());
         Car car = ad.getCar();
         // if(car == null) return null;
 
-        car.setKilometrage(car.getKilometrage() + reportDTO.getKilometrage());
+        car = carService.updateCarsKilometrage(car, reportDTO.getKilometrage());
 
         Report report = new Report();
         report.setCar(car);
         report.setComment(reportDTO.getComment());
         report.setKilometrage(reportDTO.getKilometrage());
 
-        report = this.reportRepository.save(report);
+        if(ad.getAllowedKilometrage() != 0 && ad.getAllowedKilometrage() < report.getKilometrage()){
+            log.info("Report service - calling feign request");
+            try {
+                this.requestClient.createBill(report.getKilometrage()-ad.getAllowedKilometrage(),reportDTO.getUser_id(),modelMapper.map(ad.getPriceList(), PriceListDTO.class));
+                log.info("Successufully called request service");
+            } catch (FeignException.NotFound e) {
+                log.info("Error calling request service");
+            }
+        }
 
+        report = this.reportRepository.save(report);
         return report;
     }
 

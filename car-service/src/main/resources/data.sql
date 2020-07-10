@@ -1,7 +1,10 @@
-insert into USER_TABLE (first_name, last_name, username, password, is_enabled) values ('balsa', 'sarenac', 'bax', 'asdf', true);
-insert into USER_TABLE (first_name, last_name, username, password, is_enabled) values ('agent', 'agent', 'agent', 'asdf', true);
-insert into USER_TABLE (first_name, last_name, username, password, is_enabled) values ('stefan', 'kovac', 'stefan', 'asdf', true);
-
+insert into user_table (first_name, last_name, username, password, is_enabled) values ('Niksa', 'Sarenac', 'niksa', '$2a$10$N4CZptDrasoEx3IJHL.3ZO1q8xICGMf.EBQY98m.PiR6RjHExRENK', true);
+insert into user_table (first_name, last_name, username, password, is_enabled) values ('Milica', 'Injac', 'milica', '$2a$10$N4CZptDrasoEx3IJHL.3ZO1q8xICGMf.EBQY98m.PiR6RjHExRENK', true);
+insert into user_table (first_name, last_name, username, password, is_enabled) values ('Balsa', 'Sarenac', 'bax',  '$2a$10$N4CZptDrasoEx3IJHL.3ZO1q8xICGMf.EBQY98m.PiR6RjHExRENK', true);
+insert into user_table (first_name, last_name, username, password, is_enabled) values ('Vidak', 'Sarenac', 'vidak', '$2a$10$N4CZptDrasoEx3IJHL.3ZO1q8xICGMf.EBQY98m.PiR6RjHExRENK', true);
+insert into user_table (first_name, last_name, username, password, is_enabled) values ('Stefan', 'Kovac', 'stefan', '$2a$10$N4CZptDrasoEx3IJHL.3ZO1q8xICGMf.EBQY98m.PiR6RjHExRENK', true);
+insert into user_table (first_name, last_name, username, password, is_enabled) values ('Milos', 'Andric', 'miki', '$2a$10$N4CZptDrasoEx3IJHL.3ZO1q8xICGMf.EBQY98m.PiR6RjHExRENK', true);
+insert into user_table (first_name, last_name, username, password, is_enabled) values ('Jovan', 'Vujic', 'vuja',  '$2a$10$N4CZptDrasoEx3IJHL.3ZO1q8xICGMf.EBQY98m.PiR6RjHExRENK', false);
 
 insert into MARK (name ) values ('audi');
 insert into MARK (name ) values ('bmw');
@@ -31,12 +34,12 @@ insert into PRICE_LIST (per_day, extra_kilometrage, cdw, discount) values (7, 4,
 insert into PRICE_LIST (per_day, extra_kilometrage, cdw, discount) values (8, 6, false, 11);
 insert into PRICE_LIST (per_day, extra_kilometrage, cdw, discount) values (9, 5, false, 12);
 insert into PRICE_LIST (per_day, extra_kilometrage, cdw, discount) values (11, 6, true, 10);
-insert into CAR (kilometrage, number_of_child_seats, has_android,  mark_id, car_class_id, fuel_id, model_id, gearbox_id, owner_id, number_of_grades) values (100010, 0,false, 1,2,1,1,1,1,0);
-insert into CAR (kilometrage, number_of_child_seats, has_android,  mark_id, car_class_id, fuel_id, model_id, gearbox_id, owner_id, number_of_grades) values (25555, 0,false, 1,2,2,2,2,1,0);
-insert into CAR (kilometrage, number_of_child_seats, has_android,  mark_id, car_class_id, fuel_id, model_id, gearbox_id, owner_id, number_of_grades) values (100100, 1,false, 2,1,3,3,2,1,0);
-insert into CAR (kilometrage, number_of_child_seats, has_android,  mark_id, car_class_id, fuel_id, model_id, gearbox_id, owner_id, number_of_grades) values (250203, 2,false, 2,2,1,4,1,1,0);
-insert into CAR (kilometrage, number_of_child_seats, has_android,  mark_id, car_class_id, fuel_id, model_id, gearbox_id, owner_id, number_of_grades) values (10503, 0,false, 3,2,3,5,1,1,0);
-insert into CAR (kilometrage, number_of_child_seats, has_android,  mark_id, car_class_id, fuel_id, model_id, gearbox_id, owner_id, number_of_grades) values (150000, 2,false, 4,1,2,7,2,1,0);
+insert into CAR (kilometrage, number_of_child_seats, has_android,  mark_id, car_class_id, fuel_id, model_id, gearbox_id, owner_id, number_of_grades, overall_grade) values (100010, 0,false, 1,2,1,1,1,3,2,4.5);
+insert into CAR (kilometrage, number_of_child_seats, has_android,  mark_id, car_class_id, fuel_id, model_id, gearbox_id, owner_id, number_of_grades, overall_grade) values (25555, 0,false, 1,2,2,2,2,3,0,0);
+insert into CAR (kilometrage, number_of_child_seats, has_android,  mark_id, car_class_id, fuel_id, model_id, gearbox_id, owner_id, number_of_grades, overall_grade) values (100100, 1,false, 2,1,3,3,2,3,0,0);
+insert into CAR (kilometrage, number_of_child_seats, has_android,  mark_id, car_class_id, fuel_id, model_id, gearbox_id, owner_id, number_of_grades, overall_grade) values (250203, 2,false, 2,2,1,4,1,3,0,0);
+insert into CAR (kilometrage, number_of_child_seats, has_android,  mark_id, car_class_id, fuel_id, model_id, gearbox_id, owner_id, number_of_grades, overall_grade) values (10503, 0,false, 3,2,3,5,1,3,0,0);
+insert into CAR (kilometrage, number_of_child_seats, has_android,  mark_id, car_class_id, fuel_id, model_id, gearbox_id, owner_id, number_of_grades, overall_grade) values (150000, 2,false, 4,1,2,7,2,3,0,0);
 insert into AD (cdw_available, pick_up_place, from_date, to_date, allowed_kilometrage, car_id, price_list_id, user_id) values (true, 'Nevesinje', '2020-06-01T21:39:45.618', '2020-06-19T21:39:45.618', 350, 1,1,1);
 insert into AD (cdw_available, pick_up_place, from_date, to_date, allowed_kilometrage, car_id, price_list_id, user_id) values (true, 'Trebinje', '2020-06-01T21:39:45.618', '2020-06-19T21:39:45.618', 100, 2,2,1);
 insert into AD (cdw_available, pick_up_place, from_date, to_date, allowed_kilometrage, car_id, price_list_id, user_id) values (false, 'BanjaLuka', '2020-06-02T21:39:45.618', '2020-06-10T21:39:45.618', 200, 3,3,1);
@@ -45,18 +48,21 @@ insert into AD (cdw_available, pick_up_place, from_date, to_date, allowed_kilome
 insert into AD (cdw_available, pick_up_place, from_date, to_date, allowed_kilometrage, car_id, price_list_id, user_id) values (true, 'Nevesinje', '2020-06-03T21:39:45.618', '2020-06-11T21:39:45.618', 250, 6,4,1);
 
 
-insert into COMMENT (text, approved, user_id, car_id, ad_id) values ('komentar', false, 1, 1, 1);
-insert into COMMENT (text, approved, user_id, car_id, ad_id) values ('Komentar2', false, 1, 2, 2);
-insert into COMMENT (text, approved, user_id, car_id, ad_id) values ('komentar3', false, 3, 2, 2);
-insert into COMMENT (text, approved, user_id, car_id, ad_id) values ('komentar4', false, 1, 3, 3);
-insert into COMMENT (text, approved, user_id, car_id, ad_id) values ('komentar5', false, 3, 3, 3);
+
 
 insert into GRADE (grade, user_id, car_id, ad_id) values (5, 1, 1, 1);
 insert into GRADE (grade, user_id, car_id, ad_id) values (4, 1, 1, 1);
 
-insert into COMMENT (text, approved, user_id, car_id, ad_id) values ('mnogo brz auto!!!11', true, 1, 2, 1);
-insert into COMMENT (text, approved, user_id, car_id, ad_id) values ('mnogo mi se svidja ovaj automobil', true, 1, 4, 2);
-insert into COMMENT (text, approved, user_id, car_id, ad_id) values ('preporucujem svakom ko voli udobnu voznju', true, 1, 2, 2);
+
+insert into COMMENT (text, approved, user_id, car_id, ad_id) values ('Odlicno sve, monogo mi se svidja', true, 1, 1, 1);
+insert into COMMENT (text, approved, user_id, car_id, ad_id) values ('Preporucujem', true, 1, 2, 2);
+insert into COMMENT (text, approved, user_id, car_id, ad_id) values ('Sve korektno', true, 2, 2, 2);
+insert into COMMENT (text, approved, user_id, car_id, ad_id) values ('Odlicno auto', true, 4, 3, 3);
+insert into COMMENT (text, approved, user_id, car_id, ad_id) values ('Zadovoljan sam uslugom', true, 4, 3, 3);
+insert into COMMENT (text, approved, user_id, car_id, ad_id) values ('Mnogo brz auto!!!11', true, 4, 4, 4);
+insert into COMMENT (text, approved, user_id, car_id, ad_id) values ('Mnogo mi se svidja ovaj automobil', false, 3, 4, 4);
+insert into COMMENT (text, approved, user_id, car_id, ad_id) values ('Preporucujem svakom ko voli udobnu voznju', false, 4, 6, 6);
+
 
 
 

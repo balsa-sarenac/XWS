@@ -55,7 +55,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers(HttpMethod.OPTIONS).permitAll()
-                .antMatchers("/h2-console/**", "/aggregate/**", "/verify")
+                .antMatchers("/h2-console/**", "/aggregate/**", "/verify", "/**")
                 .permitAll()
                 .anyRequest().authenticated();
 

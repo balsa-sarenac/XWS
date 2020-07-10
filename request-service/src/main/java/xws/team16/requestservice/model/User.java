@@ -18,7 +18,8 @@ public class User {
    @GeneratedValue(strategy = GenerationType.IDENTITY)
    private Long id;
 
-//   private String username;
+   @Column
+   private String username;
 //   private String firstName;
 //   private String lastName;
 //   private String companyName;
@@ -31,6 +32,8 @@ public class User {
    @OneToMany(mappedBy = "user")
    private Set<RentRequest> request;
 
+   @OneToMany(mappedBy = "user")
+   private Set<Bill> bills;
 
    @Override
    public boolean equals(Object o) {

@@ -21,20 +21,32 @@ public class CommentController {
     @PostMapping()
     private ResponseEntity<?> createComment(@RequestBody CommentDTO commentDTO){
         log.info("Comment controller - create comment");
-        return this.commentService.createComment(commentDTO);
+        return this.commentService.createComment(commentDTO, false);
+    }
+
+    @PostMapping(value = "/reply")
+    private ResponseEntity<?> createCommentReply(@RequestBody CommentDTO commentDTO) {
+        log.info("Comment controller - create comment");
+        return this.commentService.createComment(commentDTO, true);
     }
 
 
-    @GetMapping(value = "/{carId}")
+    @GetMapping(value = "/car/{carId}")
     private ResponseEntity<?> getComments(@PathVariable Long carId){
         log.info("Comment controller - getting comment for car");
         return this.commentService.getComments(carId);
     }
 
-    @GetMapping(value = "/all")
+    @GetMapping()
     private ResponseEntity<?> getAllComments(){
         log.info("Comment controller - getting all comments");
         return this.commentService.getAllComments();
+    }
+
+    @GetMapping(value = "/check/{username}/{id}")
+    private ResponseEntity<?> checkComment(@PathVariable Long id, @PathVariable String username){
+        log.info("Comment controller - check comment created");
+        return this.commentService.check(username, id);
     }
 
     @GetMapping(value = "/accept/{id}/{decision}")

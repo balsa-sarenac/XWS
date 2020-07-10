@@ -38,7 +38,7 @@ public class AdController {
      */
     @GetMapping(value = "/{id}")
     public ResponseEntity<?> getAd(@PathVariable Long id) {
-        log.info("Ad controller - new ad");
+        log.info("Ad controller - get ad");
         return this.adService.getOneAdById(id);
     }
 
@@ -49,7 +49,7 @@ public class AdController {
     }
 
     @GetMapping( value = "/city")
-    public ResponseEntity<?> searchAds() {
+    public ResponseEntity<?> searchCity() {
         log.info("Ad controller - searching cities");
         return this.adService.findCities();
     }

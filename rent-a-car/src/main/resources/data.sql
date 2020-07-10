@@ -5,7 +5,7 @@ insert into role (name, id) values ('ROLE_USER', 3);
 
 --Privileges
 
-insert into privilege  (name, id) values ('PRIVILEGE_RENT', 1);
+insert into privilege  (name, id) values ('POST_ADS', 1);
 
 -- USERS
 insert into user_table (id, username, first_name, last_name, address, password, enabled, account_non_expired, account_non_locked, credentials_non_expired, is_admin, status, num_can_req, last_password_reset_date)

@@ -37,5 +37,8 @@ public class User {
    @OneToMany(mappedBy = "user")
    private Set<Ad> ads;
 
+   @OneToMany(mappedBy = "user")
+   private Set<PriceList> priceLists;
+
 
 }

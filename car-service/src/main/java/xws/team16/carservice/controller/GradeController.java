@@ -24,7 +24,13 @@ public class GradeController {
         return this.gradeService.createGrade(gradeDTO);
     }
 
-    @GetMapping(value = "/{id}")
+    @GetMapping(value = "/check/{username}/{id}")
+    private ResponseEntity<?> checkGrade(@PathVariable Long id, @PathVariable String username){
+        log.info("Grade controller - check grade created");
+        return this.gradeService.check(username, id);
+    }
+
+    @GetMapping(value = "/car/{carId}")
     private ResponseEntity<?> getGradesForCar(@PathVariable Long carId){
         log.info("Grade controller - getting all grade");
         return this.gradeService.getGrades(carId);

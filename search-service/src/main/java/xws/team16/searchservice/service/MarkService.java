@@ -6,7 +6,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import xws.team16.searchservice.dto.MarkDTO;
+import xws.team16.searchservice.dto.ModelDTO;
 import xws.team16.searchservice.model.Mark;
+import xws.team16.searchservice.model.Model;
 import xws.team16.searchservice.repository.MarkRepository;
 
 import java.util.ArrayList;
@@ -21,19 +23,26 @@ public class MarkService {
         this.markRepository = markRepository;
     }
 
-    public ResponseEntity<List<MarkDTO>> getMarks() {
-        log.info("Mark service - get all marks");
-        List<Mark> marks = this.markRepository.findAll();
+    public List<MarkDTO> getAll(){
+        log.info("Mark Service - get all marks.");
+
+        List<Mark> marks = markRepository.findAll();
 
         List<MarkDTO> markDTOS = new ArrayList<>();
-        for (Mark mark  : marks ){
+        for (Mark m : marks){
             MarkDTO markDTO = new MarkDTO();
-            markDTO.setId(mark.getId());
-            markDTO.setName(mark.getName());
-
+            markDTO.setId(m.getId());
+            markDTO.setName(m.getName());
+            List<ModelDTO> modelDTOList = new ArrayList<>();
+            for (Model model: m.getModels()) {
+                ModelDTO modelDTO = new ModelDTO();
+                modelDTO.setId(model.getId());
+                modelDTO.setName(model.getName());
+                modelDTOList.add(modelDTO);
+            }
+            markDTO.setModels(modelDTOList);
             markDTOS.add(markDTO);
         }
-
-        return new ResponseEntity<>(markDTOS, HttpStatus.OK);
+        return markDTOS;
     }
 }

@@ -11,4 +11,5 @@ public class UserTokenState {
     private Integer expiresIn;
     private String username;
     private String refreshToken;
+    private String role;
 }
