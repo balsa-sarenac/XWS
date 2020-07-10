@@ -47,7 +47,7 @@ public class CommentService {
         comment.setAd(ad);
         comment.setUser(user);
 
-        if(user.getRoles().iterator().next().getName().equals("ROLE_USER") && reply == false) {
+        if(commentDTO.getRole().equals("ROLE_USER") && reply == false) {
             Comment commentCheck = this.commentRepository.findByUserIdAndAdId(user.getId(), ad.getId());
             if (commentCheck != null) {
                 log.info("Comment service - user comment already created");

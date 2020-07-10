@@ -28,9 +28,15 @@ public class OccupiedController {
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<?> addNew(@PathVariable Long id ) {
+    public ResponseEntity<?> getOccupied(@PathVariable Long id ) {
         log.info("Occupied controller - get occupied");
         return this.occupiedService.getOccupied(id);
+    }
+
+    @GetMapping(value = "/user/{username}")
+    public ResponseEntity<?> getOccupationUser(@PathVariable String username ) {
+        log.info("Occupied controller - get occupations");
+        return this.occupiedService.getOccupiedByUser(username);
     }
 
 }

@@ -49,4 +49,14 @@ public class AdController {
      */
     // @PostMapping(value = "/{carId}")
     // public ResposnseEntity<?> addNew(@PathVariable Long carId) {}
+
+    /**
+     * Remove ads for specific user
+     * @param user_id is id of the user
+     */
+    @GetMapping(value = "/removeAll/{user_id}")
+    public ResponseEntity<?> removeAds(@PathVariable Long user_id) {
+        log.info("Ad controller - remove all ad for user");
+        return this.adService.removeAds(user_id);
+    }
 }

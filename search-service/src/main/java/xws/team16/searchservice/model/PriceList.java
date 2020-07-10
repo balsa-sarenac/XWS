@@ -26,4 +26,7 @@ public class PriceList {
    @Column(name = "discount")
    private double discount;
 
+   @Column(name = "discount_days")
+   private double discountDays;
+
 }

@@ -99,4 +99,11 @@ public class RequestController {
         log.info("Request controller - occupied requests");
         return this.rentRequestService.cancelOccupiedRequests(occupiedDTO);
     }
+
+    @GetMapping(value = "/cancelRequest/{id}", consumes = "application/json")
+    public ResponseEntity<?> cancelRequest(@PathVariable Long id) {
+        log.info("Request controller - cancel request with id " + id);
+        return this.rentRequestService.cancel(id);
+    }
+
 }

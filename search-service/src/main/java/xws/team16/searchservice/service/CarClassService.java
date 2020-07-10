@@ -21,19 +21,26 @@ public class CarClassService {
         this.carClassRepository = carClassRepository;
     }
 
-    public ResponseEntity<List<CarClassDTO>> getClasses() {
-        log.info("CarClass service - get all classes");
-        List<CarClass> carClasses = this.carClassRepository.findAll();
+    public ResponseEntity<?> getAllCarClasses_ResponseEntity() {
+        log.info("CarClass Service - getAllCarClasses_ResponseEntity");
+
+        List<CarClass> carClasses = getAllCarClasses();
 
         List<CarClassDTO> carClassDTOS = new ArrayList<>();
-        for (CarClass carClass  : carClasses ){
+        for (CarClass cc : carClasses) {
             CarClassDTO carClassDTO = new CarClassDTO();
-            carClassDTO.setId(carClass.getId());
-            carClassDTO.setName(carClass.getName());
+
+            carClassDTO.setId(cc.getId());
+            carClassDTO.setName(cc.getName());
 
             carClassDTOS.add(carClassDTO);
         }
 
-        return new ResponseEntity<>(carClassDTOS, HttpStatus.OK);
+        return new ResponseEntity<List<CarClassDTO>>(carClassDTOS, HttpStatus.OK);
+    }
+
+    public List<CarClass> getAllCarClasses() {
+        log.info("CarClass Service - getAllCarClasses()");
+        return carClassRepository.findAll();
     }
 }

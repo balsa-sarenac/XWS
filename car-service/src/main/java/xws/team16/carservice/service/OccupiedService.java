@@ -6,11 +6,13 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import xws.team16.carservice.client.RequestClient;
+import xws.team16.carservice.dto.CarInfoDTO;
 import xws.team16.carservice.dto.OccupiedDTO;
 import xws.team16.carservice.generated.car.PostOccupiedRequest;
 import xws.team16.carservice.generated.car.TOccupied;
@@ -28,19 +30,50 @@ public class OccupiedService {
     private OccupiedRepository occupiedRepository;
     private CarService carService;
     private AdRepository adRepository;
+    private ModelMapper modelMapper;
 
     @Autowired
     private RequestClient requestClient;
 
     @Autowired
-    public OccupiedService(OccupiedRepository occupiedRepository, CarService carService, AdRepository adRepository) {
+    public OccupiedService(ModelMapper modelMapper, OccupiedRepository occupiedRepository, CarService carService, AdRepository adRepository) {
         this.occupiedRepository = occupiedRepository;
         this.carService = carService;
         this.adRepository = adRepository;
+        this.modelMapper = modelMapper;
+    }
+
+    public boolean checkOccupied(List< Occupied> occupieds, OccupiedDTO occupiedDTO){
+        LocalDate occupiedFrom = occupiedDTO.getDateFrom();
+        LocalDate occupiedTo = occupiedDTO.getDateTo();
+
+        for(Occupied o: occupieds){
+            LocalDate rentFrom = o.getDateFrom();
+            LocalDate rentTo = o.getDateTo();
+            if(!rentFrom.isBefore(occupiedFrom) && !rentTo.isAfter(occupiedTo))
+                return true;
+            if(!rentFrom.isAfter(occupiedFrom) && !rentTo.isBefore(occupiedTo))
+                return true;
+            if(!rentFrom.isAfter(occupiedFrom) && !rentTo.isAfter(occupiedTo) && !rentTo.isBefore(occupiedFrom))
+                return true;
+            if(!rentFrom.isBefore(occupiedFrom) && !rentTo.isBefore(occupiedTo) && !rentFrom.isAfter(occupiedTo))
+                return true;
+        }
+        return false;
     }
 
     public ResponseEntity<Void> newOccupied(OccupiedDTO occupiedDTO) {
         log.info("Occupied service - new occupied");
+        if(occupiedDTO.getDateFrom().isAfter(occupiedDTO.getDateTo()) || occupiedDTO.getDateFrom().isBefore(LocalDate.now())){
+            return  new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        List<Occupied> occupiedss = this.occupiedRepository.findAllByCarId(occupiedDTO.getCarId());
+        boolean flag = checkOccupied(occupiedss, occupiedDTO);
+        if(flag == true){
+            return  new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
+
         Occupied occupied = new Occupied();
         occupied.setDateFrom(occupiedDTO.getDateFrom());
         occupied.setDateTo(occupiedDTO.getDateTo());
@@ -53,6 +86,7 @@ public class OccupiedService {
         }
         occupiedDTO.setAdsId(adsId);
 
+        log.info("Occupied service - calling feign request");
         try {
             this.requestClient.occupiedRequests(occupiedDTO);
             log.info("Successufully called request service");
@@ -110,5 +144,23 @@ public class OccupiedService {
             occupiedDTO.setId(occupied.getId());
 
             return new ResponseEntity<>(occupiedDTO, HttpStatus.FOUND);
+    }
+
+    public ResponseEntity<?> getOccupiedByUser(String username) {
+        List<Car> cars = this.carService.getCarByUserUsername(username);
+        List<OccupiedDTO> occupiedDTOS = new ArrayList<>();
+        for(Car c: cars){
+            List<Occupied> occupieds = this.occupiedRepository.findAllByCarAndDateToAfter(c, LocalDate.now());
+            for(Occupied o: occupieds){
+                OccupiedDTO occupiedDTO = new OccupiedDTO();
+                occupiedDTO.setCar(modelMapper.map(o.getCar(), CarInfoDTO.class));
+                occupiedDTO.setDateFrom(o.getDateFrom());
+                occupiedDTO.setDateTo(o.getDateTo());
+                occupiedDTO.setCarId(o.getCar().getId());
+                occupiedDTOS.add(occupiedDTO);
+            }
+        }
+
+        return new ResponseEntity<>(occupiedDTOS, HttpStatus.OK);
     }
 }

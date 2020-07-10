@@ -1,5 +1,11 @@
 -- USERS
-insert into USER_TABLE (id) values (1);
+insert into USER_TABLE (id, username) values (1, 'niksa');
+insert into USER_TABLE (id, username) values (2, 'milica');
+insert into USER_TABLE (id, username) values (3, 'bax');
+insert into USER_TABLE (id, username) values (4, 'vidak');
+insert into USER_TABLE (id, username) values (5, 'stefan');
+insert into USER_TABLE (id, username) values (6, 'miki');
+insert into USER_TABLE (id, username) values (6, 'vuja');
 
 -- ADS
 insert into AD (id, user_id) values (1, 1);
@@ -22,3 +28,6 @@ insert into RENT_REQUEST (id, status, date_created, pick_up_date, return_date, p
 insert into RENT_REQUEST (id, status, date_created, pick_up_date, return_date, pick_up_place, ad_id, bundle_id, user_id) values (6, 'paid', '2020-06-01T21:39:45.618', '2020-06-03', '2020-06-30', 'Novi Sad', 5, 2, 1);
 insert into RENT_REQUEST (id, status, date_created, pick_up_date, return_date, pick_up_place, ad_id, bundle_id, user_id) values (7, 'paid', '2020-06-01T21:39:45.618', '2020-06-03', '2020-06-30', 'Novi Sad', 5, 2, 1);
 
+insert into bill (id, user_id, price, paid) values (1, 5, 200, false);
+insert into bill (id, user_id, price, paid) values (2, 5, 200, false);
+insert into bill (id, user_id, price, paid) values (3, 5, 200, false);

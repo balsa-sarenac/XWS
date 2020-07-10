@@ -25,4 +25,11 @@ public class PriceList {
 
     @Column(name = "discount")
     private double discount;
+
+    @Column(name = "discount_days")
+    private double discountDays;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 }

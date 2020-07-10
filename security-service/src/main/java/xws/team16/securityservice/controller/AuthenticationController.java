@@ -15,6 +15,7 @@ import xws.team16.securityservice.service.impl.CustomUserDetailsService;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+@CrossOrigin(value = "*")
 @RestController @Slf4j
 @RequestMapping(produces = "application/json")
 public class AuthenticationController {
@@ -40,13 +41,58 @@ public class AuthenticationController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
+    @PatchMapping(value = "")
+    //@PreAuthorize("hasAuthority('ROLE_USER')")
+    public ResponseEntity<?> edit(@RequestBody UserDTO userDTO) {
+        log.info("Controller /edit reached by user: " + userDTO.getUsername());
+        return this.userDetailsService.edit(userDTO);
+    }
+
+    /**
+     * Delete user from application
+     * @param userId id of the user
+     * @return 200 ok if successful or 404 not found if user does not exist
+     */
+    //@PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @DeleteMapping(value = "/{userId}")
+    public ResponseEntity<Void> delete(@PathVariable Long userId) {
+        log.info("Controller /delete reached by user id " + userId);
+        this.userDetailsService.delete(userId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+
+    //@PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @GetMapping(value = "/users")
+    public ResponseEntity<?> getUsers() {
+        log.info("Auth controller - get all users");
+        return this.userDetailsService.getUsers();
+    }
+
+    @GetMapping(value = "/rentPrivilege/{privilege}/{id}")
+    public ResponseEntity<?> rentPrivileges(@PathVariable Boolean privilege, @PathVariable Long id) {
+        log.info("Auth controller - setting rent privileges");
+        boolean flag =  this.userDetailsService.rentPrivilege(privilege, id);
+        if(flag == true){
+            return new ResponseEntity<>(HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping(value = "/{username}")
+    public ResponseEntity<?> getUser(@PathVariable String username) {
+        log.info("Auth controller - get all users");
+        return this.userDetailsService.getUser(username);
+    }
+
     /**
      * Enables user to log in to application
      * @param userId id of the user
      * @return 200 ok if successful or 404 not found if user does not exist
      */
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    @PutMapping(value = "/enable/{userId}")
+    //@PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @GetMapping(value = "/enable/{userId}")
     public ResponseEntity<Void> enable(@PathVariable Long userId) {
         log.info("Controller /enable reached by user id " + userId);
         this.userDetailsService.enable(userId);
@@ -58,8 +104,8 @@ public class AuthenticationController {
      * @param userId id of the user
      * @return 200 ok if successful or 404 not found if user does not exist
      */
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    @PutMapping(value = "/disable/{userId}")
+    //@PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @GetMapping(value = "/disable/{userId}")
     public ResponseEntity<Void> disable(@PathVariable Long userId) {
         log.info("Controller /disable reached by user id " + userId);
         this.userDetailsService.disable(userId);
