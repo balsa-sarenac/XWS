@@ -33,7 +33,7 @@ public class CommentService {
         this.adService = adService;
     }
 
-    public ResponseEntity<?> createComment(CommentDTO commentDTO) {
+    public ResponseEntity<?> createComment(CommentDTO commentDTO, Boolean reply) {
         log.info("Comment service - creating comment");
         Comment comment = Comment.builder()
                 .approved(false)
@@ -47,17 +47,28 @@ public class CommentService {
         comment.setAd(ad);
         comment.setUser(user);
 
-        /*
-        Comment commentCheck = this.commentRepository.findByUserIdAndAdId(user.getId(),ad.getId());
-
-        if(commentCheck != null){
-            log.info("Comment service - comment already created");
-            return new ResponseEntity<>("User already add comment for this car", HttpStatus.BAD_REQUEST);
-        }*/
+        if(commentDTO.getRole().equals("ROLE_USER") && reply == false) {
+            Comment commentCheck = this.commentRepository.findByUserIdAndAdId(user.getId(), ad.getId());
+            if (commentCheck != null) {
+                log.info("Comment service - user comment already created");
+                return new ResponseEntity<>("User already add comment for this car", HttpStatus.BAD_REQUEST);
+            }
+        }
 
         this.commentRepository.save(comment);
         log.info("Comment service - comment created");
         return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    public ResponseEntity<?> check(String username, Long id){
+        log.info("Comment service - checking comment already created");
+        User user = this.userService.getUserByUsername(username);
+        Comment commentCheck = this.commentRepository.findByUserIdAndAdId(user.getId(), id);
+
+        if (commentCheck != null) {
+            return new ResponseEntity<>(true, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(false, HttpStatus.OK);
     }
 
     public ResponseEntity<?> getComments(Long carId) {
@@ -75,6 +86,8 @@ public class CommentService {
                     .approved(comment.isApproved())
                     .id(comment.getId())
                     .text(comment.getText())
+                    .carId(comment.getCar().getId())
+                    .adId(comment.getAd().getId())
                     .userUsername(comment.getUser().getUsername())
                     .build();
             commentDTOS.add(commentDTO);
