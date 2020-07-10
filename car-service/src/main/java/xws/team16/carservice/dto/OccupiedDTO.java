@@ -17,4 +17,5 @@ public class OccupiedDTO {
     private LocalDate dateFrom;
     private Long carId;
     private List<Long> adsId;
+    private CarInfoDTO car;
 }
