@@ -6,4 +6,5 @@ import xws.team16.requestservice.model.User;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
+    User findByUsername(String username);
 }
