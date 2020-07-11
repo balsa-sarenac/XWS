@@ -26,7 +26,7 @@ public class CarClassController {
         return carClassService.getCarClassById_ResponseEntity(id);
     }
 
-    @GetMapping(value = "/all")
+    @GetMapping
     public ResponseEntity<?> getAllCarClasses() {
         log.info("CarClass Controller - getAllCarClasses()");
         return carClassService.getAllCarClasses_ResponseEntity();

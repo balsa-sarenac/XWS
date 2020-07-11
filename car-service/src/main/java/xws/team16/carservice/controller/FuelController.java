@@ -26,7 +26,7 @@ public class FuelController {
         return fuelService.getFuelById_ResponseEntity(id);
     }
 
-    @GetMapping(value = "/all")
+    @GetMapping
     public ResponseEntity<?> getAllFuels() {
         log.info("Fuel Controller - getAllFuels()");
         return fuelService.getAllFuels_ResponseEntity();
