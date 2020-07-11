@@ -17,4 +17,6 @@ public interface RentRequestRepository extends JpaRepository<RentRequest, Long> 
     List<RentRequest> findByUser(User user);
 
     List<RentRequest> findAllByAd_User_Id(Long id);
+
+    List<RentRequest> findAllByStatus(RequestStatus pending);
 }
