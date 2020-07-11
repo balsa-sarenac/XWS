@@ -4,7 +4,7 @@ package xws.team16.carservice.service;
 import feign.FeignException;
 import xws.team16.carservice.client.RequestClient;
 import xws.team16.carservice.client.SearchClient;
-import xws.team16.carservice.dto.NewAdRequestDTO;
+import xws.team16.carservice.dto.*;
 import xws.team16.carservice.exceptions.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -13,11 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import xws.team16.carservice.dto.AdDTO;
 import xws.team16.carservice.generated.ad.PostAdRequest;
 import xws.team16.carservice.generated.ad.TAd;
-import xws.team16.carservice.dto.AdInfoDTO;
-import xws.team16.carservice.dto.CarInfoDTO;
 import xws.team16.carservice.model.Ad;
 import xws.team16.carservice.model.Car;
 import xws.team16.carservice.model.PriceList;
@@ -27,7 +24,9 @@ import xws.team16.carservice.repository.AdRepository;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service @Slf4j
 public class AdService {
@@ -201,5 +200,16 @@ public class AdService {
 
         return new ResponseEntity<>(cities, HttpStatus.OK);
 
+    }
+
+    public ResponseEntity<?> getUsersForCars(AdListDTO adListDTO) {
+        List<Ad> ads = this.adRepository.findAllById(adListDTO.getAds());
+        AdUsersDTO adUsersDTO = new AdUsersDTO();
+        Map<Long, Long> adUsersMap = new HashMap<>();
+        for (Ad ad: ads) {
+            adUsersMap.put(ad.getId(), ad.getUser().getId());
+        }
+        adUsersDTO.setAdUserMap(adUsersMap);
+        return new ResponseEntity<>(adUsersDTO, HttpStatus.OK);
     }
 }

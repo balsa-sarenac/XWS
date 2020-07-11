@@ -6,6 +6,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import xws.team16.carservice.dto.AdDTO;
+import xws.team16.carservice.dto.AdListDTO;
 import xws.team16.carservice.service.AdService;
 
 import java.sql.SQLException;
@@ -64,5 +65,11 @@ public class AdController {
     public ResponseEntity<?> searchCity() {
         log.info("Ad controller - searching cities");
         return this.adService.findCities();
+    }
+
+    @PostMapping(value = "/users-cars")
+    public ResponseEntity<?> getUsersForCars(@RequestBody AdListDTO adListDTO) {
+        log.info("Requesting users for ads");
+        return this.adService.getUsersForCars(adListDTO);
     }
 }
