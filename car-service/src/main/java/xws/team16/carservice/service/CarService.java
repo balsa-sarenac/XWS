@@ -13,6 +13,7 @@ import xws.team16.carservice.generated.ad.TCar;
 import xws.team16.carservice.generated.car.*;
 import xws.team16.carservice.model.*;
 import xws.team16.carservice.repository.CarRepository;
+import xws.team16.carservice.repository.MyImageRepository;
 
 import javax.sql.rowset.serial.SerialBlob;
 import java.sql.SQLException;
@@ -33,6 +34,8 @@ public class CarService {
     private UserService userService;
     private ModelMapper modelMapper;
 
+    @Autowired
+    private MyImageRepository myImageRepository;
 
     @Autowired
     public CarService(CarRepository carRepository, ModelService modelService, MarkService markService, FuelService fuelService,
@@ -48,7 +51,7 @@ public class CarService {
     }
 
     public Car newCar(CarDTO carDTO) throws SQLException {
-        log.info("Car service - new car");
+        log.info("New car");
         Model model = this.modelService.getModelById(carDTO.getModelId());
         Mark mark = this.markService.getMarkById(carDTO.getMarkId());
         Fuel fuel = this.fuelService.getFuelById(carDTO.getFuelId());
@@ -64,13 +67,6 @@ public class CarService {
 //            myImage.setImage(image.getImage());
 //            images.add(myImage);
 //        }
-        Set<MyImage> images = new HashSet<>();
-        if (carDTO.getImages() != null) {
-            for (String image: carDTO.getImages()) {
-                MyImage myImage = extractImage(image);
-                images.add(myImage);
-            }
-        }
 
         Car car = new Car();
         car.setModel(model);
@@ -81,10 +77,20 @@ public class CarService {
         car.setOwner(user);
         car.setKilometrage(carDTO.getKilometrage());
         car.setNumberOfChildSeats(carDTO.getNumberOfChildSeats());
-        car.setImages(images);
+//        car.setImages(images);
 
         car = this.carRepository.save(car);
         log.info("Car added with id " + car.getId());
+
+        Set<MyImage> images = new HashSet<>();
+        if (carDTO.getImages() != null) {
+            for (String image: carDTO.getImages()) {
+                MyImage myImage = extractImage(image);
+                myImage.setCar(car);
+                images.add(myImage);
+            }
+        }
+        this.myImageRepository.saveAll(images);
 
         return car;
     }
@@ -139,6 +145,12 @@ public class CarService {
         myImage.setInfo(parts[0]);
         myImage.setType(type);
         return myImage;
+    }
+
+    public String encodeImage(MyImage myImage) throws SQLException {
+        String retVal = "data:image/jpeg;base64,";
+        String img = Base64.toBase64String(myImage.getImage().getBytes(1L, (int) myImage.getImage().length()));
+        return retVal + img;
     }
 
     public ResponseEntity<?> getCarByUser(String username) {
