@@ -8,7 +8,10 @@
 
 package xws.tim16.rentacar.generated;
 
-import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
 
 /**
@@ -21,7 +24,7 @@ import javax.xml.bind.annotation.*;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
- *         &lt;element name="priceListRequest" type="{https://ftn.uns.ac.rs/car}TPriceList"/&gt;
+ *         &lt;element name="commentResponse" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
@@ -32,36 +35,27 @@ import javax.xml.bind.annotation.*;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "priceListRequest"
+    "commentResponse"
 })
-@XmlRootElement(name = "PostPriceListRequest")
-public class PostPriceListRequest {
+@XmlRootElement(name = "PostCommentResponse")
+public class PostCommentResponse {
 
-    @XmlElement(required = true)
-    protected TPriceList priceListRequest;
+    protected long commentResponse;
 
     /**
-     * Gets the value of the priceListRequest property.
-     *
-     * @return
-     *     possible object is
-     *     {@link TPriceList }
-     *
+     * Gets the value of the commentResponse property.
+     * 
      */
-    public TPriceList getPriceListRequest() {
-        return priceListRequest;
+    public long getCommentResponse() {
+        return commentResponse;
     }
 
     /**
-     * Sets the value of the priceListRequest property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link TPriceList }
-     *     
+     * Sets the value of the commentResponse property.
+     * 
      */
-    public void setPriceListRequest(TPriceList value) {
-        this.priceListRequest = value;
+    public void setCommentResponse(long value) {
+        this.commentResponse = value;
     }
 
 }

@@ -21,7 +21,7 @@ import javax.xml.bind.annotation.*;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
- *         &lt;element name="priceListRequest" type="{https://ftn.uns.ac.rs/car}TPriceList"/&gt;
+ *         &lt;element name="commentRequest" type="{https://ftn.uns.ac.rs/car}TComment"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
@@ -32,36 +32,36 @@ import javax.xml.bind.annotation.*;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "priceListRequest"
+    "commentRequest"
 })
-@XmlRootElement(name = "PostPriceListRequest")
-public class PostPriceListRequest {
+@XmlRootElement(name = "PostCommentRequest")
+public class PostCommentRequest {
 
     @XmlElement(required = true)
-    protected TPriceList priceListRequest;
+    protected TComment commentRequest;
 
     /**
-     * Gets the value of the priceListRequest property.
+     * Gets the value of the commentRequest property.
      *
      * @return
      *     possible object is
-     *     {@link TPriceList }
+     *     {@link TComment }
      *
      */
-    public TPriceList getPriceListRequest() {
-        return priceListRequest;
+    public TComment getCommentRequest() {
+        return commentRequest;
     }
 
     /**
-     * Sets the value of the priceListRequest property.
+     * Sets the value of the commentRequest property.
      *
      * @param value
      *     allowed object is
-     *     {@link TPriceList }
+     *     {@link TComment }
      *     
      */
-    public void setPriceListRequest(TPriceList value) {
-        this.priceListRequest = value;
+    public void setCommentRequest(TComment value) {
+        this.commentRequest = value;
     }
 
 }
