@@ -33,6 +33,45 @@
             </xs:sequence>
         </xs:complexType>
     </xs:element>
+    <xs:element name="PostPriceListRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="priceListRequest" type="car:TPriceList"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="PostPriceListResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="priceListResponse" type="xs:long"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="EditPriceListRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="priceListRequest" type="car:TPriceList"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="EditPriceListResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="priceListResponse" type="xs:long"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:complexType name="TPriceList">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long"/>
+            <xs:element name="perDay" type="xs:double"/>
+            <xs:element name="extraKilometrage" type="xs:double"/>
+            <xs:element name="cdw" type="xs:double"/>
+            <xs:element name="discount" type="xs:double"/>
+            <xs:element name="discountDays" type="xs:double"/>
+            <xs:element name="userUsername" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
     <xs:complexType name="TComment">
         <xs:sequence>
             <xs:element name="id" type="xs:long"/>
