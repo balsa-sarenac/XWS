@@ -291,4 +291,60 @@ public class CarService {
         return car;
     }
 
+    public ResponseEntity<?> getCarById_ResponseEntity(Long car_id) {
+        log.info("Car service - getCarById_ResponseEntity(" + car_id + ")");
+
+        Car car = getCar(car_id);
+
+        if (car == null)
+            return new ResponseEntity<>("Car with id " + car_id + " does not exist", HttpStatus.NOT_FOUND);
+
+        CarInfoDTO carDTO = new CarInfoDTO();
+
+        carDTO.setId(car.getId());
+
+        ModelInfoDTO modelDTO = new ModelInfoDTO();
+        modelDTO.setId(car.getModel().getId());
+        modelDTO.setName(car.getModel().getName());
+        carDTO.setModel(modelDTO);
+
+        MarkInfoDTO markDTO = new MarkInfoDTO();
+        markDTO.setId(car.getMark().getId());
+        markDTO.setName(car.getMark().getName());
+        carDTO.setMark(markDTO);
+
+        CarClassDTO carClassDTO = new CarClassDTO();
+        carClassDTO.setId(car.getCarClass().getId());
+        carClassDTO.setName(car.getCarClass().getName());
+        carDTO.setCarClass(carClassDTO);
+
+        FuelDTO fuelDTO = new FuelDTO();
+        fuelDTO.setId(car.getFuel().getId());
+        fuelDTO.setType(car.getFuel().getType());
+        carDTO.setFuel(fuelDTO);
+
+        GearboxDTO gearboxDTO = new GearboxDTO();
+        gearboxDTO.setId(car.getGearbox().getId());
+        gearboxDTO.setType(car.getGearbox().getType());
+        carDTO.setGearbox(gearboxDTO);
+
+        carDTO.setKilometrage((int)car.getKilometrage());
+        carDTO.setNumberOfChildSeats(car.getNumberOfChildSeats());
+        carDTO.setHasAndroid(car.isHasAndroid());
+        carDTO.setOverallGrade(getOverallGrade(car));
+        carDTO.setNumberGrades(car.getGrades().size());
+
+        return new ResponseEntity<CarInfoDTO>(carDTO, HttpStatus.OK);
+    }
+
+    public float getOverallGrade(Car car) {
+        log.info("Car service - getOverallGrade(car)");
+
+        float sum = 0;
+        for (Grade grade : car.getGrades()) {
+            sum += grade.getGrade();
+        }
+
+        return sum;
+    }
 }
