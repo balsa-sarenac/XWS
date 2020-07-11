@@ -187,7 +187,6 @@ public class AdService {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-
     public ResponseEntity<?> findCities() {
         List<String> cities = new ArrayList<>();
         List<Ad> ads = this.adRepository.findAllByToDateAfter(DateTime.now().minusDays(30));

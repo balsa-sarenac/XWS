@@ -69,7 +69,7 @@ public class AuthenticationController {
         return this.userDetailsService.getUsers();
     }
 
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    //@PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @GetMapping(value = "/rentPrivilege/{privilege}/{id}")
     public ResponseEntity<?> rentPrivileges(@PathVariable Boolean privilege, @PathVariable Long id) {
         log.info("Auth controller - setting rent privileges");

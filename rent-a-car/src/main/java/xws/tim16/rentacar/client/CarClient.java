@@ -45,6 +45,28 @@ public class CarClient extends WebServiceGatewaySupport {
         return response;
     }
 
+    public PostPriceListResponse postPriceList(TPriceList tPriceList) {
+        PostPriceListRequest request = new PostPriceListRequest();
+        request.setPriceListRequest(tPriceList);
+
+
+        PostPriceListResponse response = (PostPriceListResponse) getWebServiceTemplate()
+                .marshalSendAndReceive("http://localhost:8083/ad-soap/car", request,
+                        new SoapActionCallback("https://ftn.uns.ac.rs/car/PostPriceListRequest"));
+        return response;
+    }
+
+    public EditPriceListResponse editPriceList(TPriceList tPriceList) {
+         EditPriceListRequest request = new EditPriceListRequest();
+         request.setPriceListRequest(tPriceList);
+
+
+        EditPriceListResponse response = (EditPriceListResponse) getWebServiceTemplate()
+                .marshalSendAndReceive("http://localhost:8083/ad-soap/car", request,
+                        new SoapActionCallback("https://ftn.uns.ac.rs/car/EditPriceListRequest"));
+        return response;
+    }
+
     public PostOccupiedResponse postNewOccupied(TOccupied tOccupied) {
         PostOccupiedRequest request = new PostOccupiedRequest();
         request.setOccupiedRequest(tOccupied);
@@ -57,4 +79,44 @@ public class CarClient extends WebServiceGatewaySupport {
 
         return response;
     }
+
+    public PostCommentResponse postNewComment(TComment tComment) {
+        PostCommentRequest request = new PostCommentRequest();
+        request.setCommentRequest(tComment);
+
+        log.info("Requesting creation of new comment " + tComment.toString());
+
+        PostCommentResponse response = (PostCommentResponse) getWebServiceTemplate()
+                .marshalSendAndReceive("http://localhost:8083/ad-soap/car", request,
+                        new SoapActionCallback("https://ftn.uns.ac.rs/car/PostCommentRequest"));
+
+        return response;
+    }
+
+    public GetCommentResponse getComments(Long id) {
+        GetCommentRequest request = new GetCommentRequest();
+        request.setCommentRequest(id);
+
+        log.info("Requesting comment of ad with id " + id);
+
+        GetCommentResponse response = (GetCommentResponse) getWebServiceTemplate()
+                .marshalSendAndReceive("http://localhost:8083/ad-soap/car", request,
+                        new SoapActionCallback("https://ftn.uns.ac.rs/car/GetCommentRequest"));
+
+        return response;
+    }
+
+    public GetGradeResponse getGrades(Long id) {
+        GetGradeRequest request = new GetGradeRequest();
+        request.setGradeRequest(id);
+
+        log.info("Requesting grades of ad with id " + id);
+
+        GetGradeResponse response = (GetGradeResponse) getWebServiceTemplate()
+                .marshalSendAndReceive("http://localhost:8083/ad-soap/car", request,
+                        new SoapActionCallback("https://ftn.uns.ac.rs/car/GetGradeRequest"));
+
+        return response;
+    }
+
 }

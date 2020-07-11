@@ -8,6 +8,8 @@ import xws.tim16.rentacar.dto.AdDTO;
 import xws.tim16.rentacar.dto.SearchDTO;
 import xws.tim16.rentacar.service.AdService;
 
+import java.sql.SQLException;
+
 @CrossOrigin
 @Slf4j
 @RestController
@@ -27,7 +29,7 @@ public class AdController {
      * @param adDTO is ad to be created with all fields
      */
     @PostMapping
-    public ResponseEntity<?> addNew(@RequestBody AdDTO adDTO) {
+    public ResponseEntity<?> addNew(@RequestBody AdDTO adDTO) throws SQLException {
         log.info("Ad controller - new ad");
         return this.adService.newAd(adDTO);
     }

@@ -23,6 +23,7 @@ import xws.tim16.rentacar.generated.*;
 import xws.tim16.rentacar.model.*;
 import xws.tim16.rentacar.repository.AdRepository;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -51,7 +52,7 @@ public class AdService {
         this.modelMapper = modelMapper;
     }
 
-    public ResponseEntity<Void> newAd(AdDTO adDTO) {
+    public ResponseEntity<Void> newAd(AdDTO adDTO) throws SQLException {
         log.info("Ad service - add new ad and car");
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();

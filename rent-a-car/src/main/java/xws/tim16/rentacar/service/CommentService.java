@@ -1,17 +1,23 @@
 package xws.tim16.rentacar.service;
 
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import xws.tim16.rentacar.client.CarClient;
 import xws.tim16.rentacar.dto.CommentDTO;
+import xws.tim16.rentacar.generated.GetCommentResponse;
+import xws.tim16.rentacar.generated.PostCommentResponse;
+import xws.tim16.rentacar.generated.TComment;
 import xws.tim16.rentacar.model.Ad;
 import xws.tim16.rentacar.model.Car;
 import xws.tim16.rentacar.model.Comment;
 import xws.tim16.rentacar.model.User;
+import xws.tim16.rentacar.repository.AdRepository;
 import xws.tim16.rentacar.repository.CommentRepository;
 
 import java.util.ArrayList;
@@ -24,13 +30,21 @@ public class CommentService {
     private UserService userService;
     private CarService carService;
     private AdService adService;
+    private CarClient carClient;
 
     @Autowired
-    public CommentService(CommentRepository commentRepository, UserService userService, CarService carService, AdService adService) {
+    private ModelMapper modelMapper;
+
+    @Autowired
+    private AdRepository adRepository;
+
+    @Autowired
+    public CommentService(CommentRepository commentRepository, UserService userService, CarService carService, AdService adService, CarClient carClient) {
         this.commentRepository = commentRepository;
         this.userService = userService;
         this.carService = carService;
         this.adService = adService;
+        this.carClient = carClient;
     }
 
     public ResponseEntity<?> createComment(CommentDTO commentDTO, Boolean reply) {
@@ -55,6 +69,23 @@ public class CommentService {
             }
         }
 
+        if(commentDTO.getRole().equals("ROLE_AGENT")) {
+            log.info("Sending soap request to car service");
+            TComment tComment = new TComment();
+            tComment.setApproved(false);
+            tComment.setText(commentDTO.getText());
+            tComment.setUserUsername(user.getUsername());
+            tComment.setAdId(ad.getRefId());
+
+            try {
+                PostCommentResponse response = this.carClient.postNewComment(tComment);
+                comment.setRefId(response.getCommentResponse());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            log.info("Soap request successfully finished");
+        }
+
         this.commentRepository.save(comment);
         log.info("Comment service - comment created");
         return new ResponseEntity<>(HttpStatus.CREATED);
@@ -75,7 +106,32 @@ public class CommentService {
         log.info("Comment service - get all comments for car with id" + carId);
         List<Comment> comments = this.commentRepository.findByCarIdAndAndApproved(carId, true);
         log.info("Comment service - retrieving comments");
-        return new ResponseEntity<>(transformComments(comments),HttpStatus.OK);
+
+        List<CommentDTO> commentDTOS = new ArrayList<>();
+        List<Ad> ads = this.adRepository.findAllByCarId(carId);
+        for(Ad a: ads){
+            if(a.getRefId() != null) {
+                log.info("Sending soap request to car service");
+                try {
+                    GetCommentResponse response = this.carClient.getComments(a.getRefId());
+                    for (TComment t : response.getComments()) {
+                        commentDTOS.add(modelMapper.map(t, CommentDTO.class));
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                log.info("Soap request successfully finished");
+            }
+        }
+        List<CommentDTO>  commentsDTO = transformComments(comments);
+        for(CommentDTO cd: commentDTOS){
+            if(!commentsDTO.contains(cd)){
+                commentsDTO.add(cd);
+            }
+        }
+
+        log.info("Comment service - comments successfully retrieved");
+        return new ResponseEntity<>(commentsDTO,HttpStatus.OK);
     }
 
     public List<CommentDTO> transformComments(List<Comment> comments){

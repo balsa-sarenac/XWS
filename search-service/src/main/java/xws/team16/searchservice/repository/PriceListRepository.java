@@ -1,3 +1,4 @@
+
 package xws.team16.searchservice.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -7,3 +8,4 @@ import xws.team16.searchservice.model.PriceList;
 @Repository
 public interface PriceListRepository extends JpaRepository<PriceList, Long> {
 }
+

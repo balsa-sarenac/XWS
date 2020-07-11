@@ -33,12 +33,95 @@
             </xs:sequence>
         </xs:complexType>
     </xs:element>
+    <xs:element name="PostPriceListRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="priceListRequest" type="car:TPriceList"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="PostPriceListResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="priceListResponse" type="xs:long"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="EditPriceListRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="priceListRequest" type="car:TPriceList"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="EditPriceListResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="priceListResponse" type="xs:long"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="PostCommentRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="commentRequest" type="car:TComment"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="PostCommentResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="commentResponse" type="xs:long"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="GetCommentRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="commentRequest" type="xs:long"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="GetCommentResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" minOccurs="0" name="comments" type="car:TComment"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="GetGradeRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="gradeRequest" type="xs:long"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="GetGradeResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" minOccurs="0" name="grades" type="car:TGrade"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:complexType name="TPriceList">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long"/>
+            <xs:element name="perDay" type="xs:double"/>
+            <xs:element name="extraKilometrage" type="xs:double"/>
+            <xs:element name="cdw" type="xs:double"/>
+            <xs:element name="discount" type="xs:double"/>
+            <xs:element name="discountDays" type="xs:double"/>
+            <xs:element name="userUsername" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
     <xs:complexType name="TComment">
         <xs:sequence>
             <xs:element name="id" type="xs:long"/>
             <xs:element name="text" type="xs:string"/>
             <xs:element name="approved" type="xs:boolean"/>
             <xs:element name="userId" type="xs:long"/>
+            <xs:element name="userUsername" type="xs:string"/>
+            <xs:element name="adId" type="xs:long"/>
         </xs:sequence>
     </xs:complexType>
     <xs:complexType name="TReport">
@@ -54,6 +137,8 @@
             <xs:element name="id" type="xs:long"/>
             <xs:element name="grade" type="xs:int"/>
             <xs:element name="userId" type="xs:long"/>
+            <xs:element name="userUsername" type="xs:string"/>
+            <xs:element name="adId" type="xs:long"/>
         </xs:sequence>
     </xs:complexType>
     <xs:element name="GetStatisticsRequest">

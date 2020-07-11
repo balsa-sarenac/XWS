@@ -6,8 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import xws.tim16.rentacar.client.CarClient;
 import xws.tim16.rentacar.dto.PriceListDTO;
 import xws.tim16.rentacar.exception.NotFoundException;
+import xws.tim16.rentacar.generated.EditPriceListResponse;
+import xws.tim16.rentacar.generated.PostPriceListResponse;
+import xws.tim16.rentacar.generated.TPriceList;
 import xws.tim16.rentacar.model.PriceList;
 import xws.tim16.rentacar.model.User;
 import xws.tim16.rentacar.repository.PriceListRepository;
@@ -21,6 +25,9 @@ public class PriceListService {
     private PriceListRepository priceListRepository;
     private ModelMapper modelMapper;
     private UserService userService;
+
+    @Autowired
+    private CarClient carClient;
 
     @Autowired
     public PriceListService(PriceListRepository priceListRepository, ModelMapper modelMapper, UserService userService) {
@@ -39,7 +46,21 @@ public class PriceListService {
         PriceList priceList = modelMapper.map(priceListDTO, PriceList.class);
         User user = this.userService.getUserByUsername(priceListDTO.getUserUsername());
         priceList.setUser(user);
+
+        log.info("Sending soap request to car service");
+        TPriceList tPriceList = modelMapper.map(priceListDTO, TPriceList.class);
+
+        try {
+            PostPriceListResponse response = this.carClient.postPriceList(tPriceList);
+            priceList.setRefId(response.getPriceListResponse());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        log.info("Soap request successfully finished");
+
+
         this.priceListRepository.save(priceList);
+
         log.info("Price list service - price list created");
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
@@ -52,6 +73,19 @@ public class PriceListService {
         priceList.setExtraKilometrage(priceListDTO.getExtraKilometrage());
         priceList.setDiscountDays(priceListDTO.getDiscountDays());
         priceList.setPerDay(priceListDTO.getPerDay());
+
+        log.info("Sending soap request to car service");
+        TPriceList tPriceList = modelMapper.map(priceListDTO, TPriceList.class);
+        tPriceList.setId(priceList.getRefId());
+
+        try {
+            EditPriceListResponse response = this.carClient.editPriceList(tPriceList);
+            priceList.setRefId(response.getPriceListResponse());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        log.info("Soap request successfully finished");
+
         this.priceListRepository.save(priceList);
         log.info("Price list service - price list edited");
         return new ResponseEntity<>(HttpStatus.CREATED);
