@@ -18,4 +18,6 @@ public interface AdRepository extends JpaRepository<Ad, Long> {
     Page<Ad> searchAds(String pickUpPlace, DateTime fromDate, DateTime toDate, Long modelId, Long markId, Long carClassId, Long fuelId, Long gearboxId, Double priceFrom, Double priceTo, Double kilomterageFrom, Double kilometrageTo, Double kilometrageDrive, Boolean cdw, Integer numberOfChildSeats, Pageable pageable);
 
     List<Ad> findAllByToDateAfter(DateTime now);
+
+    List<Ad> findAllByCarId(Long carId);
 }
