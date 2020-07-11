@@ -16,9 +16,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import xws.team16.searchservice.dto.*;
 import xws.team16.searchservice.model.Ad;
+import xws.team16.searchservice.model.Car;
 import xws.team16.searchservice.model.PriceList;
 import xws.team16.searchservice.repository.AdRepository;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -27,11 +29,15 @@ import java.util.Set;
 public class AdService {
     private AdRepository adRepository;
     private ModelMapper modelMapper;
+    private CarService carService;
+    private PriceListService priceListService;
 
     @Autowired
-    public AdService(AdRepository adRepository, ModelMapper modelMapper) {
+    public AdService(AdRepository adRepository, ModelMapper modelMapper, CarService carService, PriceListService priceListService) {
         this.adRepository = adRepository;
         this.modelMapper = modelMapper;
+        this.carService = carService;
+        this.priceListService = priceListService;
     }
 
     public Sort sortBy(String sort){
@@ -51,7 +57,7 @@ public class AdService {
         return Sort.by(Sort.Direction.ASC, "fromDate");
     }
 
-    public ResponseEntity<List<AdInfoDTO>> searchAds(SearchDTO search, int page, String sort) {
+    public ResponseEntity<List<AdInfoDTO>> searchAds(SearchDTO search, int page, String sort) throws SQLException {
         log.info("Ad service - searching ads");
         if(search.getFromDate().isAfter(search.getToDate()) || search.getFromDate().isBefore(DateTime.now())){
             return  new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -89,6 +95,7 @@ public class AdService {
             AdInfoDTO adInfoDTO = modelMapper.map(ad, AdInfoDTO.class);
             adInfoDTO.getCar().setOverallGrade(ad.getCar().getOverallGrade());
             adInfoDTO.setPages(ads.getTotalPages());
+            adInfoDTO.setImages(this.carService.transformImages(ad));
             adDTOS.add(adInfoDTO);
         }
 
@@ -159,5 +166,27 @@ public class AdService {
         }
 
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+
+    public ResponseEntity<Void> newAd(NewAdRequestDTO adDTO) throws SQLException {
+        log.info("Ad service - add new ad and car");
+        Car car = this.carService.newCar(adDTO.getCarDTO());
+        PriceList priceList = this.priceListService.getPriceListById(adDTO.getPriceListId());
+//        User user = car.getOwner();
+
+        Ad ad = new Ad();
+        ad.setCar(car);
+        ad.setAllowedKilometrage(adDTO.getAllowedKilometrage());
+        ad.setCdwAvailable(adDTO.isCdwAvailable());
+        ad.setPickUpPlace(adDTO.getPickUpPlace());
+        ad.setFromDate(adDTO.getFromDate());
+        ad.setToDate(adDTO.getToDate());
+//        ad.setUser(user);
+        ad.setPriceList(priceList);
+
+        ad = this.adRepository.save(ad);
+        log.info("Ad created with id " + ad.getId());
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 }

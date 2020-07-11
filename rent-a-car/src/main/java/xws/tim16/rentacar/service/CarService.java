@@ -13,10 +13,11 @@ import xws.tim16.rentacar.generated.GetStatisticsResponse;
 import xws.tim16.rentacar.generated.TCarStatistics;
 import xws.tim16.rentacar.model.*;
 import xws.tim16.rentacar.repository.CarRepository;
+import xws.tim16.rentacar.repository.MyImageRepository;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import javax.sql.rowset.serial.SerialBlob;
+import java.sql.SQLException;
+import java.util.*;
 
 @Service @Slf4j
 public class CarService {
@@ -34,6 +35,9 @@ public class CarService {
     private CarClient carClient;
 
     @Autowired
+    private MyImageRepository myImageRepository;
+
+    @Autowired
     public CarService(CarRepository carRepository, ModelService modelService, MarkService markService, FuelService fuelService, CarClassService carClassService, GearboxService gearboxService, UserService userService, ModelMapper modelMapper) {
         this.carRepository = carRepository;
         this.modelService = modelService;
@@ -45,7 +49,7 @@ public class CarService {
         this.modelMapper = modelMapper;
     }
 
-    public Car newCar(CarDTO carDTO) {
+    public Car newCar(CarDTO carDTO) throws SQLException {
         log.info("Car service - new car");
         Model model = this.modelService.getModelById(carDTO.getModelId());
         Mark mark = this.markService.getMarkById(carDTO.getMarkId());
@@ -67,6 +71,16 @@ public class CarService {
 
         car = this.carRepository.save(car);
         log.info("Car added with id " + car.getId());
+
+        Set<MyImage> images = new HashSet<>();
+        if (carDTO.getImages() != null) {
+            for (String image: carDTO.getImages()) {
+                MyImage myImage = extractImage(image);
+                myImage.setCar(car);
+                images.add(myImage);
+            }
+        }
+        this.myImageRepository.saveAll(images);
 
         return car;
     }
@@ -289,6 +303,25 @@ public class CarService {
         // carRepository.save(car); // This line is unnecessary. It works without it.
 
         return car;
+    }
+
+
+    public MyImage extractImage(String string) throws SQLException {
+        String[] parts = string.split(",");
+        byte[] decodedByte = Base64.getDecoder().decode(parts[1]);
+        String[] info = parts[0].split("/");
+        String type = info[1].split(";")[0];
+        MyImage myImage = new MyImage();
+        myImage.setImage(new SerialBlob(decodedByte));
+        myImage.setInfo(parts[0]);
+        myImage.setType(type);
+        return myImage;
+    }
+
+    public String encodeImage(MyImage myImage) throws SQLException {
+        String retVal = "data:image/jpeg;base64,";
+        String img = Base64.getEncoder().encodeToString(myImage.getImage().getBytes(1L, (int) myImage.getImage().length()));
+        return retVal + img;
     }
 
     public ResponseEntity<?> getCarById_ResponseEntity(Long car_id) {

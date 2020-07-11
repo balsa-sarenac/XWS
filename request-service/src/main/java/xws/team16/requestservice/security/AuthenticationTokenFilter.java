@@ -21,15 +21,16 @@ public class AuthenticationTokenFilter extends UsernamePasswordAuthenticationFil
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 
         HttpServletRequest httpRequest = (HttpServletRequest) request;
-        String role = httpRequest.getHeader("role");
-        String username = httpRequest.getHeader("username");
+        String role = httpRequest.getHeader("Roles");
+        String username = httpRequest.getHeader("Username");
 
         if (role != null) {
             Set<SimpleGrantedAuthority> authorities = new HashSet<>();
 
-            String[] tokens = role.split("\\|");
+            String[] tokens = role.split("-");
             for (String token : tokens) {
-                authorities.add(new SimpleGrantedAuthority(token));
+                if (!token.equals(""))
+                    authorities.add(new SimpleGrantedAuthority(token));
             }
 
             UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(username, null, authorities);

@@ -23,6 +23,6 @@ public class MyImage {
     private Blob image;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "car_id")
+    @JoinColumn(name = "car_id", referencedColumnName = "id")
     private Car car;
 }

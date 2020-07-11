@@ -4,12 +4,16 @@ package xws.team16.searchservice.controller;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import xws.team16.searchservice.dto.AdDTO;
+import xws.team16.searchservice.dto.NewAdRequestDTO;
 import xws.team16.searchservice.dto.SearchDTO;
 import xws.team16.searchservice.model.Ad;
 import xws.team16.searchservice.service.AdService;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Set;
 
@@ -27,7 +31,7 @@ public class AdController {
     }
 
     @PostMapping(value = "/search/{page}/{sort}")
-    public ResponseEntity<?> searchAds(@RequestBody SearchDTO search, @PathVariable int page,@PathVariable String sort) {
+    public ResponseEntity<?> searchAds(@RequestBody SearchDTO search, @PathVariable int page,@PathVariable String sort) throws SQLException {
         log.info("Ad controller - searching ads");
         return this.adService.searchAds(search,page, sort);
     }
@@ -61,5 +65,14 @@ public class AdController {
         return this.adService.remove(ads);
     }
 
+    /**
+     * Creates new Ad and Car
+     * @param adDTO is ad to be created with all fields
+     */
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> addNew(@RequestBody NewAdRequestDTO adDTO) throws SQLException {
+        log.info("Ad controller - new ad");
+        return this.adService.newAd(adDTO);
+    }
 
 }

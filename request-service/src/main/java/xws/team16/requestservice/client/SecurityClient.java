@@ -11,4 +11,7 @@ public interface SecurityClient {
 
     @GetMapping(value = "/rentPrivilege/{privilege}/{id}")
     Void rentPrivileges(@PathVariable Boolean privilege, @PathVariable Long id);
+
+    @GetMapping(value = "/email/{username}")
+    ResponseEntity<String> getEmailForUser(@PathVariable String username);
 }

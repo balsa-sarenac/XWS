@@ -42,7 +42,7 @@ public class AuthenticationController {
     }
 
     @PatchMapping(value = "")
-    //@PreAuthorize("hasAuthority('ROLE_USER')")
+    @PreAuthorize("hasAuthority('ROLE_USER') || hasAuthority('ROLE_AGENT')")
     public ResponseEntity<?> edit(@RequestBody UserDTO userDTO) {
         log.info("Controller /edit reached by user: " + userDTO.getUsername());
         return this.userDetailsService.edit(userDTO);
@@ -53,7 +53,7 @@ public class AuthenticationController {
      * @param userId id of the user
      * @return 200 ok if successful or 404 not found if user does not exist
      */
-    //@PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @DeleteMapping(value = "/{userId}")
     public ResponseEntity<Void> delete(@PathVariable Long userId) {
         log.info("Controller /delete reached by user id " + userId);
@@ -62,13 +62,14 @@ public class AuthenticationController {
     }
 
 
-    //@PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @GetMapping(value = "/users")
     public ResponseEntity<?> getUsers() {
         log.info("Auth controller - get all users");
         return this.userDetailsService.getUsers();
     }
 
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @GetMapping(value = "/rentPrivilege/{privilege}/{id}")
     public ResponseEntity<?> rentPrivileges(@PathVariable Boolean privilege, @PathVariable Long id) {
         log.info("Auth controller - setting rent privileges");
@@ -82,7 +83,7 @@ public class AuthenticationController {
 
     @GetMapping(value = "/{username}")
     public ResponseEntity<?> getUser(@PathVariable String username) {
-        log.info("Auth controller - get all users");
+        log.info("Auth controller - get all user");
         return this.userDetailsService.getUser(username);
     }
 
@@ -91,7 +92,7 @@ public class AuthenticationController {
      * @param userId id of the user
      * @return 200 ok if successful or 404 not found if user does not exist
      */
-    //@PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @GetMapping(value = "/enable/{userId}")
     public ResponseEntity<Void> enable(@PathVariable Long userId) {
         log.info("Controller /enable reached by user id " + userId);
@@ -104,7 +105,7 @@ public class AuthenticationController {
      * @param userId id of the user
      * @return 200 ok if successful or 404 not found if user does not exist
      */
-    //@PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @GetMapping(value = "/disable/{userId}")
     public ResponseEntity<Void> disable(@PathVariable Long userId) {
         log.info("Controller /disable reached by user id " + userId);
@@ -120,6 +121,30 @@ public class AuthenticationController {
     public ResponseEntity<?> verify(@RequestBody String token) {
         log.info("Controller /verify invoked with token - " + token);
         return this.userDetailsService.verify(token);
+    }
+
+//    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PostMapping(value = "/approve/{id}")
+    public ResponseEntity<?> approveRegRequest(@PathVariable Long id) {
+        return this.userDetailsService.approveRequest(id);
+    }
+
+//    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PostMapping(value = "/refuse/{id}")
+    public ResponseEntity<?> refuseRegRequest(@PathVariable Long id) {
+        return this.userDetailsService.refuseRequest(id);
+    }
+
+//    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @GetMapping(value = "/registration-requests")
+    public ResponseEntity<?> getRegistrationRequests() {
+        return this.userDetailsService.getRegistrationRequests();
+    }
+
+    @GetMapping(value = "/email/{username}")
+    private ResponseEntity<?> getEmailForUser(@PathVariable String username) {
+        log.info("Getting email for user: " + username);
+        return this.userDetailsService.getEmailForUser(username);
     }
 
 }

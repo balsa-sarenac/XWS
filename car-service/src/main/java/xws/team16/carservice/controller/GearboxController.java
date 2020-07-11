@@ -27,7 +27,7 @@ public class GearboxController {
         return gearboxService.getGearboxById_ResponseEntity(id);
     }
 
-    @GetMapping(value = "/all")
+    @GetMapping
     public ResponseEntity<?> getAllGearboxes() {
         log.info("Gearbox Controller - getAllGearboxes()");
         return gearboxService.getAllGearboxes_ResponseEntity();

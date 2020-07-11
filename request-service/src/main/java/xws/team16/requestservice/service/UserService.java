@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import xws.team16.requestservice.dto.UserDTO;
 import xws.team16.requestservice.exceptions.NotFoundException;
@@ -34,5 +35,10 @@ public class UserService {
         this.userRepository.save(user);
 
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    public User getLoggedInUser() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        return this.userRepository.findByUsername(username);
     }
 }

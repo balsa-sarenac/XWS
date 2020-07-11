@@ -4,6 +4,7 @@ package xws.team16.carservice.service;
 import feign.FeignException;
 import xws.team16.carservice.client.RequestClient;
 import xws.team16.carservice.client.SearchClient;
+import xws.team16.carservice.dto.NewAdRequestDTO;
 import xws.team16.carservice.exceptions.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -68,6 +69,17 @@ public class AdService {
 
         ad = this.adRepository.save(ad);
         log.info("Ad created with id " + ad.getId());
+
+        try {
+            NewAdRequestDTO newAdRequestDTO = new NewAdRequestDTO();
+            newAdRequestDTO.setId(ad.getId());
+            newAdRequestDTO.setUserId(ad.getUser().getId());
+            this.requestClient.postAd(newAdRequestDTO);
+            this.searchClient.postAd(adDTO);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
@@ -76,7 +88,7 @@ public class AdService {
         return  ad;
     }
 
-    public ResponseEntity<?> getOneAdById(Long id) {
+    public ResponseEntity<?> getOneAdById(Long id) throws SQLException {
         Ad ad = this.adRepository.getOne(id);
         AdInfoDTO adDTO = new AdInfoDTO();
         adDTO.setAllowedKilometrage(ad.getAllowedKilometrage());
@@ -98,6 +110,13 @@ public class AdService {
         }
         car.setOverallGrade(grade);
         adDTO.setCar(car);
+
+        List<String> images = new ArrayList<>();
+        for (MyImage myImage: ad.getCar().getImages()) {
+            String image = this.carService.encodeImage(myImage);
+            images.add(image);
+        }
+        adDTO.setImages(images);
 
         return new ResponseEntity<>(adDTO,HttpStatus.OK);
 
@@ -132,7 +151,6 @@ public class AdService {
 
     public Ad getCar(Long ad_id) {
         log.info("Ad service - get ad");
-        if (ad_id == null) ad_id = 1L;
         Ad ad = adRepository.findById(ad_id).orElseThrow(() -> new NotFoundException("Ad with given id was not found"));
 
         log.info("Ad getted with id " + ad.getId());
@@ -167,5 +185,21 @@ public class AdService {
         }
 
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+
+    public ResponseEntity<?> findCities() {
+        List<String> cities = new ArrayList<>();
+        List<Ad> ads = this.adRepository.findAllByToDateAfter(DateTime.now().minusDays(30));
+
+        for(Ad a: ads){
+            if(cities.contains(a.getPickUpPlace()))
+                continue;
+
+            cities.add(a.getPickUpPlace());
+        }
+
+        return new ResponseEntity<>(cities, HttpStatus.OK);
+
     }
 }

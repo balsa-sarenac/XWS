@@ -21,9 +21,12 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import xws.team16.securityservice.client.CarClient;
+import xws.team16.securityservice.client.MailClient;
 import xws.team16.securityservice.client.RequestClient;
+import xws.team16.securityservice.dto.MailDTO;
 import xws.team16.securityservice.dto.RoleDTO;
 import xws.team16.securityservice.dto.UserDTO;
+import xws.team16.securityservice.exception.InvalidOperationException;
 import xws.team16.securityservice.exception.NotFoundException;
 import xws.team16.securityservice.model.*;
 import xws.team16.securityservice.repository.PrivilegeRepository;
@@ -53,6 +56,9 @@ public class CustomUserDetailsService implements UserDetailsService {
     private RequestClient requestClient;
     @Autowired
     private CarClient carClient;
+
+    @Autowired
+    private MailClient mailClient;
 
     @Autowired
     public CustomUserDetailsService(TokenUtils tokenUtils, AuthenticationManager authenticationManager, UserRepository userRepository, PasswordEncoder passwordEncoder, RoleRepository roleRepository, PrivilegeRepository privilegeRepository, ModelMapper modelMapper) {
@@ -250,7 +256,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     public ResponseEntity<?> getUsers() {
         log.info("User service - getting all users");
-        List<User> users = this.userRepository.findAllByStatus(0);
+        List<User> users = this.userRepository.findAllByStatusAndLastPasswordResetDateAfter(0, new Timestamp(-1));
         List<UserDTO> userDTOS = new ArrayList<>();
         for(User u: users){
             if (u.getRoles().iterator().next().getName().equals("ROLE_USER")){
@@ -330,4 +336,80 @@ public class CustomUserDetailsService implements UserDetailsService {
         }
     }
 
+    public ResponseEntity<?> approveRequest(Long id) {
+        log.info("Approving registration request");
+        User user = this.userRepository.findById(id).orElseThrow(() -> new NotFoundException("User with given  id was not found"));
+        if (user.getLastPasswordResetDate() != null) {
+            throw new InvalidOperationException("Registration request has already been processed");
+        }
+        user.setLastPasswordResetDate(new Timestamp(0));
+        user.setEnabled(true);
+        this.userRepository.save(user);
+
+        try {
+            sendMail("Registration request accepted!", "You registration request has been accepted!");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    public ResponseEntity<?> refuseRequest(Long id) {
+        log.info("Refusing registration request");
+        User user = this.userRepository.findById(id).orElseThrow(() -> new NotFoundException("User with given  id was not found"));
+        if (user.getLastPasswordResetDate() != null) {
+            throw new InvalidOperationException("Registration request has already been processed");
+        }
+        user.setLastPasswordResetDate(new Timestamp(-1));
+        user.setEnabled(false);
+        this.userRepository.save(user);
+
+        try {
+            sendMail("Registration request refused!", "You registration request has been refused!");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    public ResponseEntity<?> getRegistrationRequests() {
+        log.info("Getting all registration requests");
+        List<User> requests = this.userRepository.findByLastPasswordResetDate(null);
+        if (requests.size() == 0)
+            return new ResponseEntity<>(HttpStatus.OK);
+
+        List<UserDTO> users = new ArrayList<>();
+        for (User user: requests) {
+            UserDTO userDTO = new UserDTO();
+            userDTO.setId(user.getId());
+            userDTO.setFirstName(user.getFirstName());
+            userDTO.setLastName(user.getLastName());
+            userDTO.setEmail(user.getEmail());
+            userDTO.setUsername(user.getUsername());
+            users.add(userDTO);
+        }
+
+        return new ResponseEntity<>(users, HttpStatus.OK);
+    }
+
+
+    public ResponseEntity<?> getEmailForUser(String username) {
+        log.info("Getting email for user");
+        User user = this.userRepository.findByUsername(username);
+        return new ResponseEntity<>(user.getEmail(), HttpStatus.OK);
+    }
+
+    public void sendMail(String subject, String message) {
+        User user = this.userRepository.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+        String email = user.getEmail();
+        log.info(email);
+        MailDTO mailDTO = new MailDTO();
+        mailDTO.setEmail(email);
+        mailDTO.setMessage(message);
+        mailDTO.setSubject(subject);
+        this.mailClient.sendMail(mailDTO);
+        log.info("Mail sent");
+    }
 }
