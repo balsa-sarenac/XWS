@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import xws.tim16.rentacar.dto.AllRequestsDTO;
 import xws.tim16.rentacar.dto.OccupiedDTO;
@@ -248,6 +249,20 @@ public class RentRequestService {
     public int numberOfCancelled(Long id){
         List<RentRequest> rentRequests = this.rentRequestRepository.findAllByStatusAndUserId(RequestStatus.cancelled, id);
         return  rentRequests.size();
+    }
+
+    @Scheduled(cron = "0 59 23 * * *")
+    public void cancelPendingRequests() {
+        List<RentRequest> requests = this.rentRequestRepository.findAllByStatus(RequestStatus.pending);
+        List<RentRequest> cancelled = new ArrayList<>();
+        DateTime now = DateTime.now();
+        for (RentRequest request: requests) {
+            if (request.getDateCreated().plusDays(1).isBefore(now)) {
+                request.setStatus(RequestStatus.cancelled);
+                cancelled.add(request);
+            }
+        }
+        this.rentRequestRepository.saveAll(cancelled);
     }
 
 }
