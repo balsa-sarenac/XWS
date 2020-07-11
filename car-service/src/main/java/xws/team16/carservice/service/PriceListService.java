@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import xws.team16.carservice.client.SearchClient;
 import xws.team16.carservice.dto.PriceListDTO;
 import xws.team16.carservice.exceptions.NotFoundException;
+import xws.team16.carservice.generated.car.EditPriceListResponse;
 import xws.team16.carservice.generated.car.PostPriceListRequest;
 import xws.team16.carservice.generated.car.PostPriceListResponse;
 import xws.team16.carservice.generated.car.TPriceList;
@@ -121,7 +122,7 @@ public class PriceListService {
         return response;
     }
 
-    public PostPriceListResponse editPriceListSoap(TPriceList priceListRequest) {
+    public EditPriceListResponse editPriceListSoap(TPriceList priceListRequest) {
         log.info("Price list service - editing price list");
         PriceList priceList = this.priceListRepository.getOnePriceList(priceListRequest.getId());
         priceList.setCdw(priceListRequest.getCdw());
@@ -141,7 +142,7 @@ public class PriceListService {
 
         priceList = this.priceListRepository.save(priceList);
         log.info("Price list service - price list created");
-        PostPriceListResponse response = new PostPriceListResponse();
+        EditPriceListResponse response = new EditPriceListResponse();
         response.setPriceListResponse(priceList.getId());
         return response;
 
