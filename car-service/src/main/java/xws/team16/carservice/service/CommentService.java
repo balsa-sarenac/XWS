@@ -1,6 +1,7 @@
 package xws.team16.carservice.service;
 
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -8,6 +9,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import xws.team16.carservice.dto.CommentDTO;
+import xws.team16.carservice.generated.car.GetCommentResponse;
+import xws.team16.carservice.generated.car.PostCommentResponse;
+import xws.team16.carservice.generated.car.TComment;
 import xws.team16.carservice.model.Ad;
 import xws.team16.carservice.model.Car;
 import xws.team16.carservice.model.Comment;
@@ -24,6 +28,9 @@ public class CommentService {
     private UserService userService;
     private CarService carService;
     private AdService adService;
+
+    @Autowired
+    private ModelMapper modelMapper;
 
     @Autowired
     public CommentService(CommentRepository commentRepository, UserService userService, CarService carService, AdService adService) {
@@ -123,5 +130,46 @@ public class CommentService {
         return new ResponseEntity<>(transformComments(comments),HttpStatus.OK);
 
 
+    }
+
+    public PostCommentResponse postCommentSoap(TComment commentRequest) {
+        log.info("Comment service - creating comment");
+        Comment comment = Comment.builder()
+                .approved(false)
+                .text(commentRequest.getText())
+                .build();
+        User user = this.userService.getUserByUsername(commentRequest.getUserUsername());
+        Ad ad = this.adService.getAd(commentRequest.getAdId());
+        Car car = ad.getCar();
+
+        comment.setCar(car);
+        comment.setAd(ad);
+        comment.setUser(user);
+
+        comment = this.commentRepository.save(comment);
+        log.info("Comment service - comment created");
+
+        PostCommentResponse response = new PostCommentResponse();
+        response.setCommentResponse(comment.getId());
+        return response;
+    }
+
+    public GetCommentResponse getCommentsSoap(long commentRequest) {
+        log.info("Comment service - getting soap comments");
+        Ad ad = adService.getAdById(commentRequest);
+        Car car = ad.getCar();
+
+        log.info("Comment service - get all comments for car with id" + car.getId());
+        List<Comment> comments = this.commentRepository.findByCarIdAndAndApproved(car.getId(), true);
+        log.info("Comment service - retrieving comments");
+        List<CommentDTO> commentDTOS = transformComments(comments);
+
+        log.info("Comment service - retrieving comments to soap");
+        GetCommentResponse response = new GetCommentResponse();
+        for(CommentDTO c: commentDTOS){
+            response.getComments().add(modelMapper.map(c, TComment.class));
+        }
+        log.info("Comment service - comment retrived");
+        return response;
     }
 }

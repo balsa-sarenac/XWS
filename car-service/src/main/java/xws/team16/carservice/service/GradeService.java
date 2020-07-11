@@ -1,11 +1,15 @@
 package xws.team16.carservice.service;
 
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.ModelMap;
 import xws.team16.carservice.dto.GradeDTO;
+import xws.team16.carservice.generated.car.GetGradeResponse;
+import xws.team16.carservice.generated.car.TGrade;
 import xws.team16.carservice.model.Ad;
 import xws.team16.carservice.model.Car;
 import xws.team16.carservice.model.Grade;
@@ -21,6 +25,9 @@ public class GradeService {
     private UserService userService;
     private CarService carService;
     private AdService adService;
+
+    @Autowired
+    private ModelMapper modelMapper;
 
     @Autowired
     public GradeService(GradeRepository gradeRepository, UserService userService, CarService carService, AdService adService) {
@@ -92,5 +99,38 @@ public class GradeService {
             return new ResponseEntity<>(true, HttpStatus.OK);
         }
         return new ResponseEntity<>(false, HttpStatus.OK);
+    }
+
+    public GetGradeResponse getGradesSoap(long gradeRequest) {
+        log.info("Grade service - getting soap grades");
+        Ad ad = adService.getAdById(gradeRequest);
+        Car car = ad.getCar();
+        List<Grade> grades = this.gradeRepository.findByCarId(car.getId());
+        List<GradeDTO> gradeDTOS = new ArrayList<>();
+
+        log.info("Grade service - creating grades xml");
+        for (Grade grade: grades){
+            GradeDTO gradeDTO = GradeDTO.builder()
+                    .id(grade.getId())
+                    .grade(grade.getGrade())
+                    .carId(grade.getCar().getId())
+                    .userUsername(grade.getUser().getUsername())
+                    .adId(grade.getAd().getId())
+                    .build();
+            gradeDTOS.add(gradeDTO);
+        }
+
+        log.info("Grade service - retrieving grades to soap");
+        GetGradeResponse response = new GetGradeResponse();
+        for(GradeDTO g: gradeDTOS){
+            TGrade tGrade = new TGrade();
+            tGrade.setGrade(g.getGrade());
+            tGrade.setId(g.getId());
+            tGrade.setUserUsername(g.getUserUsername());
+            tGrade.setAdId(g.getAdId());
+            response.getGrades().add(tGrade);
+        }
+        log.info("Grade service - comment retrived");
+        return response;
     }
 }
