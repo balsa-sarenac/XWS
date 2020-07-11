@@ -12,4 +12,5 @@ public class UserTokenState {
     private String username;
     private String refreshToken;
     private String role;
+    private Long id;
 }
