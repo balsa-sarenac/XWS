@@ -45,6 +45,28 @@ public class CarClient extends WebServiceGatewaySupport {
         return response;
     }
 
+    public PostPriceListResponse postPriceList(TPriceList tPriceList) {
+        PostPriceListRequest request = new PostPriceListRequest();
+        request.setPriceListRequest(tPriceList);
+
+
+        PostPriceListResponse response = (PostPriceListResponse) getWebServiceTemplate()
+                .marshalSendAndReceive("http://localhost:8083/ad-soap/car", request,
+                        new SoapActionCallback("https://ftn.uns.ac.rs/car/PostPriceListRequest"));
+        return response;
+    }
+
+    public EditPriceListResponse editPriceList(TPriceList tPriceList) {
+         EditPriceListRequest request = new EditPriceListRequest();
+         request.setPriceListRequest(tPriceList);
+
+
+        EditPriceListResponse response = (EditPriceListResponse) getWebServiceTemplate()
+                .marshalSendAndReceive("http://localhost:8083/ad-soap/car", request,
+                        new SoapActionCallback("https://ftn.uns.ac.rs/car/EditPriceListRequest"));
+        return response;
+    }
+
     public PostOccupiedResponse postNewOccupied(TOccupied tOccupied) {
         PostOccupiedRequest request = new PostOccupiedRequest();
         request.setOccupiedRequest(tOccupied);
