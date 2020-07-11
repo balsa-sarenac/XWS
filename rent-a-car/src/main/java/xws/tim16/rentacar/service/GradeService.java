@@ -1,17 +1,22 @@
 package xws.tim16.rentacar.service;
 
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import xws.tim16.rentacar.client.CarClient;
 import xws.tim16.rentacar.dto.GradeDTO;
+import xws.tim16.rentacar.generated.GetGradeResponse;
+import xws.tim16.rentacar.generated.TGrade;
 import xws.tim16.rentacar.model.Ad;
 import xws.tim16.rentacar.model.Car;
 import xws.tim16.rentacar.model.Grade;
 import xws.tim16.rentacar.model.User;
+import xws.tim16.rentacar.repository.AdRepository;
 import xws.tim16.rentacar.repository.GradeRepository;
 
 
@@ -26,6 +31,15 @@ public class GradeService {
     private AdService adService;
 
     @Autowired
+    private AdRepository adRepository;
+
+    @Autowired
+    private CarClient carClient;
+
+    @Autowired
+    private ModelMapper modelMapper;
+
+    @Autowired
     public GradeService(GradeRepository gradeRepository, UserService userService, CarService carService, AdService adService) {
         this.gradeRepository = gradeRepository;
         this.userService = userService;
@@ -35,11 +49,10 @@ public class GradeService {
 
     public ResponseEntity<?> createGrade(GradeDTO gradeDTO) {
         log.info("Grade service - creating grade for car with id " + gradeDTO.getCarId());
-
-
         Grade grade  = Grade.builder()
                 .grade(gradeDTO.getGrade())
                 .build();
+
         User user = this.userService.getUserByUsername(gradeDTO.getUserUsername());
         Ad ad  = this.adService.getAd(gradeDTO.getAdId());
         Car car = ad.getCar();
@@ -84,7 +97,31 @@ public class GradeService {
                     .build();
             gradeDTOS.add(gradeDTO);
         }
-        log.info("Grade service - returning grades");
+
+        List<GradeDTO> gradesDTOS = new ArrayList<>();
+        List<Ad> ads = this.adRepository.findAllByCarId(carId);
+        for(Ad a: ads){
+            if(a.getRefId() != null) {
+                log.info("Sending soap request to car service");
+                try {
+                    GetGradeResponse response = this.carClient.getGrades(a.getRefId());
+                    for (TGrade t : response.getGrades()) {
+                        gradesDTOS.add(modelMapper.map(t, GradeDTO.class));
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                log.info("Soap request successfully finished");
+            }
+        }
+
+        for(GradeDTO gr: gradesDTOS){
+            if(!gradeDTOS.contains(gr)){
+                gradeDTOS.add(gr);
+            }
+        }
+
+        log.info("Grade service - grades successfully retrieved");
         return new ResponseEntity<>(gradeDTOS, HttpStatus.OK);
     }
 
