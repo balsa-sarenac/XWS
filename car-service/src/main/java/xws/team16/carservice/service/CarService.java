@@ -59,15 +59,6 @@ public class CarService {
         Gearbox gearbox = this.gearboxService.getGearboxById(carDTO.getGearboxId());
         User user = this.userService.getUserByUsername("bax");
 
-//        Set<MyImage> images = new HashSet<>();
-//        for (ImageDTO image: carDTO.getImages()) {
-//            MyImage myImage = new MyImage();
-//            myImage.setName(image.getName());
-//            myImage.setType(image.getType());
-//            myImage.setImage(image.getImage());
-//            images.add(myImage);
-//        }
-
         Car car = new Car();
         car.setModel(model);
         car.setMark(mark);
