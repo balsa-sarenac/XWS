@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import xws.team16.carservice.dto.AdDTO;
+import xws.team16.carservice.dto.NewAdRequestDTO;
 import xws.team16.carservice.dto.OccupiedDTO;
 import xws.team16.carservice.dto.PriceListDTO;
 import xws.team16.carservice.model.PriceList;
@@ -22,4 +24,7 @@ public interface RequestClient {
 
     @GetMapping(value = "/cancelRequest/{id}", consumes = "application/json")
     Void cancelRequest(@PathVariable Long id);
+
+    @PostMapping(value = "/ad")
+    Void postAd(@RequestBody NewAdRequestDTO adDTO);
 }
