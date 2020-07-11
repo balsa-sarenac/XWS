@@ -67,6 +67,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         web.ignoring().antMatchers(HttpMethod.POST, "/login");
         web.ignoring().antMatchers(HttpMethod.POST, "/register");
         web.ignoring().antMatchers(HttpMethod.POST, "/verify");
+//        web.ignoring().antMatchers(HttpMethod.POST, "/**");
+//        web.ignoring().antMatchers(HttpMethod.GET, "/**");
+//        web.ignoring().antMatchers(HttpMethod.PUT, "/**");
+//        web.ignoring().antMatchers(HttpMethod.DELETE, "/**");
     }
 
 }
