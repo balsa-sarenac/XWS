@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import xws.team16.searchservice.dto.PriceListDTO;
+import xws.team16.searchservice.exception.NotFoundException;
 import xws.team16.searchservice.model.PriceList;
 import xws.team16.searchservice.repository.PriceListRepository;
 

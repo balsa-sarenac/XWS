@@ -41,7 +41,7 @@ public class AdController {
      * @param id is id of the ad
      */
     @GetMapping(value = "/{id}")
-    public ResponseEntity<?> getAd(@PathVariable Long id) {
+    public ResponseEntity<?> getAd(@PathVariable Long id) throws SQLException {
         log.info("Ad controller - get ad");
         return this.adService.getOneAdById(id);
     }

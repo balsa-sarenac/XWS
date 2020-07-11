@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import xws.team16.searchservice.dto.*;
 import xws.team16.searchservice.model.Ad;
 import xws.team16.searchservice.model.Car;
+import xws.team16.searchservice.model.MyImage;
 import xws.team16.searchservice.model.PriceList;
 import xws.team16.searchservice.repository.AdRepository;
 
@@ -96,6 +97,13 @@ public class AdService {
             adInfoDTO.getCar().setOverallGrade(ad.getCar().getOverallGrade());
             adInfoDTO.setPages(ads.getTotalPages());
             adInfoDTO.setImages(this.carService.transformImages(ad));
+
+            List<String> images = new ArrayList<>();
+            for (MyImage myImage: ad.getCar().getImages()) {
+                String image = this.carService.encodeImage(myImage);
+                images.add(image);
+            }
+            adInfoDTO.setImages(images);
             adDTOS.add(adInfoDTO);
         }
 
@@ -134,7 +142,7 @@ public class AdService {
 
     }
 
-    public ResponseEntity<?> getOneAdById(Long id) {
+    public ResponseEntity<?> getOneAdById(Long id) throws SQLException {
         log.info("Ad service - getting one ad");
         Ad ad = this.adRepository.getOne(id);
         AdInfoDTO adDTO = new AdInfoDTO();
@@ -151,6 +159,13 @@ public class AdService {
         car.setOverallGrade(ad.getCar().getOverallGrade());
         car.setNumberGrades(ad.getCar().getNumberOfGrades());
         adDTO.setCar(car);
+
+        List<String> images = new ArrayList<>();
+        for (MyImage myImage: ad.getCar().getImages()) {
+            String image = this.carService.encodeImage(myImage);
+            images.add(image);
+        }
+        adDTO.setImages(images);
 
         return new ResponseEntity<>(adDTO,HttpStatus.OK);
     }
