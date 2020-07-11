@@ -37,7 +37,7 @@ public class CarConfiguration extends WebSecurityConfigurerAdapter {
         http.headers().frameOptions().disable();
 
         http.headers().addHeaderWriter(new StaticHeadersWriter("X-Content-Security-Policy","script-src 'self'"));
-
+        http.cors().disable();
         http
                 .csrf()
                 .disable()

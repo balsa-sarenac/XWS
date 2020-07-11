@@ -18,7 +18,7 @@ public class MailController {
     @Autowired
     private MailProducer mailProducer;
 
-    @PostMapping(value = "/mail", consumes = "application/json")
+    @PostMapping(value = "/", consumes = "application/json")
     public ResponseEntity<?> sendMail(@RequestBody MailDTO mailDTO) throws JsonProcessingException {
         logger.info("Sending mail");
         this.mailProducer.sendTo("mail-queue", mailDTO);

@@ -38,7 +38,7 @@ public class AdController {
      * @param id is id of the ad
      */
     @GetMapping(value = "/{id}")
-    public ResponseEntity<?> getAd(@PathVariable Long id) {
+    public ResponseEntity<?> getAd(@PathVariable Long id) throws SQLException {
         log.info("Ad controller - new ad");
         return this.adService.getOneAdById(id);
     }
@@ -58,5 +58,11 @@ public class AdController {
     public ResponseEntity<?> removeAds(@PathVariable Long user_id) {
         log.info("Ad controller - remove all ad for user");
         return this.adService.removeAds(user_id);
+    }
+
+    @GetMapping( value = "/city")
+    public ResponseEntity<?> searchCity() {
+        log.info("Ad controller - searching cities");
+        return this.adService.findCities();
     }
 }

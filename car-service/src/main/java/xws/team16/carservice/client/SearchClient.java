@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import xws.team16.carservice.dto.PriceListDTO;
+import xws.team16.carservice.dto.AdDTO;
 
 import java.util.List;
 
@@ -21,4 +22,8 @@ public interface SearchClient {
 
     @PutMapping( value = "/priceList", consumes = "application/json")
     public ResponseEntity<?> editPriceList(@RequestBody PriceListDTO priceListDTO);
+
+    @PostMapping(value = "/ad")
+    Void postAd(@RequestBody AdDTO adDTO);
+
 }

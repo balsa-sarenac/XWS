@@ -7,6 +7,8 @@ import lombok.Setter;
 import org.joda.time.DateTime;
 import xws.team16.searchservice.util.JsonJodaDateTimeSerializer;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -24,4 +26,5 @@ public class AdInfoDTO {
     private boolean hasAndroid;
     private PriceListDTO priceList;
     private Integer pages;
+    private List<String> images;
 }

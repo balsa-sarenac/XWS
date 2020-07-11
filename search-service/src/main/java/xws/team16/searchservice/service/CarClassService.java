@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import xws.team16.searchservice.dto.CarClassDTO;
+import xws.team16.searchservice.exception.NotFoundException;
 import xws.team16.searchservice.model.CarClass;
 import xws.team16.searchservice.repository.CarClassRepository;
 
@@ -42,5 +43,10 @@ public class CarClassService {
     public List<CarClass> getAllCarClasses() {
         log.info("CarClass Service - getAllCarClasses()");
         return carClassRepository.findAll();
+    }
+
+    public CarClass getCarClassById(Long id) {
+        log.info("Car class service - getting class by id");
+        return this.carClassRepository.findById(id).orElseThrow(() -> new NotFoundException("Car class with given id was not found."));
     }
 }

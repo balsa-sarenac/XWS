@@ -15,6 +15,7 @@ insert into PRICE_LIST (per_day, extra_kilometrage, cdw, discount, discount_days
 insert into PRICE_LIST (per_day, extra_kilometrage, cdw, discount, discount_days) values (8, 2, 30, 11, 30);
 insert into PRICE_LIST (per_day, extra_kilometrage, cdw, discount, discount_days) values (9, 1, 40, 12, 20);
 
+
 --Marke
 insert into MARK (name ) values ('Audi');
 insert into MARK (name ) values ('Bmw');

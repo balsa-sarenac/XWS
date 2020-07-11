@@ -42,4 +42,10 @@ public class PriceListService {
         log.info("Price list service - price list edited");
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    public PriceList getPriceListById(Long priceListId) {
+        log.info("PriceList service - get price list by id");
+        return this.priceListRepository.findById(priceListId).orElseThrow(() -> new NotFoundException("PriceList with given id was nto found"));
+    }
 }
+
