@@ -24,6 +24,7 @@ import xws.team16.securityservice.client.CarClient;
 import xws.team16.securityservice.client.RequestClient;
 import xws.team16.securityservice.dto.RoleDTO;
 import xws.team16.securityservice.dto.UserDTO;
+import xws.team16.securityservice.exception.InvalidOperationException;
 import xws.team16.securityservice.exception.NotFoundException;
 import xws.team16.securityservice.model.*;
 import xws.team16.securityservice.repository.PrivilegeRepository;
@@ -250,7 +251,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     public ResponseEntity<?> getUsers() {
         log.info("User service - getting all users");
-        List<User> users = this.userRepository.findAllByStatus(0);
+        List<User> users = this.userRepository.findAllByStatusAndLastPasswordResetDateAfter(0, new Timestamp(-1));
         List<UserDTO> userDTOS = new ArrayList<>();
         for(User u: users){
             if (u.getRoles().iterator().next().getName().equals("ROLE_USER")){
@@ -329,5 +330,50 @@ public class CustomUserDetailsService implements UserDetailsService {
             return false;
         }
     }
+
+    public ResponseEntity<?> approveRequest(Long id) {
+        log.info("Approving registration request");
+        User user = this.userRepository.findById(id).orElseThrow(() -> new NotFoundException("User with given  id was not found"));
+        if (user.getLastPasswordResetDate() != null) {
+            throw new InvalidOperationException("Registration request has already been processed");
+        }
+        user.setLastPasswordResetDate(new Timestamp(0));
+        user.setEnabled(true);
+        this.userRepository.save(user);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    public ResponseEntity<?> refuseRequest(Long id) {
+        log.info("Refusing registration request");
+        User user = this.userRepository.findById(id).orElseThrow(() -> new NotFoundException("User with given  id was not found"));
+        if (user.getLastPasswordResetDate() != null) {
+            throw new InvalidOperationException("Registration request has already been processed");
+        }
+        user.setLastPasswordResetDate(new Timestamp(-1));
+        user.setEnabled(false);
+        this.userRepository.save(user);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    public ResponseEntity<?> getRegistrationRequests() {
+        log.info("Getting all registration requests");
+        List<User> requests = this.userRepository.findByLastPasswordResetDate(null);
+        if (requests.size() == 0)
+            return new ResponseEntity<>(HttpStatus.OK);
+
+        List<UserDTO> users = new ArrayList<>();
+        for (User user: requests) {
+            UserDTO userDTO = new UserDTO();
+            userDTO.setId(user.getId());
+            userDTO.setFirstName(user.getFirstName());
+            userDTO.setLastName(user.getLastName());
+            userDTO.setEmail(user.getEmail());
+            userDTO.setUsername(user.getUsername());
+            users.add(userDTO);
+        }
+
+        return new ResponseEntity<>(users, HttpStatus.OK);
+    }
+
 
 }
