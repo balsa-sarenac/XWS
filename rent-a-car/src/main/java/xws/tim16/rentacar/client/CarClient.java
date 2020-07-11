@@ -79,4 +79,44 @@ public class CarClient extends WebServiceGatewaySupport {
 
         return response;
     }
+
+    public PostCommentResponse postNewComment(TComment tComment) {
+        PostCommentRequest request = new PostCommentRequest();
+        request.setCommentRequest(tComment);
+
+        log.info("Requesting creation of new comment " + tComment.toString());
+
+        PostCommentResponse response = (PostCommentResponse) getWebServiceTemplate()
+                .marshalSendAndReceive("http://localhost:8083/ad-soap/car", request,
+                        new SoapActionCallback("https://ftn.uns.ac.rs/car/PostCommentRequest"));
+
+        return response;
+    }
+
+    public GetCommentResponse getComments(Long id) {
+        GetCommentRequest request = new GetCommentRequest();
+        request.setCommentRequest(id);
+
+        log.info("Requesting comment of ad with id " + id);
+
+        GetCommentResponse response = (GetCommentResponse) getWebServiceTemplate()
+                .marshalSendAndReceive("http://localhost:8083/ad-soap/car", request,
+                        new SoapActionCallback("https://ftn.uns.ac.rs/car/GetCommentRequest"));
+
+        return response;
+    }
+
+    public GetGradeResponse getGrades(Long id) {
+        GetGradeRequest request = new GetGradeRequest();
+        request.setGradeRequest(id);
+
+        log.info("Requesting grades of ad with id " + id);
+
+        GetGradeResponse response = (GetGradeResponse) getWebServiceTemplate()
+                .marshalSendAndReceive("http://localhost:8083/ad-soap/car", request,
+                        new SoapActionCallback("https://ftn.uns.ac.rs/car/GetGradeRequest"));
+
+        return response;
+    }
+
 }
