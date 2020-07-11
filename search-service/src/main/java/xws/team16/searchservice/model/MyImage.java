@@ -1,4 +1,4 @@
-package xws.team16.carservice.model;
+package xws.team16.searchservice.model;
 
 import lombok.Getter;
 import lombok.Setter;

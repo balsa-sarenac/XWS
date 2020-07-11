@@ -1,4 +1,4 @@
-package xws.team16.carservice.model;
+package xws.tim16.rentacar.model;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -6,7 +6,8 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.sql.Blob;
 
-@Getter @Setter
+@Getter
+@Setter
 @Entity
 public class MyImage {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)

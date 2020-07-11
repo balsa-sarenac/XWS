@@ -23,7 +23,7 @@ public class ModelController {
         this.modelService = modelService;
     }
 
-    @GetMapping(value = "/all")
+    @GetMapping
     public ResponseEntity<?> getAll(){
         log.info("Model Controller - get all models.");
         return modelService.getAll();

@@ -26,7 +26,7 @@ public class MarkController {
         this.markService = markService;
     }
 
-    @GetMapping(value = "/all")
+    @GetMapping
     public ResponseEntity<?> getAll(){
         log.info("Mark Controller - get all marks.");
 

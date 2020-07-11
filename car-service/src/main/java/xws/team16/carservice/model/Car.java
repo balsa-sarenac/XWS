@@ -63,7 +63,7 @@ public class Car {
    @OneToMany(mappedBy = "car", fetch = FetchType.EAGER)
    private Set<Grade> grades;
 
-   @OneToMany(mappedBy = "car", cascade = CascadeType.ALL)
+   @OneToMany(mappedBy = "car", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
    private Set<MyImage> images;
 
    @Column

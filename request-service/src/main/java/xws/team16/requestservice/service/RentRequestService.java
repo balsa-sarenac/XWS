@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import xws.team16.requestservice.dto.AllRequestsDTO;
 import xws.team16.requestservice.dto.OccupiedDTO;
 import xws.team16.requestservice.dto.RequestDTO;
 import xws.team16.requestservice.dto.ShoppingCartDTO;
@@ -37,15 +39,55 @@ public class RentRequestService {
         this.userService = userService;
     }
 
-    public ResponseEntity<?> getAll(Long userId) {
-        log.info("Rent request service - get all requests for user");
-        User user = this.userService.getUserById(userId);
+
+    public ResponseEntity<?> getAll() {
+        log.info("Get all requests for user");
+        User user = this.userService.getLoggedInUser();
         List<RentRequest> requests = this.rentRequestRepository.findByUser(user);
 
         List<RequestDTO> retVal = getRequestDTOS(requests);
+        AllRequestsDTO requestsDTO = this.filterRequests(retVal);
+
         log.info("Returning list of requests");
-        return new ResponseEntity<>(retVal, HttpStatus.OK);
+        return new ResponseEntity<>(requestsDTO, HttpStatus.OK);
     }
+
+    public ResponseEntity<?> getAllReceived() {
+        log.info("Get all received requests for user");
+        User user = this.userService.getLoggedInUser();
+        List<RentRequest> requests = this.rentRequestRepository.findAllByAd_User_Id(user.getId());
+
+        List<RequestDTO> retVal = getRequestDTOS(requests);
+        AllRequestsDTO requestsDTO = this.filterRequests(retVal);
+
+        log.info("Returning list of requests");
+        return new ResponseEntity<>(requestsDTO, HttpStatus.OK);
+    }
+
+    public AllRequestsDTO filterRequests(List<RequestDTO> retVal) {
+        AllRequestsDTO requestsDTO = new AllRequestsDTO();
+        List<RequestDTO> pending = new ArrayList<>();
+        List<RequestDTO> paid = new ArrayList<>();
+        List<RequestDTO> finished = new ArrayList<>();
+        retVal.forEach(req -> {
+            if (req.getStatus().equals(RequestStatus.pending.toString())) {
+                pending.add(req);
+            } else if (req.getStatus().equals(RequestStatus.paid.toString())) {
+                if (req.getReturnDate().isBefore(new LocalDate())) {
+                    finished.add(req);
+                } else {
+                    paid.add(req);
+                }
+            }
+        });
+
+        requestsDTO.setAll(retVal);
+        requestsDTO.setPending(pending);
+        requestsDTO.setPaid(paid);
+        requestsDTO.setFinished(finished);
+        return requestsDTO;
+    }
+
 
     public List<RequestDTO> getRequestDTOS(List<RentRequest> requests) {
         List<RequestDTO> retVal = new ArrayList<>();
@@ -62,26 +104,6 @@ public class RentRequestService {
                     .build());
         }
         return retVal;
-    }
-
-    public ResponseEntity<?> getAllActive(Long userId) {
-        log.info("Rent request service - get all active requests for user");
-        User user = this.userService.getUserById(userId);
-        List<RentRequest> requests = this.rentRequestRepository.findByUserAndStatus(user, RequestStatus.pending);
-
-        List<RequestDTO> retVal = getRequestDTOS(requests);
-        log.info("Returning list of requests");
-        return new ResponseEntity<>(retVal, HttpStatus.OK);
-    }
-
-    public ResponseEntity<?> getAllPast(Long userId) {
-        log.info("Rent request service - get all past requests for user");
-        User user = this.userService.getUserById(userId);
-        List<RentRequest> requests = this.rentRequestRepository.findByUserAndStatusAndReturnDateAfter(user, RequestStatus.paid, new LocalDate());
-
-        List<RequestDTO> retVal = getRequestDTOS(requests);
-        log.info("Returning list of requests");
-        return new ResponseEntity<>(retVal, HttpStatus.OK);
     }
 
     public ResponseEntity<?> newRequests(ShoppingCartDTO shoppingCart) {
@@ -235,5 +257,19 @@ public class RentRequestService {
         }
 
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @Scheduled(cron = "0 59 23 * * *")
+    public void cancelPendingRequests() {
+        List<RentRequest> requests = this.rentRequestRepository.findAllByStatus(RequestStatus.pending);
+        List<RentRequest> cancelled = new ArrayList<>();
+        DateTime now = DateTime.now();
+        for (RentRequest request: requests) {
+            if (request.getDateCreated().plusDays(1).isBefore(now)) {
+                request.setStatus(RequestStatus.cancelled);
+                cancelled.add(request);
+            }
+        }
+        this.rentRequestRepository.saveAll(cancelled);
     }
 }
