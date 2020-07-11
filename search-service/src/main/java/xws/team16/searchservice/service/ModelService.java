@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import xws.team16.searchservice.dto.MarkDTO;
 import xws.team16.searchservice.dto.ModelDTO;
+import xws.team16.searchservice.exception.NotFoundException;
 import xws.team16.searchservice.model.Model;
 import xws.team16.searchservice.repository.ModelRepository;
 
@@ -44,5 +45,11 @@ public class ModelService {
         }
 
         return new ResponseEntity<>(modelDTOS, HttpStatus.OK);
+    }
+
+    public Model getModelById(Long modelId) {
+        log.info("Model service - getting model by id");
+
+        return this.modelRepository.findById(modelId).orElseThrow(() -> new NotFoundException("Model with given id was not found."));
     }
 }

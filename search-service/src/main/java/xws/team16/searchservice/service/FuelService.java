@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import xws.team16.searchservice.dto.FuelDTO;
+import xws.team16.searchservice.exception.NotFoundException;
 import xws.team16.searchservice.model.Fuel;
 import xws.team16.searchservice.repository.FuelRepository;
 
@@ -43,5 +44,10 @@ public class FuelService {
     public List<Fuel> getAllFuels() {
         log.info("Fuel Service - getAllFuels()");
         return fuelRepository.findAll();
+    }
+
+    public Fuel getFuelById(Long id) {
+        log.info("Fuel Service - getFuelById(" + id + ")");
+        return this.fuelRepository.findById(id).orElseThrow(() -> new NotFoundException("Fuel with given id was not found."));
     }
 }

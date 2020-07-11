@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import xws.team16.searchservice.dto.GearboxDTO;
+import xws.team16.searchservice.exception.NotFoundException;
 import xws.team16.searchservice.model.Gearbox;
 import xws.team16.searchservice.repository.GearboxRepository;
 
@@ -42,5 +43,10 @@ public class    GearboxService {
     public List<Gearbox> getAllGearboxes() {
         log.info("Gearbox Service - getAllGearboxes()");
         return gearboxRepository.findAll();
+    }
+
+    public Gearbox getGearboxById(Long id) {
+        log.info("Gearbox Service - getGearboxById(" + id + ")");
+        return this.gearboxRepository.findById(id).orElseThrow(() -> new NotFoundException("Gearbox with given id was nto found"));
     }
 }

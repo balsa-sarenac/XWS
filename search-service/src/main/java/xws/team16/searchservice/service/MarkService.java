@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import xws.team16.searchservice.dto.MarkDTO;
 import xws.team16.searchservice.dto.ModelDTO;
+import xws.team16.searchservice.exception.NotFoundException;
 import xws.team16.searchservice.model.Mark;
 import xws.team16.searchservice.model.Model;
 import xws.team16.searchservice.repository.MarkRepository;
@@ -44,5 +45,10 @@ public class MarkService {
             markDTOS.add(markDTO);
         }
         return markDTOS;
+    }
+
+    public Mark getMarkById(Long markId) {
+        log.info("Mark service - getting mark by id");
+        return this.markRepository.findById(markId).orElseThrow(() -> new NotFoundException("Mark with given id was not fond."));
     }
 }
