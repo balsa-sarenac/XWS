@@ -305,7 +305,6 @@ public class CarService {
         return car;
     }
 
-
     public MyImage extractImage(String string) throws SQLException {
         String[] parts = string.split(",");
         byte[] decodedByte = Base64.getDecoder().decode(parts[1]);
