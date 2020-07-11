@@ -8,11 +8,11 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import xws.team16.requestservice.dto.AllRequestsDTO;
-import xws.team16.requestservice.dto.OccupiedDTO;
-import xws.team16.requestservice.dto.RequestDTO;
-import xws.team16.requestservice.dto.ShoppingCartDTO;
+import xws.team16.requestservice.client.MailClient;
+import xws.team16.requestservice.client.SecurityClient;
+import xws.team16.requestservice.dto.*;
 import xws.team16.requestservice.exceptions.InvalidOperationException;
 import xws.team16.requestservice.exceptions.NotFoundException;
 import xws.team16.requestservice.model.*;
@@ -30,6 +30,12 @@ public class RentRequestService {
 
     @Autowired
     private RentBundleService rentBundleService;
+
+    @Autowired
+    private SecurityClient securityClient;
+
+    @Autowired
+    private MailClient mailClient;
 
     @Autowired
     public RentRequestService(RentRequestRepository rentRequestRepository, AdService adService,
@@ -206,6 +212,12 @@ public class RentRequestService {
         HttpHeaders headers = new HttpHeaders();
         headers.setAccessControlAllowOrigin("*");
 
+//        try {
+//            sendMail("Rent request approved!", "You rent request has been approved");
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+
         return new ResponseEntity<>(headers, HttpStatus.OK);
     }
 
@@ -239,6 +251,13 @@ public class RentRequestService {
         request.setStatus(RequestStatus.refused);
         this.rentRequestRepository.save(request);
         log.info("Successfully refused rent request");
+
+//        try {
+//            sendMail("Rent request refused!", "You rent request has been refused");
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -271,5 +290,17 @@ public class RentRequestService {
             }
         }
         this.rentRequestRepository.saveAll(cancelled);
+    }
+
+    public void sendMail(String subject, String message) {
+        ResponseEntity<String> retVal = (ResponseEntity<String>) this.securityClient.getEmailForUser(SecurityContextHolder.getContext().getAuthentication().getName());
+        String email = retVal.getBody();
+        log.info(email);
+        MailDTO mailDTO = new MailDTO();
+        mailDTO.setEmail(email);
+        mailDTO.setMessage(message);
+        mailDTO.setSubject(subject);
+        this.mailClient.sendMail(mailDTO);
+        log.info("Mail sent");
     }
 }

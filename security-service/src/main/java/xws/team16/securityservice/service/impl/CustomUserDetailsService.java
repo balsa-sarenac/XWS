@@ -21,7 +21,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import xws.team16.securityservice.client.CarClient;
+import xws.team16.securityservice.client.MailClient;
 import xws.team16.securityservice.client.RequestClient;
+import xws.team16.securityservice.dto.MailDTO;
 import xws.team16.securityservice.dto.RoleDTO;
 import xws.team16.securityservice.dto.UserDTO;
 import xws.team16.securityservice.exception.InvalidOperationException;
@@ -54,6 +56,9 @@ public class CustomUserDetailsService implements UserDetailsService {
     private RequestClient requestClient;
     @Autowired
     private CarClient carClient;
+
+    @Autowired
+    private MailClient mailClient;
 
     @Autowired
     public CustomUserDetailsService(TokenUtils tokenUtils, AuthenticationManager authenticationManager, UserRepository userRepository, PasswordEncoder passwordEncoder, RoleRepository roleRepository, PrivilegeRepository privilegeRepository, ModelMapper modelMapper) {
@@ -340,6 +345,13 @@ public class CustomUserDetailsService implements UserDetailsService {
         user.setLastPasswordResetDate(new Timestamp(0));
         user.setEnabled(true);
         this.userRepository.save(user);
+
+        try {
+            sendMail("Registration request accepted!", "You registration request has been accepted!");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -352,6 +364,13 @@ public class CustomUserDetailsService implements UserDetailsService {
         user.setLastPasswordResetDate(new Timestamp(-1));
         user.setEnabled(false);
         this.userRepository.save(user);
+
+        try {
+            sendMail("Registration request refused!", "You registration request has been refused!");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -376,4 +395,21 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
 
+    public ResponseEntity<?> getEmailForUser(String username) {
+        log.info("Getting email for user");
+        User user = this.userRepository.findByUsername(username);
+        return new ResponseEntity<>(user.getEmail(), HttpStatus.OK);
+    }
+
+    public void sendMail(String subject, String message) {
+        User user = this.userRepository.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+        String email = user.getEmail();
+        log.info(email);
+        MailDTO mailDTO = new MailDTO();
+        mailDTO.setEmail(email);
+        mailDTO.setMessage(message);
+        mailDTO.setSubject(subject);
+        this.mailClient.sendMail(mailDTO);
+        log.info("Mail sent");
+    }
 }

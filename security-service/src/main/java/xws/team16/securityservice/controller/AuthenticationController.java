@@ -83,7 +83,7 @@ public class AuthenticationController {
 
     @GetMapping(value = "/{username}")
     public ResponseEntity<?> getUser(@PathVariable String username) {
-        log.info("Auth controller - get all users");
+        log.info("Auth controller - get all user");
         return this.userDetailsService.getUser(username);
     }
 
@@ -139,6 +139,12 @@ public class AuthenticationController {
     @GetMapping(value = "/registration-requests")
     public ResponseEntity<?> getRegistrationRequests() {
         return this.userDetailsService.getRegistrationRequests();
+    }
+
+    @GetMapping(value = "/email/{username}")
+    private ResponseEntity<?> getEmailForUser(@PathVariable String username) {
+        log.info("Getting email for user: " + username);
+        return this.userDetailsService.getEmailForUser(username);
     }
 
 }
