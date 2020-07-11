@@ -57,4 +57,6 @@ public class Car {
    @OneToMany(mappedBy = "car")
    private Set<Ad> ads;
 
+   @OneToMany(mappedBy = "car", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+   private Set<MyImage> images;
 }
