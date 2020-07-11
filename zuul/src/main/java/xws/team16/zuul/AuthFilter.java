@@ -58,9 +58,10 @@ public class AuthFilter extends ZuulFilter {
         try {
             RoleDTO roleDTO = this.securityClient.verify(token);
             StringBuilder roles = new StringBuilder();
-            StringBuilder privileges = new StringBuilder();
-            for (String role : roleDTO.getRoles())
-                roles.append(role).append("-");
+
+            roleDTO.getRoles().forEach(s -> roles.append(s).append("-"));
+            if (roleDTO.getPrivileges() != null)
+                roleDTO.getPrivileges().forEach(s -> roles.append(s).append("-"));
 
             ctx.addZuulRequestHeader("Username", roleDTO.getUsername());
             ctx.addZuulRequestHeader("Roles", String.valueOf(roles));
