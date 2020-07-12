@@ -81,14 +81,14 @@ insert into CAR_CLASS (name ) values ('Suv');
 insert into GEARBOX (type) values ('Automatic');
 insert into GEARBOX (type) values ('Manual');
 
-insert into PRICE_LIST (per_day, extra_kilometrage, cdw, discount, discount_days, user_id) values (7, 1, 20, 10, 20, 1);
-insert into PRICE_LIST (per_day, extra_kilometrage, cdw, discount, discount_days, user_id) values (8, 2, 30, 11, 30, 1);
-insert into PRICE_LIST (per_day, extra_kilometrage, cdw, discount, discount_days, user_id) values (9, 1, 40, 12, 20, 2);
-insert into PRICE_LIST (per_day, extra_kilometrage, cdw, discount, discount_days, user_id) values (11, 2, 30, 10, 25, 2);
-insert into PRICE_LIST (per_day, extra_kilometrage, cdw, discount, discount_days, user_id) values (7, 1, 20, 10, 20, 3);
-insert into PRICE_LIST (per_day, extra_kilometrage, cdw, discount, discount_days, user_id) values (8, 2, 30, 11, 30, 3);
-insert into PRICE_LIST (per_day, extra_kilometrage, cdw, discount, discount_days, user_id) values (9, 1, 40, 12, 20, 4);
-insert into PRICE_LIST (per_day, extra_kilometrage, cdw, discount, discount_days, user_id) values (7, 1, 20, 10, 20, 4);
+insert into PRICE_LIST (per_day, extra_kilometrage, cdw, discount, discount_days, user_id, ref_id) values (7, 1, 20, 10, 20, 1, 1);
+insert into PRICE_LIST (per_day, extra_kilometrage, cdw, discount, discount_days, user_id, ref_id) values (8, 2, 30, 11, 30, 1, 1);
+insert into PRICE_LIST (per_day, extra_kilometrage, cdw, discount, discount_days, user_id, ref_id) values (9, 1, 40, 12, 20, 2, null);
+insert into PRICE_LIST (per_day, extra_kilometrage, cdw, discount, discount_days, user_id, ref_id) values (11, 2, 30, 10, 25, 2, null);
+insert into PRICE_LIST (per_day, extra_kilometrage, cdw, discount, discount_days, user_id, ref_id) values (7, 1, 20, 10, 20, 3, 4);
+insert into PRICE_LIST (per_day, extra_kilometrage, cdw, discount, discount_days, user_id, ref_id) values (8, 2, 30, 11, 30, 3, 5);
+insert into PRICE_LIST (per_day, extra_kilometrage, cdw, discount, discount_days, user_id, ref_id) values (9, 1, 40, 12, 20, 4, null);
+insert into PRICE_LIST (per_day, extra_kilometrage, cdw, discount, discount_days, user_id, ref_id) values (7, 1, 20, 10, 20, 4, null);
 
 
 insert into CAR (kilometrage, number_of_child_seats, has_android,  mark_id, car_class_id, fuel_id, model_id, gearbox_id, owner_id, number_of_grades, overall_grade) values (100010, 0,false, 1,2,1,1,1,1,0,4.5);

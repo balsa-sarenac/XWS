@@ -47,16 +47,19 @@ public class PriceListService {
         User user = this.userService.getUserByUsername(priceListDTO.getUserUsername());
         priceList.setUser(user);
 
-        log.info("Sending soap request to car service");
-        TPriceList tPriceList = modelMapper.map(priceListDTO, TPriceList.class);
 
-        try {
-            PostPriceListResponse response = this.carClient.postPriceList(tPriceList);
-            priceList.setRefId(response.getPriceListResponse());
-        } catch (Exception e) {
-            e.printStackTrace();
+        if(user.getRoles().iterator().next().getName().equals("ROLE_AGENT")) {
+            log.info("Sending soap request to car service");
+            TPriceList tPriceList = modelMapper.map(priceListDTO, TPriceList.class);
+
+            try {
+                PostPriceListResponse response = this.carClient.postPriceList(tPriceList);
+                priceList.setRefId(response.getPriceListResponse());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            log.info("Soap request successfully finished");
         }
-        log.info("Soap request successfully finished");
 
 
         this.priceListRepository.save(priceList);
@@ -74,20 +77,22 @@ public class PriceListService {
         priceList.setDiscountDays(priceListDTO.getDiscountDays());
         priceList.setPerDay(priceListDTO.getPerDay());
 
+        User user = this.userService.getUserByUsername(priceListDTO.getUserUsername());
+        if(user.getRoles().iterator().next().getName().equals("ROLE_AGENT")) {
+            log.info("Sending soap request to car service");
+            TPriceList tPriceList = modelMapper.map(priceListDTO, TPriceList.class);
+            if (priceList.getRefId() != null) {
+                tPriceList.setId(priceList.getRefId());
+            }
 
-        log.info("Sending soap request to car service");
-        TPriceList tPriceList = modelMapper.map(priceListDTO, TPriceList.class);
-        if(priceList.getRefId() != null) {
-            tPriceList.setId(priceList.getRefId());
+            try {
+                EditPriceListResponse response = this.carClient.editPriceList(tPriceList);
+                priceList.setRefId(response.getPriceListResponse());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            log.info("Soap request successfully finished");
         }
-
-        try {
-            EditPriceListResponse response = this.carClient.editPriceList(tPriceList);
-            priceList.setRefId(response.getPriceListResponse());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        log.info("Soap request successfully finished");
 
 
         log.info("Price list service - price list edited");
