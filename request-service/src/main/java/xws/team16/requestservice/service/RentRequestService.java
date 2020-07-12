@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import xws.team16.requestservice.client.CarClient;
 import xws.team16.requestservice.client.MailClient;
 import xws.team16.requestservice.client.SecurityClient;
 import xws.team16.requestservice.dto.*;
@@ -36,6 +37,9 @@ public class RentRequestService {
 
     @Autowired
     private MailClient mailClient;
+
+    @Autowired
+    private CarClient carClient;
 
     @Autowired
     public RentRequestService(RentRequestRepository rentRequestRepository, AdService adService,
@@ -217,6 +221,17 @@ public class RentRequestService {
 //        } catch (Exception e) {
 //            e.printStackTrace();
 //        }
+
+        try {
+            OccupiedDTO occupiedDTO = new OccupiedDTO();
+            occupiedDTO.setDateFrom(request.getPickUpDate());
+            occupiedDTO.setDateTo(request.getReturnDate());
+            occupiedDTO.setCarId(request.getAd().getId());
+            this.carClient.addNewRequestOccupation(occupiedDTO);
+            log.info("Saved new occupation for accepted request");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         return new ResponseEntity<>(headers, HttpStatus.OK);
     }
