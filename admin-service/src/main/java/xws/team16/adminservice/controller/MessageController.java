@@ -19,10 +19,10 @@ public class MessageController {
         this.messageService = messageService;
     }
 
-    @GetMapping(value = "/{userId}")
-    public ResponseEntity<?> getAll(@PathVariable Long userId) {
+    @GetMapping
+    public ResponseEntity<?> getAll() {
         log.info("Message controller - get all users messages");
-        return this.messageService.getAll(userId);
+        return this.messageService.getAll();
     }
 
     @PostMapping

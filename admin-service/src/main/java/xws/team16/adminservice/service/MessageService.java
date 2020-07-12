@@ -29,9 +29,9 @@ public class MessageService {
         this.userService = userService;
     }
 
-    public ResponseEntity<?> getAll(Long userId) {
+    public ResponseEntity<?> getAll() {
         log.info("Message service - get all messages");
-        User user = this.userService.getUserById(userId);
+        User user = this.userService.getUser();
         List<Message> messageList = this.messageRepository.findBySenderOrReceiverOrderBySent(user, user);
         Map<Long, ChatDTO> chats = new HashMap<>();
 
