@@ -39,4 +39,10 @@ public class OccupiedController {
         return this.occupiedService.getOccupiedByUser(username);
     }
 
+    @PostMapping(value = "/rent")
+    public ResponseEntity<?> addNewRequestOccupation(@RequestBody OccupiedDTO occupiedDTO) {
+        log.info("Adding new occupation for accepted request");
+        return this.occupiedService.newOccupiedRequest(occupiedDTO);
+    }
+
 }

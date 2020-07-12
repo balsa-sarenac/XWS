@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import xws.team16.carservice.client.RequestClient;
 import xws.team16.carservice.dto.CarInfoDTO;
 import xws.team16.carservice.dto.OccupiedDTO;
+import xws.team16.carservice.exceptions.NotFoundException;
 import xws.team16.carservice.generated.car.PostOccupiedRequest;
 import xws.team16.carservice.generated.car.TOccupied;
 import xws.team16.carservice.model.Ad;
@@ -163,4 +164,19 @@ public class OccupiedService {
 
         return new ResponseEntity<>(occupiedDTOS, HttpStatus.OK);
     }
+
+    public ResponseEntity<?> newOccupiedRequest(OccupiedDTO occupiedDTO) {
+        log.info("Adding new occupation for accepted request");
+        Ad ad = this.adRepository.findById(occupiedDTO.getCarId()).orElseThrow(() -> new NotFoundException("Ad with given id was not found"));
+
+        Occupied occupied = new Occupied();
+        occupied.setCar(ad.getCar());
+        occupied.setDateFrom(occupiedDTO.getDateFrom());
+        occupied.setDateTo(occupiedDTO.getDateTo());
+        this.occupiedRepository.save(occupied);
+        log.info("Successfully created occupation");
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 }

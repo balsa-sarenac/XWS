@@ -27,4 +27,5 @@ public class AdInfoDTO {
     private PriceListDTO priceList;
     private Integer pages;
     private List<String> images;
+    private Long userId;
 }
