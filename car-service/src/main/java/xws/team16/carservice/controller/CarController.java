@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import xws.team16.carservice.dto.CarDTO;
+import xws.team16.carservice.dto.CarInfoDTO;
 import xws.team16.carservice.service.CarService;
 
 @CrossOrigin(origins = "*")
@@ -48,4 +49,11 @@ public class CarController {
         log.info("Car controller - getting cars");
         return this.carService.getCarByUser(username);
     }
+
+    @PatchMapping(value = "")
+    public ResponseEntity<?> editCar(@RequestBody CarInfoDTO carInfoDTO){
+        log.info("Car controller - get car by its id (id = " + carInfoDTO.getId() + ")");
+        return carService.editCar(carInfoDTO);
+    }
+
 }

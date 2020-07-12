@@ -460,4 +460,17 @@ public class CarService {
 
         return sum;
     }
+
+    public ResponseEntity<?> editCar(CarInfoDTO carInfoDTO) {
+        Car car = this.carRepository.getOne(carInfoDTO.getId());
+        car.setKilometrage(carInfoDTO.getKilometrage());
+        car.setNumberOfChildSeats(carInfoDTO.getNumberOfChildSeats());
+        car.setHasAndroid(carInfoDTO.isHasAndroid());
+        car.setFuel(this.fuelService.getFuelById(carInfoDTO.getFuel().getId()));
+        car.setGearbox(this.gearboxService.getGearboxById(carInfoDTO.getGearbox().getId()));
+        car.setCarClass(this.carClassService.getCarClassById(carInfoDTO.getCarClass().getId()));
+
+        this.carRepository.save(car);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

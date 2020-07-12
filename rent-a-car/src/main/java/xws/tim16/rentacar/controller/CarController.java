@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import xws.tim16.rentacar.dto.CarInfoDTO;
 import xws.tim16.rentacar.service.CarService;
 
 @CrossOrigin
@@ -40,6 +41,12 @@ public class CarController {
     public ResponseEntity<?> getCarById(@PathVariable Long car_id){
         log.info("Car controller - get car by its id (id = " + car_id + ")");
         return carService.getCarById_ResponseEntity(car_id);
+    }
+
+    @PatchMapping(value = "")
+    public ResponseEntity<?> editCar(@RequestBody CarInfoDTO carInfoDTO){
+        log.info("Car controller - get car by its id (id = " + carInfoDTO.getId() + ")");
+        return carService.editCar(carInfoDTO);
     }
 
 }
