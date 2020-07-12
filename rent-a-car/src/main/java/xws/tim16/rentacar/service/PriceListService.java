@@ -74,9 +74,12 @@ public class PriceListService {
         priceList.setDiscountDays(priceListDTO.getDiscountDays());
         priceList.setPerDay(priceListDTO.getPerDay());
 
+
         log.info("Sending soap request to car service");
         TPriceList tPriceList = modelMapper.map(priceListDTO, TPriceList.class);
-        tPriceList.setId(priceList.getRefId());
+        if(priceList.getRefId() != null) {
+            tPriceList.setId(priceList.getRefId());
+        }
 
         try {
             EditPriceListResponse response = this.carClient.editPriceList(tPriceList);
@@ -86,7 +89,7 @@ public class PriceListService {
         }
         log.info("Soap request successfully finished");
 
-        this.priceListRepository.save(priceList);
+
         log.info("Price list service - price list edited");
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
