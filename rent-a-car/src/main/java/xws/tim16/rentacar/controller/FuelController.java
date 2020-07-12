@@ -45,5 +45,10 @@ public class FuelController {
         return fuelService.update_ResponseEntity(fuelDTO);
     }
 
+    @DeleteMapping(value = "{id}")
+    public ResponseEntity<?> deleteFuelById(@PathVariable Long id) {
+        log.info("Fuel Controller - deleteFuelById(" + id + ")");
+        return fuelService.deleteFuelById_ResponseEntity(id);
+    }
 }
 
