@@ -7,6 +7,8 @@ import lombok.Setter;
 import org.joda.time.DateTime;
 import xws.tim16.rentacar.util.JsonJodaDateTimeSerializer;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -25,4 +27,6 @@ public class AdInfoDTO {
     private PriceListDTO priceList;
     private Integer pages;
     private Long userId;
+    private List<String> images;
+
 }

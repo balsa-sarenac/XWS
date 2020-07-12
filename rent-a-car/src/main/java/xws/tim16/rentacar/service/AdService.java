@@ -135,7 +135,7 @@ public class AdService {
         return this.adRepository.findById(adId).orElseThrow(() -> new NotFoundException("Ad with given id was nto found."));
     }
 
-    public ResponseEntity<?> getOneAdById(Long id) {
+    public ResponseEntity<?> getOneAdById(Long id) throws SQLException {
         log.info("Ad service - getting one ad");
         Ad ad = this.adRepository.getOne(id);
         AdInfoDTO adDTO = new AdInfoDTO();
@@ -164,6 +164,12 @@ public class AdService {
         car.setOverallGrade(grade);
         car.setNumberGrades(numberGrades);
         adDTO.setCar(car);
+        List<String> images = new ArrayList<>();
+        for (MyImage myImage: ad.getCar().getImages()) {
+            String image = this.carService.encodeImage(myImage);
+            images.add(image);
+        }
+        adDTO.setImages(images);
 
         return new ResponseEntity<>(adDTO,HttpStatus.OK);
     }
@@ -173,7 +179,7 @@ public class AdService {
         return  ad;
     }
 
-    public ResponseEntity<List<AdInfoDTO>> searchAds(SearchDTO search, int page, String sort) {
+    public ResponseEntity<List<AdInfoDTO>> searchAds(SearchDTO search, int page, String sort) throws SQLException {
         log.info("Ad service - searching ads");
         if(search.getFromDate().isAfter(search.getToDate()) || search.getFromDate().isBefore(DateTime.now().plusDays(2))){
             return  new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -213,6 +219,13 @@ public class AdService {
             adInfoDTO.setPages(ads.getTotalPages());
             adInfoDTO.setUserId(ad.getUser().getId());
             adDTOS.add(adInfoDTO);
+
+            List<String> images = new ArrayList<>();
+            for (MyImage myImage: ad.getCar().getImages()) {
+                String image = this.carService.encodeImage(myImage);
+                images.add(image);
+            }
+            adInfoDTO.setImages(images);
         }
 
         log.info("Ad service - sending founded ads");

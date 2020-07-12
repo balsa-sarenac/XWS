@@ -39,13 +39,13 @@ public class AdController {
      * @param id is id of the ad
      */
     @GetMapping(value = "/{id}")
-    public ResponseEntity<?> getAd(@PathVariable Long id) {
+    public ResponseEntity<?> getAd(@PathVariable Long id) throws SQLException {
         log.info("Ad controller - get ad");
         return this.adService.getOneAdById(id);
     }
 
     @PostMapping(value = "/search/{page}/{sort}")
-    public ResponseEntity<?> searchAds(@RequestBody SearchDTO search, @PathVariable int page,@PathVariable String sort) {
+    public ResponseEntity<?> searchAds(@RequestBody SearchDTO search, @PathVariable int page,@PathVariable String sort) throws SQLException {
         log.info("Ad controller - searching ads");
         return this.adService.searchAds(search,page, sort);
     }

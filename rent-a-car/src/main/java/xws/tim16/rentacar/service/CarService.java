@@ -317,9 +317,21 @@ public class CarService {
         return myImage;
     }
 
+    public MyImage extractImage(String string) throws SQLException {
+        String[] parts = string.split(",");
+        byte[] decodedByte = Base64.decode(parts[1]);
+        String[] info = parts[0].split("/");
+        String type = info[1].split(";")[0];
+        MyImage myImage = new MyImage();
+        myImage.setImage(new SerialBlob(decodedByte));
+        myImage.setInfo(parts[0]);
+        myImage.setType(type);
+        return myImage;
+    }
+
     public String encodeImage(MyImage myImage) throws SQLException {
         String retVal = "data:image/jpeg;base64,";
-        String img = Base64.getEncoder().encodeToString(myImage.getImage().getBytes(1L, (int) myImage.getImage().length()));
+        String img = Base64.toBase64String(myImage.getImage().getBytes(1L, (int) myImage.getImage().length()));
         return retVal + img;
     }
 
