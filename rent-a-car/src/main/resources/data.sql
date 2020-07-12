@@ -19,7 +19,7 @@ values (4, 'balsa', 'sarenac', 'bax', 'tamo daleko', '$2a$10$U9jvaVCEV.48aHuR2vc
 insert into user_table (id, username, first_name, last_name, address, password, enabled, account_non_expired, account_non_locked, credentials_non_expired, is_admin, status, num_can_req, last_password_reset_date)
 values (5, 'admin', 'admin', 'admin', 'admin', '$2a$10$U9jvaVCEV.48aHuR2vck/emgRLXJ3d5jleYyCTwdO/X9fmDtZ0bgG', true, false, false, false, true, 0 ,0, '2020-06-09T21:39:42.000');
 
-insert into users_roles (user_id, role_id) values (1, 3);
+insert into users_roles (user_id, role_id) values (1, 2);
 insert into users_roles (user_id, role_id) values (2, 3);
 insert into users_roles (user_id, role_id) values (3, 2);
 insert into users_roles (user_id, role_id) values (4, 3);
@@ -31,61 +31,80 @@ insert into users_privileges (user_id, privilege_id) values (3, 1);
 insert into users_privileges (user_id, privilege_id) values (4, 1);
 
 -- MESSAGES
-insert into message (id, text, date_sent, sender_id, receiver_id) values (1, 'hi', '2020-06-03T21:39:45.618', 1, 3);
-insert into message (id, text, date_sent, sender_id, receiver_id) values (2, 'hey', '2020-06-03T21:42:45.618', 3, 1);
-insert into message (id, text, date_sent, sender_id, receiver_id) values (3, 'hello', '2020-06-03T21:44:45.618', 1, 2);
+insert into message (id, text, date_sent, sender_id, receiver_id) values (1, 'hi', '2020-06-03T21:39:45.618', 1, 4);
+insert into message (id, text, date_sent, sender_id, receiver_id) values (2, 'hey', '2020-06-03T21:42:45.618', 4, 1);
+insert into message (id, text, date_sent, sender_id, receiver_id) values (3, 'hello', '2020-06-03T21:44:45.618', 4, 2);
 
 
-insert into MARK (name ) values ('audi');
-insert into MARK (name ) values ('bmw');
-insert into MARK (name ) values ('mercedes');
-insert into MARK (name ) values ('ford');
-insert into MODEL (name, mark_id) values ('q7', 1);
-insert into MODEL (name, mark_id) values ('a4', 1);
-insert into MODEL (name, mark_id) values ('g22', 2);
-insert into MODEL (name, mark_id) values ('x7', 2);
-insert into MODEL (name, mark_id) values ('c112', 3);
-insert into MODEL (name, mark_id) values ('f700', 3);
-insert into MODEL (name, mark_id) values ('focus', 4);
-insert into MODEL (name, mark_id) values ('Q5', 1);
-insert into MODEL (name, mark_id) values ('A3', 1);
+--Marke
+insert into MARK (name ) values ('Audi');
+insert into MARK (name ) values ('Bmw');
+insert into MARK (name ) values ('Mercedes');
+insert into MARK (name ) values ('Ford');
+insert into MARK (name ) values ('Opel');
+
+---Modeli
+insert into MODEL (name, mark_id) values ('Q7', 1);
 insert into MODEL (name, mark_id) values ('A4', 1);
-insert into MODEL (name, mark_id) values ('Q3', 1);
-insert into FUEL (type) values ('benzin');
-insert into FUEL (type) values ('dizel');
-insert into FUEL (type) values ('elektricni');
-insert into CAR_CLASS (name ) values ('city');
-insert into CAR_CLASS (name ) values ('limuzina');
-insert into CAR_CLASS (name ) values ('karavan');
-insert into CAR_CLASS (name ) values ('terenac');
-insert into GEARBOX (type) values ('automatic');
-insert into GEARBOX (type) values ('manuelni');
-insert into PRICE_LIST (per_day, extra_kilometrage, cdw, discount, discount_days, user_id) values (7, 4, 10, 10, 20, 1);
-insert into PRICE_LIST (per_day, extra_kilometrage, cdw, discount, discount_days, user_id) values (8, 6, 150, 11, 30, 1);
-insert into PRICE_LIST (per_day, extra_kilometrage, cdw, discount, discount_days, user_id) values (9, 5, 100, 12, 20, 1);
-insert into PRICE_LIST (per_day, extra_kilometrage, cdw, discount, discount_days, user_id) values (11, 6, 200, 10, 25, 1);
+insert into MODEL (name, mark_id) values ('Q5', 1);
+insert into MODEL (name, mark_id) values ('S6', 1);
+insert into MODEL (name, mark_id) values ('Gran Coupe', 2);
+insert into MODEL (name, mark_id) values ('Sedan', 2);
+insert into MODEL (name, mark_id) values ('X7', 2);
+insert into MODEL (name, mark_id) values ('X4', 2);
+insert into MODEL (name, mark_id) values ('G 550 SUV', 3);
+insert into MODEL (name, mark_id) values ('AMG GT', 3);
+insert into MODEL (name, mark_id) values ('C112', 3);
+insert into MODEL (name, mark_id) values ('F700', 3);
+insert into MODEL (name, mark_id) values ('Focus', 4);
+insert into MODEL (name, mark_id) values ('Mondeo', 4);
+insert into MODEL (name, mark_id) values ('Mustang', 4);
+insert into MODEL (name, mark_id) values ('Explorer', 4);
+insert into MODEL (name, mark_id) values ('Astra', 5);
+insert into MODEL (name, mark_id) values ('Insignia', 5);
+insert into MODEL (name, mark_id) values ('Corsa',5);
+insert into MODEL (name, mark_id) values ('Meriva', 5);
+
+--Fuel
+insert into FUEL (type) values ('Benzin');
+insert into FUEL (type) values ('Dizel');
+insert into FUEL (type) values ('Electro');
+insert into FUEL (type) values ('Hybrid');
+
+--Klase
+insert into CAR_CLASS (name ) values ('City');
+insert into CAR_CLASS (name ) values ('Luxury');
+insert into CAR_CLASS (name ) values ('Caravan');
+insert into CAR_CLASS (name ) values ('Suv');
+
+--Gearboxes
+insert into GEARBOX (type) values ('Automatic');
+insert into GEARBOX (type) values ('Manual');
+
+insert into PRICE_LIST (per_day, extra_kilometrage, cdw, discount, discount_days, user_id) values (7, 1, 20, 10, 20, 1);
+insert into PRICE_LIST (per_day, extra_kilometrage, cdw, discount, discount_days, user_id) values (8, 2, 30, 11, 30, 1);
+insert into PRICE_LIST (per_day, extra_kilometrage, cdw, discount, discount_days, user_id) values (9, 1, 40, 12, 20, 2);
+insert into PRICE_LIST (per_day, extra_kilometrage, cdw, discount, discount_days, user_id) values (11, 2, 30, 10, 25, 2);
+insert into PRICE_LIST (per_day, extra_kilometrage, cdw, discount, discount_days, user_id) values (7, 1, 20, 10, 20, 3);
+insert into PRICE_LIST (per_day, extra_kilometrage, cdw, discount, discount_days, user_id) values (8, 2, 30, 11, 30, 3);
+insert into PRICE_LIST (per_day, extra_kilometrage, cdw, discount, discount_days, user_id) values (9, 1, 40, 12, 20, 4);
+insert into PRICE_LIST (per_day, extra_kilometrage, cdw, discount, discount_days, user_id) values (7, 1, 20, 10, 20, 4);
+
+
 insert into CAR (kilometrage, number_of_child_seats, has_android,  mark_id, car_class_id, fuel_id, model_id, gearbox_id, owner_id, number_of_grades, overall_grade) values (100010, 0,false, 1,2,1,1,1,1,0,4.5);
 insert into CAR (kilometrage, number_of_child_seats, has_android,  mark_id, car_class_id, fuel_id, model_id, gearbox_id, owner_id, number_of_grades, overall_grade) values (25555, 0,false, 1,2,2,2,2,1,0,0.0);
-insert into CAR (kilometrage, number_of_child_seats, has_android,  mark_id, car_class_id, fuel_id, model_id, gearbox_id, owner_id, number_of_grades, overall_grade) values (100100, 1,false, 2,1,3,3,2,2,0,0.0);
-insert into CAR (kilometrage, number_of_child_seats, has_android,  mark_id, car_class_id, fuel_id, model_id, gearbox_id, owner_id, number_of_grades, overall_grade) values (250203, 2,false, 2,2,1,4,1,2,0,0.0);
+insert into CAR (kilometrage, number_of_child_seats, has_android,  mark_id, car_class_id, fuel_id, model_id, gearbox_id, owner_id, number_of_grades, overall_grade) values (100100, 1,false, 2,1,3,3,2,1,0,0.0);
+insert into CAR (kilometrage, number_of_child_seats, has_android,  mark_id, car_class_id, fuel_id, model_id, gearbox_id, owner_id, number_of_grades, overall_grade) values (250203, 2,false, 2,2,1,4,1,3,0,0.0);
 insert into CAR (kilometrage, number_of_child_seats, has_android,  mark_id, car_class_id, fuel_id, model_id, gearbox_id, owner_id, number_of_grades, overall_grade) values (10503, 0,false, 3,2,3,5,1,3,0,0.0);
 insert into CAR (kilometrage, number_of_child_seats, has_android,  mark_id, car_class_id, fuel_id, model_id, gearbox_id, owner_id, number_of_grades, overall_grade) values (150000, 2,false, 4,1,2,7,2,3,0,0.0);
 insert into AD (cdw_available, pick_up_place, from_date, to_date, allowed_kilometrage, car_id, price_list_id, user_id, ref_id) values (true, 'Nevesinje', '2020-08-01T21:39:45.618', '2020-08-19T21:39:45.618', 350, 1,1,1,1);
 insert into AD (cdw_available, pick_up_place, from_date, to_date, allowed_kilometrage, car_id, price_list_id, user_id, ref_id) values (true, 'Trebinje', '2020-08-01T21:39:45.618', '2020-08-19T21:39:45.618', 100, 2,2,1,2);
-insert into AD (cdw_available, pick_up_place, from_date, to_date, allowed_kilometrage, car_id, price_list_id, user_id, ref_id) values (false, 'BanjaLuka', '2020-08-02T21:39:45.618', '2020-08-10T21:39:45.618', 200, 3,3,2,3);
-insert into AD (cdw_available, pick_up_place, from_date, to_date, allowed_kilometrage, car_id, price_list_id, user_id, ref_id) values (false, 'Nevesinje', '2020-08-02T21:39:45.618', '2020-08-10T21:39:45.618', 300, 4,4,2,4);
-insert into AD (cdw_available, pick_up_place, from_date, to_date, allowed_kilometrage, car_id, price_list_id, user_id, ref_id) values (true, 'Nevesinje', '2020-08-03T21:39:45.618', '2020-08-11T21:39:45.618', 0, 5,2,3,5);
+insert into AD (cdw_available, pick_up_place, from_date, to_date, allowed_kilometrage, car_id, price_list_id, user_id, ref_id) values (false, 'BanjaLuka', '2020-08-02T21:39:45.618', '2020-08-10T21:39:45.618', 200, 3,2,1,3);
+insert into AD (cdw_available, pick_up_place, from_date, to_date, allowed_kilometrage, car_id, price_list_id, user_id, ref_id) values (false, 'Nevesinje', '2020-08-02T21:39:45.618', '2020-08-10T21:39:45.618', 300, 4,4,3,4);
+insert into AD (cdw_available, pick_up_place, from_date, to_date, allowed_kilometrage, car_id, price_list_id, user_id, ref_id) values (true, 'Nevesinje', '2020-08-03T21:39:45.618', '2020-08-11T21:39:45.618', 0, 5,3,3,5);
 insert into AD (cdw_available, pick_up_place, from_date, to_date, allowed_kilometrage, car_id, price_list_id, user_id, ref_id) values (true, 'Nevesinje', '2020-08-03T21:39:45.618', '2020-08-11T21:39:45.618', 250, 6,4,3,6);
 
 
--- CARS
--- insert into car (id, user_id) values (1, 1);
--- insert into car (id, user_id) values (2, 1);
--- insert into car (id, user_id) values (3, 2);
--- insert into car (id, user_id) values (4, 2);
--- insert into car (id, user_id) values (5, 3);
--- insert into car (id, user_id) values (6, 3);
--- insert into car (id, user_id) values (7, 3);
 
 -- REQUESTS
 
@@ -108,13 +127,13 @@ insert into RENT_REQUEST (id, status, date_created, pick_up_date, return_date, p
 
 
 --COMMENTS
-insert into COMMENT (text, approved, user_id, car_id, ad_id) values ('Odlicno sve, monogo mi se svidja', true, 1, 5, 1);
-insert into COMMENT (text, approved, user_id, car_id, ad_id) values ('Preporucujem', true, 1, 6, 2);
+insert into COMMENT (text, approved, user_id, car_id, ad_id) values ('Odlicno sve, monogo mi se svidja', true, 1, 5, 5);
+insert into COMMENT (text, approved, user_id, car_id, ad_id) values ('Preporucujem', true, 2, 6, 6);
 insert into COMMENT (text, approved, user_id, car_id, ad_id) values ('Sve korektno', true, 2, 2, 2);
 insert into COMMENT (text, approved, user_id, car_id, ad_id) values ('Odlicno auto', true, 4, 3, 3);
 insert into COMMENT (text, approved, user_id, car_id, ad_id) values ('Zadovoljan sam uslugom', true, 4, 3, 3);
 insert into COMMENT (text, approved, user_id, car_id, ad_id) values ('Mnogo brz auto!!!11', true, 4, 4, 4);
-insert into COMMENT (text, approved, user_id, car_id, ad_id) values ('Mnogo mi se svidja ovaj automobil', false, 3, 4, 4);
+insert into COMMENT (text, approved, user_id, car_id, ad_id) values ('Mnogo mi se svidja ovaj automobil', false, 1, 4, 4);
 insert into COMMENT (text, approved, user_id, car_id, ad_id) values ('Preporucujem svakom ko voli udobnu voznju', false, 4, 6, 6);
 
 insert into GRADE (grade, user_id, car_id, ad_id) values (5, 3, 1, 1);

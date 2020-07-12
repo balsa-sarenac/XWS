@@ -155,7 +155,7 @@ public class OccupiedService {
             }
         }
 
-        /*
+
         log.info("Sending soap request to car service");
         TOccupied tOccupied = new TOccupied();
         tOccupied.setCarId(occupied.getId());
@@ -168,7 +168,7 @@ public class OccupiedService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        log.info("Soap request successfully finished");*/
+        log.info("Soap request successfully finished");
 
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
